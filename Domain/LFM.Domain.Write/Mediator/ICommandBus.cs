@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
-using LFM.Core.Common.Command;
+using LFM.Domain.Write.Declarations;
+using LFM.Domain.Write.Models;
 
 namespace LFM.Domain.Write.Mediator
 {

@@ -11,7 +11,7 @@ namespace LFM.DataAccess.DB.SQLite.DataInitializer
 {
     public static class SqliteIdentityInitializer
     {
-        public static async Task InitializeSqliteIdentitySeed(this IServiceProvider serviceProvider)
+        public static async Task Init(IServiceProvider serviceProvider)
         {
             using (var scope = serviceProvider.CreateScope())
             {

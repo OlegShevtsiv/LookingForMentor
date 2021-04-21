@@ -1,7 +1,8 @@
-using LFM.Core.Common.Command;
 using LFM.Domain.Write.CommandHandlers.Auth;
 using LFM.Domain.Write.Commands.Auth;
+using LFM.Domain.Write.Declarations;
 using LFM.Domain.Write.Mediator;
+using LFM.Domain.Write.Models;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace LFM.Domain.Write
@@ -19,6 +20,9 @@ namespace LFM.Domain.Write
         {
             services.AddTransient<ICommandHandler<LoginUserCommand, CommandResult>, LoginUserCommandHandler>();
             services.AddTransient<ICommandHandler<LogoutUserCommand, CommandResult>, LogoutUserCommandHandler>();
+            services.AddTransient<ICommandHandler<RegisterStudentCommand, CommandResult>, RegisterStudentCommandHandler>();
+            services.AddTransient<ICommandHandler<RegisterMentorCommand, CommandResult>, RegisterMentorCommandHandler>();
+
         }
     }
 }

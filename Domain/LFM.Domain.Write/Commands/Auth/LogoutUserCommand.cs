@@ -1,4 +1,4 @@
-using LFM.Core.Common.Command;
+using LFM.Domain.Write.Declarations;
 
 namespace LFM.Domain.Write.Commands.Auth
 {

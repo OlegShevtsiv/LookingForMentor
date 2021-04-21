@@ -1,7 +1,8 @@
 using System.Threading.Tasks;
-using LFM.Core.Common.Command;
 using LFM.DataAccess.DB.Core.Entities;
 using LFM.Domain.Write.Commands.Auth;
+using LFM.Domain.Write.Declarations;
+using LFM.Domain.Write.Models;
 using Microsoft.AspNetCore.Identity;
 
 namespace LFM.Domain.Write.CommandHandlers.Auth
@@ -22,7 +23,7 @@ namespace LFM.Domain.Write.CommandHandlers.Auth
                 return new CommandResult(false);
             }
 
-            var loginResult = await _signInManager.PasswordSignInAsync(command.LoginName, command.Password, command.RememberMe, lockoutOnFailure: false);
+            var loginResult = await _signInManager.PasswordSignInAsync(command.Email, command.Password, command.RememberMe, lockoutOnFailure: false);
             
             return new CommandResult(loginResult.Succeeded);
         }

@@ -1,21 +1,13 @@
-using LFM.Core.Common.Command;
-using Lfm.Core.Common.Web.Models.ViewModels.Auth;
+using LFM.Domain.Write.Declarations;
 
 namespace LFM.Domain.Write.Commands.Auth
 {
     public class LoginUserCommand : ICommand
     {
-        public LoginUserCommand(LoginVM model)
-        {
-            LoginName = model.LoginName;
-            Password = model.Password;
-            RememberMe = model.RememberMe;
-        }
-
-        public string LoginName { get; }
+        public string Email { get; set; }
         
-        public string Password { get; }
+        public string Password { get; set; }
 
-        public bool RememberMe { get; }
+        public bool RememberMe { get; set; }
     }
 }

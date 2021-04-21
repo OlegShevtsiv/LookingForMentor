@@ -1,7 +1,8 @@
 using System;
 using System.Threading.Tasks;
-using LFM.Core.Common.Command;
 using LFM.Core.Common.Exceptions;
+using LFM.Domain.Write.Declarations;
+using LFM.Domain.Write.Models;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace LFM.Domain.Write.Mediator

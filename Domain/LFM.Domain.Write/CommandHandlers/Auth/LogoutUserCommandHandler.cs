@@ -1,7 +1,8 @@
 using System.Threading.Tasks;
-using LFM.Core.Common.Command;
 using LFM.DataAccess.DB.Core.Entities;
 using LFM.Domain.Write.Commands.Auth;
+using LFM.Domain.Write.Declarations;
+using LFM.Domain.Write.Models;
 using Microsoft.AspNetCore.Identity;
 
 namespace LFM.Domain.Write.CommandHandlers.Auth

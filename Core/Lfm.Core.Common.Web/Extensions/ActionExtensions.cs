@@ -1,5 +1,5 @@
 using Lfm.Core.Common.Web.Data;
-using Lfm.Core.Common.Web.Models.ViewModels;
+using Lfm.Core.Common.Web.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Lfm.Core.Common.Web.Extensions
@@ -12,7 +12,7 @@ namespace Lfm.Core.Common.Web.Extensions
         /// <param name="controller"></param>
         /// <param name="returnUrlModel"></param>
         /// <returns></returns>
-        public static IActionResult LocalRedirect(this Controller controller, ReturnUrlVM returnUrlModel = null)
+        public static IActionResult Redirect(this Controller controller, ReturnUrlModel returnUrlModel)
         {
             if (returnUrlModel?.ReturnUrl != null)
             {
