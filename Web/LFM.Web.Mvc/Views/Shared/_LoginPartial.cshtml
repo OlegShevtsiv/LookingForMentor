@@ -1,14 +1,14 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @using LFM.DataAccess.DB.Core.Entities
+@using Lfm.Domain.Common.Extensions
 
 @inject SignInManager<LfmUser> SignInManager
-@inject UserManager<LfmUser> UserManager
 
 <ul class="navbar-nav">
     @if (SignInManager.IsSignedIn(User))
     {
         <li class="nav-item">
-            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @User.Identity.Name!</a>
+            <a class="nav-link text-dark" asp-controller="UserCabinet" asp-action="Index" title="Manage">Hello @User.GetName()!</a>
         </li>
         <li class="nav-item">
             <form class="form-inline" asp-controller="Auth" asp-action="Logout">
@@ -19,10 +19,7 @@
     else
     {
         <li class="nav-item">
-            <a class="nav-link text-dark" asp-controller="Auth" asp-action="RegisterMentor">Register Mentor</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link text-dark" asp-controller="Auth" asp-action="RegisterStudent">Register Student</a>
+            <a class="nav-link text-dark" asp-controller="Auth" asp-action="Register">Registration</a>
         </li>
         <li class="nav-item">
             <a class="nav-link text-dark" asp-controller="Auth" asp-action="Login" asp-route-returnUrl="@Context.Request.Path">Login</a>

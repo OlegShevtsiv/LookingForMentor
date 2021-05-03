@@ -1,9 +1,6 @@
 using System;
-using System.Collections.Generic;
-using System.Net;
 using System.Threading.Tasks;
 using LFM.Core.Common.Exceptions;
-using Lfm.Core.Common.Web.Data;
 using Lfm.Web.Mvc.App.SessionAlerts;
 using Microsoft.AspNetCore.Http;
 
@@ -26,13 +23,13 @@ namespace Lfm.Web.Mvc.App.Middlewares
             }
             catch (LfmException lfmError)
             {
-                context.Alert(lfmError.Message, AlertTypes.Error);
-                context.Response.Redirect(context.Request.Path, true);
+                //log exception
+                AlertExtensions.AlertErrorAndRedirect(lfmError.Message, context);
             }
-            catch (Exception e)
+            catch (Exception exc)
             {
-                context.Alert(AlertMessages.SystemError, AlertTypes.Error);
-                context.Response.Redirect(context.Request.Path, true);
+                //log exception
+                AlertExtensions.AlertErrorAndRedirect(Messages.SystemError, context);
             }
         }
     }

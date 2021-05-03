@@ -1,0 +1,50 @@
+@using Lfm.Domain.Common.Extensions
+@using Lfm.Web.Mvc.App.UIRenderers
+@using LFM.Core.Common.Extensions
+@model Lfm.Domain.ReadModels.ReviewModels.MentorProfile.MentorProfilePreviewModel
+@{
+    ViewData["Title"] = "General info";
+    Layout = "_UserCabinetLayout.cshtml";
+}
+
+<div class="col-md-8">
+    
+    <div class="list-group-item flex-column align-items-start border-dark">
+        <img src="@(Url.Action("GetMentorsAvatar", "UserCabinet"))" class="profile-pic" alt="">
+    </div>
+    
+    <div class="list-group-item flex-column align-items-start border-dark">
+        <label>Full name</label>
+        <hr>
+        <p>@Model.Surname @Context.User.GetName() @Model.MiddleName</p>
+    </div>
+    
+    <div class="list-group-item flex-column align-items-start border-dark">
+        <label>About Me</label>
+        <hr>
+        <p>@Model.AboutMe</p>
+    </div>
+
+    <div class="list-group-item flex-column align-items-start border-dark">
+        <label>My location</label>
+        <hr>
+        <p>@Model.LocationInfo</p>
+    </div>
+    
+
+    <div class="list-group-item flex-column align-items-start border-dark">
+        <label>Where can I conduct lessons?</label>
+        <hr>
+        <p>@UserCabinetUiRenderer.StudyingPlaceToString(Model.StudyingPlace)</p>
+    </div>
+    
+    
+    <div class="list-group-item flex-column align-items-start border-dark">
+        <label>My education</label>
+        <hr>
+        <p>@Model.Education</p>
+    </div>
+    
+    <a class="page-link border-info" asp-controller="UserCabinet" asp-action="EditMentorGeneralInfo">Edit info...</a>
+</div>
+

@@ -1,4 +1,4 @@
-using Lfm.Web.Mvc.App.Configurations;
+using Lfm.Web.Mvc.App.Startup;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;

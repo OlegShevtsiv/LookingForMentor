@@ -1,4 +1,4 @@
-using LFM.DataAccess.DB.SQLite.DataInitializer;
+using Lfm.Web.Mvc.App.DataInitializers;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 

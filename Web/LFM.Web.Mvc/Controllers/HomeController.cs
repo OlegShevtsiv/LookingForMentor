@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Threading.Tasks;
+using LFM.Domain.Read.Providers;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
 namespace LFM.Web.Mvc.Controllers
@@ -6,6 +8,7 @@ namespace LFM.Web.Mvc.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+
 
         public HomeController(ILogger<HomeController> logger)
         {
@@ -17,7 +20,7 @@ namespace LFM.Web.Mvc.Controllers
             return View();
         }
 
-        public IActionResult Privacy()
+        public async Task<IActionResult> Privacy()
         {
             return View();
         }

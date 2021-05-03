@@ -1,12 +1,14 @@
 using System.Threading.Tasks;
 using AutoMapper;
+using LFM.Core.Common.Exceptions;
 using Lfm.Core.Common.Web.Data;
 using Lfm.Core.Common.Web.Extensions;
 using LFM.Domain.Write.Commands.Auth;
 using LFM.Domain.Write.Mediator;
 using LFM.Domain.Write.Models;
-using Lfm.Web.Mvc.App.Models.ViewModels.Auth;
+using Lfm.Web.Mvc.App.Attributes.Action;
 using Lfm.Web.Mvc.App.SessionAlerts;
+using Lfm.Web.Mvc.Models.ViewsModels.Auth;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -37,6 +39,12 @@ namespace LFM.Web.Mvc.Controllers
             return View(new LoginVM{ReturnUrl = returnUrl});
         }
 
+        [HttpGet("register")]
+        public IActionResult Register()
+        {
+            return View();
+        }
+        
         [HttpGet("register/mentor")]
         public IActionResult RegisterMentor()
         {
@@ -64,11 +72,11 @@ namespace LFM.Web.Mvc.Controllers
                 
                 if (loginResult.IsSuccess)
                 {
-                    this.AlertSuccess(AlertMessages.LoginSuccess);
+                    this.AlertSuccess(Messages.LoginSuccessful);
                     return this.Redirect(model);
                 }
             }
-            this.AlertError(AlertMessages.LogoutFailed);
+            this.AlertError(Messages.LoginFailed);
             return View(model);
         }
 
@@ -84,11 +92,11 @@ namespace LFM.Web.Mvc.Controllers
                 
                 if (loginResult.IsSuccess)
                 {
-                    this.AlertSuccess(AlertMessages.LoginSuccess);
-                    return LocalRedirect(Constants.DefaultUrl);
+                    this.AlertSuccess(Messages.RegistrationSuccessful);
+                    return RedirectToAction("Index", "UserCabinet");
                 }
             }
-            this.AlertError(AlertMessages.LogoutFailed);
+            this.AlertError(Messages.RegistrationFailed);
             return View(model);
         }
         
@@ -100,15 +108,15 @@ namespace LFM.Web.Mvc.Controllers
             {
                 var command = _mapper.Map<RegisterStudentCommand>(model);
                 
-                CommandResult loginResult = await _commandBus.ExecuteCommand<RegisterStudentCommand, CommandResult>(command);
+                CommandResult registrationResult = await _commandBus.ExecuteCommand<RegisterStudentCommand, CommandResult>(command);
                 
-                if (loginResult.IsSuccess)
+                if (registrationResult.IsSuccess)
                 {
-                    this.AlertSuccess(AlertMessages.LoginSuccess);
-                    return LocalRedirect(Constants.DefaultUrl);
+                    this.AlertSuccess(Messages.RegistrationSuccessful);
+                    return RedirectToAction("Index", "UserCabinet");
                 }
             }
-            this.AlertError(AlertMessages.LogoutFailed);
+            this.AlertError(Messages.RegistrationFailed);
             return View(model);
         }
 
@@ -121,11 +129,11 @@ namespace LFM.Web.Mvc.Controllers
             CommandResult logoutResult = await _commandBus.ExecuteCommand<LogoutUserCommand, CommandResult>(command);
             
             if (logoutResult.IsSuccess)
-                this.AlertSuccess(AlertMessages.LogoutSuccess);
+                this.AlertSuccess(Messages.LogoutSuccessful);
             else
-                this.AlertError(AlertMessages.LogoutFailed);
+                this.AlertError(Messages.LogoutFailed);
             
-            return this.LocalRedirect(Constants.DefaultUrl);
+            return LocalRedirect(Constants.DefaultUrl);
         }
         
         #endregion

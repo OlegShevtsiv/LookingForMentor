@@ -1,5 +1,6 @@
 ﻿@using Lfm.Core.Common.Web.Extensions
 @using Lfm.Web.Mvc.App.SessionAlerts
+@using Lfm.Web.Mvc.App.UIRenderers
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -41,7 +42,7 @@
 
                 @foreach (AlertDataModel alert in alerts)
                 {
-                    <div class="toast bg-@alert.GetCssColorClassName()" role="alert" aria-live="assertive" aria-atomic="true" data-autohide="false">
+                    <div class="toast bg-@AlertUiRenderer.GetAlertCssColorClassName(alert)" role="alert" aria-live="assertive" aria-atomic="true" data-autohide="false">
                         <div class="toast-header">
                             <strong class="mr-auto">@alert.Type.ToString()</strong>
                             <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">

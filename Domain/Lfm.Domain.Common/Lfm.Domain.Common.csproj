@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Core\Lfm.Core.Common.Web\Lfm.Core.Common.Web.csproj" />
+    <ProjectReference Include="..\..\Core\LFM.Core.Common\LFM.Core.Common.csproj" />
+    <ProjectReference Include="..\..\DataAccess\LFM.DataAccess.DB.Core\LFM.DataAccess.DB.Core.csproj" />
+  </ItemGroup>
+
+</Project>

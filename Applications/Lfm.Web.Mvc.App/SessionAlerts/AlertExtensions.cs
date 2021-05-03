@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Lfm.Core.Common.Web.Data;
 using Lfm.Core.Common.Web.Extensions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -50,17 +51,11 @@ namespace Lfm.Web.Mvc.App.SessionAlerts
             page.Context.Session.Remove(AlertKey);
             return alerts;
         }
-
-        public static string GetCssColorClassName(this AlertDataModel alert)
+        
+        public static void AlertErrorAndRedirect(string errorMessage, HttpContext context)
         {
-            return alert.Type switch
-            {
-                AlertTypes.Success => "success",
-                AlertTypes.Error => "danger",
-                AlertTypes.Warning => "warning",
-                AlertTypes.Info => "info",
-                _ => string.Empty
-            };
+            context.Alert(errorMessage, AlertTypes.Error);
+            context.Response.Redirect(Constants.DefaultUrl, true);
         }
     }
 }
