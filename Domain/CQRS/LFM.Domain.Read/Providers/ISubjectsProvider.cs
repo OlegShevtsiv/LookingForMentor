@@ -6,8 +6,12 @@ namespace LFM.Domain.Read.Providers
 {
     public interface ISubjectsProvider
     {
-        public Task<ICollection<SubjectReviewModel>> GetAllSubjects();
+        public Task<IEnumerable<SubjectReviewModel>> GetAllSubjects();
 
+        public Task<IEnumerable<SubjectListItem>> GetSubjectsList();
+        
         Task<SubjectReviewModel> GetSubject(int subjectId);
+
+        Task<bool> IsExists(int subjectId);
     }
 }

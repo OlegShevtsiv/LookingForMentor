@@ -27,7 +27,9 @@ namespace LFM.Domain.Write
             services.AddScoped<ICommandHandler<RegisterStudentCommand, CommandResult>, RegisterStudentCommandHandler>();
             services.AddScoped<ICommandHandler<RegisterMentorCommand, CommandResult>, RegisterMentorCommandHandler>();
             services.AddScoped<ICommandHandler<EditMentorProfileCommand, CommandResult>, EditMentorProfileCommandHandler>();
-
+            services.AddScoped<ICommandHandler<AddMentorSubjectCommand, CommandResult>, AddMentorSubjectCommandHandler>();
+            services.AddScoped<ICommandHandler<DeleteMentorSubjectCommand, CommandResult>, DeleteMentorSubjectCommandHandler>();
+            services.AddScoped<ICommandHandler<EditMentorSubjectCommand, CommandResult>, EditMentorSubjectCommandHandler>();
         }
         
         private static void AddCommandServices(IServiceCollection services)

@@ -17,7 +17,8 @@ namespace LFM.Domain.Write.Commands.MentorProfile
         
         public string AboutMe { get; set; }
         
-        public string LocationInfo { get; set; }
+        
+        public int TownId { get; set; }
 
         public StudyingPlaces? StudyingPlace { get; set; }
         

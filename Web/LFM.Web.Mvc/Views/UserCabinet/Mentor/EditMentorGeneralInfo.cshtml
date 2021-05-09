@@ -1,9 +1,10 @@
 @using Lfm.Web.Mvc.App.UIRenderers
+@using LFM.Domain.Read.Providers
 @model Lfm.Web.Mvc.Models.ViewsModels.UserCabinet.Mentor.EditMentorsProfileVM
-
+@inject IMasterDataProvider MasterDataProvider;
 @{
     ViewData["Title"] = "Edit general info";
-    Layout = "_UserCabinetLayout.cshtml";
+    Layout = "../_UserCabinetLayout.cshtml";
 }
 
 <div class="col-md-8">
@@ -12,7 +13,7 @@
         
         <div class="form-group">
             <div class="edit-personal-data__user-photo">
-                <img src="@(Url.Action("GetMentorsAvatar", "UserCabinet"))" class="profile-pic" alt="">
+                <img src="@(Url.Action("GetMentorAvatar", "UserCabinet"))" class="profile-pic" alt="">
                 <input asp-for="ProfileImageFormFile" type="file" class="file-upload">
             </div>
             <a href="#" class="upload-button">Upload new Avatar</a>
@@ -38,14 +39,33 @@
         
         <div class="form-group">
             <label>About me</label>
-            <textarea asp-for="AboutMe" class="form-control"></textarea>
+            <textarea asp-for="AboutMe" rows="5" class="form-control"></textarea>
             <span asp-validation-for="AboutMe" class="text-danger"></span>
         </div>
         
         <div class="form-group">
-            <label>My location</label>
-            <textarea asp-for="LocationInfo" class="form-control"></textarea>
-            <span asp-validation-for="LocationInfo" class="text-danger"></span>
+            <label>My town</label>
+            
+            @{
+                var towns = await MasterDataProvider.GetAllTowns();
+                var firstFive = towns.Take(5).ToList();
+                towns = towns.Skip(5).ToList();
+                
+              <select asp-for="TownId" class="form-control" style="max-height: 250px;">
+                  @foreach (var t in firstFive)
+                  {
+                      <option value="@t.Id">@t.Name</option>
+                  }
+                  <optgroup label="----------------------">
+                      @foreach (var t in towns)
+                      {
+                          <option value="@t.Id">@t.Name</option>
+                      }
+                  </optgroup>
+              </select>   
+            }
+
+            <span asp-validation-for="TownId" class="text-danger"></span>
         </div>
         
         <div class="form-group">
@@ -70,7 +90,7 @@
          
         <div class="form-group">
             <label>My education</label>
-            <textarea asp-for="Education" class="form-control"></textarea>
+            <textarea asp-for="Education" rows="2" class="form-control"></textarea>
             <span asp-validation-for="Education" class="text-danger"></span>
         </div>
         

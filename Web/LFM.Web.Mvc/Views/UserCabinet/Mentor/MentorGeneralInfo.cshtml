@@ -4,13 +4,13 @@
 @model Lfm.Domain.ReadModels.ReviewModels.MentorProfile.MentorProfilePreviewModel
 @{
     ViewData["Title"] = "General info";
-    Layout = "_UserCabinetLayout.cshtml";
+    Layout = "../_UserCabinetLayout.cshtml";
 }
 
 <div class="col-md-8">
     
     <div class="list-group-item flex-column align-items-start border-dark">
-        <img src="@(Url.Action("GetMentorsAvatar", "UserCabinet"))" class="profile-pic" alt="">
+        <img src="@(Url.Action("GetMentorAvatar", "UserCabinet"))" class="profile-pic" alt="">
     </div>
     
     <div class="list-group-item flex-column align-items-start border-dark">
@@ -26,9 +26,9 @@
     </div>
 
     <div class="list-group-item flex-column align-items-start border-dark">
-        <label>My location</label>
+        <label>My town</label>
         <hr>
-        <p>@Model.LocationInfo</p>
+        <p>@Model.TownName</p>
     </div>
     
 

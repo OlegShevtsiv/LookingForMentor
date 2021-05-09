@@ -12,7 +12,7 @@ namespace LFM.DataAccess.DB.Core.Entities.MentorEntities
 
         public int MentorId { get; set; }
         
-        public LfmUser Mentor { get; set; }
+        public virtual LfmUser Mentor { get; set; }
         
         [Required]
         [MaxLength(20)]
@@ -30,10 +30,11 @@ namespace LFM.DataAccess.DB.Core.Entities.MentorEntities
         public string AboutMe { get; set; }
 
         public virtual List<MentorsSubjectInfo> SubjectsInfo { get; set; }
+        
+        
+        public int? TownId { get; set; }
 
-        [Required]
-        [MaxLength(250)]
-        public string LocationInfo { get; set; }
+        public virtual Town Town { get; set; }
 
         public StudyingPlaces? StudyingPlace { get; set; }
         

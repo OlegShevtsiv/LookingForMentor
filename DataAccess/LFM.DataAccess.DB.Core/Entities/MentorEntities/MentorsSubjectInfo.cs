@@ -10,12 +10,15 @@ namespace LFM.DataAccess.DB.Core.Entities.MentorEntities
     {
         public int Id { get; set; }
         
-        public int MentorsProfileId { get; set; }
+        public int MentorId { get; set; }
 
-        [Required]
         public int CostPerHour { get; set; }
-
+        
         [Required]
+        [MaxLength(500)]
+        [MinLength(100)]
+        public string Description { get; set; }
+
         public int SubjectId { get; set; }
 
         public virtual Subject Subject { get; set; }

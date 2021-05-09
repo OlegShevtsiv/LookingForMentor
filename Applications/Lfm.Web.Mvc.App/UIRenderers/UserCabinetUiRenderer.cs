@@ -63,12 +63,14 @@ namespace Lfm.Web.Mvc.App.UIRenderers
                 new CabinetNavItem
                 {
                     Name = "General Info",
-                    Link = "/userCabinet/generalInfo/"
+                    ControllerName = "UserCabinet",
+                    ActionName = "MentorGeneralInfo"
                 },
                 new CabinetNavItem
                 {
                     Name = "My subjects",
-                    Link = "/userCabinet/subjectsInfo/"
+                    ControllerName = "UserCabinet",
+                    ActionName = "MentorSubjectsInfo"
                 }
             };
     }

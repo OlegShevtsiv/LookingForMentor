@@ -65,7 +65,11 @@ namespace LFM.DataAccess.DB.Core.Context
 
                 e.HasMany(m => m.SubjectsInfo)
                     .WithOne()
-                    .HasForeignKey(m => m.MentorsProfileId);
+                    .HasForeignKey(m => m.MentorId);
+                
+                e.HasOne(m => m.Town)
+                    .WithOne()
+                    .HasForeignKey<MentorsProfile>(m => m.TownId);
             });
 
             builder.Entity<MentorsSubjectInfo>(e =>

@@ -15,7 +15,7 @@ namespace Lfm.Domain.ReadModels.ReviewModels.MentorProfile
 
         public List<SubjectInfo> SubjectsInfos { get; set; }
         
-        public string LocationInfo { get; set; }
+        public string TownName { get; set; }
 
         public StudyingPlaces StudyingPlace { get; set; }
         

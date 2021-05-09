@@ -1,5 +1,9 @@
 using System.Collections.Generic;
+using System.Linq;
+using LFM.DataAccess.DB.Core.Entities;
 using LFM.DataAccess.DB.Core.Entities.SubjectEntities;
+using LFM.DataAccess.DB.Core.MasterDataProviders;
+using LFM.DataAccess.DB.Core.Resources;
 using Microsoft.EntityFrameworkCore;
 
 namespace LFM.DataAccess.DB.Core.Context
@@ -12,37 +16,37 @@ namespace LFM.DataAccess.DB.Core.Context
             {
                 new SubjectsTag
                 {
-                    Id = 100,
+                    Id = 1,
                     Name = "Base level"
                 },
                 new SubjectsTag
                 {
-                    Id = 101,
+                    Id = 2,
                     Name = "Elementary School"
                 },
                 new SubjectsTag
                 {
-                    Id = 102,
+                    Id = 3,
                     Name = "Secondary School"
                 },
                 new SubjectsTag
                 {
-                    Id = 103,
+                    Id = 4,
                     Name = "High School"
                 },
                 new SubjectsTag
                 {
-                    Id = 104,
+                    Id = 5,
                     Name = "For beginners"
                 },
                 new SubjectsTag
                 {
-                    Id = 105,
+                    Id = 6,
                     Name = "For professionals"
                 },
                 new SubjectsTag
                 {
-                    Id = 106,
+                    Id = 7,
                     Name = "University courses"
                 }
             };
@@ -73,54 +77,83 @@ namespace LFM.DataAccess.DB.Core.Context
                 new TagSubjectRelation
                 {
                     SubjectId = 1,
-                    TagId = 101
+                    TagId = 2
                 },
                 new TagSubjectRelation
                 {
                     SubjectId = 1,
-                    TagId = 102
+                    TagId = 3
                 },
                 new TagSubjectRelation
                 {
                     SubjectId = 1,
-                    TagId = 103
+                    TagId = 4
                 },
                 new TagSubjectRelation
                 {
                     SubjectId = 2,
-                    TagId = 100
+                    TagId = 1
                 },
                 new TagSubjectRelation
                 {
                     SubjectId = 2,
-                    TagId = 104
+                    TagId = 5
                 },
                 new TagSubjectRelation
                 {
                     SubjectId = 2,
-                    TagId = 105
-                }
-                ,new TagSubjectRelation
+                    TagId = 6
+                },
+                new TagSubjectRelation
                 {
                     SubjectId = 2,
-                    TagId = 106
+                    TagId = 7
                 },
                 new TagSubjectRelation
                 {
                     SubjectId = 3,
-                    TagId = 102
+                    TagId = 1
                 },
                 new TagSubjectRelation
                 {
                     SubjectId = 3,
-                    TagId = 103
-                }
-                ,new TagSubjectRelation
+                    TagId = 2
+                },
+                new TagSubjectRelation
                 {
                     SubjectId = 3,
-                    TagId = 106
+                    TagId = 3
+                },
+                new TagSubjectRelation
+                {
+                    SubjectId = 3,
+                    TagId = 4
+                },
+                new TagSubjectRelation
+                {
+                    SubjectId = 3,
+                    TagId = 5
+                },
+                new TagSubjectRelation
+                {
+                    SubjectId = 3,
+                    TagId = 6
+                },
+                new TagSubjectRelation
+                {
+                    SubjectId = 3,
+                    TagId = 7
                 }
             });
+            
+            modelBuilder.Entity<Town>().HasData(GetTowns());
+        }
+
+        private static Town[] GetTowns()
+        {
+            TownsResourceProvider townsResourceProvider = new TownsResourceProvider();
+            var towns = townsResourceProvider.GetAllTowns().Result.ToArray();
+            return towns;
         }
     }
 }

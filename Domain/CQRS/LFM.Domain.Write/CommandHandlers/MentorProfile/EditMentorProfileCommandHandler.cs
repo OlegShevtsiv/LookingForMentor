@@ -47,6 +47,12 @@ namespace LFM.Domain.Write.CommandHandlers.MentorProfile
             if (profile == null)
                 throw new LfmException(Messages.DataNotFound);
 
+            var isTownExist = await _context.UkrainianTowns.AnyAsync(t => t.Id == command.TownId);
+            if (!isTownExist)
+            {
+                throw new LfmException(Messages.TownNotFound);
+            }
+
             if (!mentor.Name.Equals(command.Name, StringComparison.InvariantCulture))
             {
                 mentor.Name = command.Name;
@@ -90,9 +96,9 @@ namespace LFM.Domain.Write.CommandHandlers.MentorProfile
                 hasChanges = true;
             }
 
-            if(profile.LocationInfo != command.LocationInfo)
+            if(profile.TownId != command.TownId)
             {
-                profile.LocationInfo = command.LocationInfo;
+                profile.TownId = command.TownId;
                 hasChanges = true;
             }
 
@@ -108,7 +114,7 @@ namespace LFM.Domain.Write.CommandHandlers.MentorProfile
                 hasChanges = true;
             }
 
-            if (command.ProfileImageBytes != null)
+            if (command.ProfileImageBytes?.Length > 0)
             {
                 if (profile.ProfileImageId == null)
                     profile.ProfileImage = new MentorsProfileImage();

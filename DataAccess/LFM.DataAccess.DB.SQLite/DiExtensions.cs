@@ -37,6 +37,7 @@ namespace LFM.DataAccess.DB.SQLite
                 .AddClaimsPrincipalFactory<TClaimFactory>();
 
             services.AddRepository();
+            services.AddMasterDataProviders();
         }
     }
 }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -5,9 +6,17 @@ namespace LFM.Core.Common.Extensions
 {
     public static class CollectionsExtensions
     {
-        public static string ToCommaSeparatedString(this IEnumerable<string> collection)
+        public static string ToSeparatedString(this IEnumerable<string> collection, string separator)
         {
-            return collection?.Aggregate(string.Empty, (curr, next) => $"{curr},{next}").Trim(',');
+            var list = collection?.ToList() ?? new List<string>();
+            
+            if (list.Any() != true)
+                return string.Empty;
+
+            if (list.Count == 1)
+                return list.First();
+            
+            return String.Join(separator, list);
         }
     }
 }

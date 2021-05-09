@@ -1,0 +1,56 @@
+@using LFM.Core.Common.Extensions
+@using Lfm.Domain.Common.Extensions
+@using LFM.Domain.Read.Providers
+@model ICollection<Lfm.Domain.ReadModels.ReviewModels.MentorProfile.MentorSubjectReviewModel>;
+@inject IMentorProfileProvider MentorProfileProvider;
+@{
+    ViewData["Title"] = "Subjects Info";
+    Layout = "../_UserCabinetLayout.cshtml";
+}
+
+@{
+    var availableSubjects = await MentorProfileProvider.GetAvailableSubjects(User.GetId());
+    if (availableSubjects?.Any() == true)
+    {
+        <div class="dropdown show">
+            <button class="btn btn-sm btn-success dropdown-toggle" type="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Add subject
+            </button>
+            <div class="dropdown-menu scrollable-menu" aria-labelledby="dropdownMenuLink">
+                @foreach (var s in availableSubjects)
+                {
+                    <a class="dropdown-item" asp-controller="UserCabinet" asp-action="AddingMentorSubject" asp-route-subjectId="@s.Id">@s.Name</a>
+                }
+            </div>
+        </div>
+    }
+}
+
+<table class="table">
+    
+    @if (Model?.Any() == true)
+    {
+        <tr>
+            <th>Name</th><th style="max-width: 300px;">Tags</th><th>Cost per hour</th><th></th>
+        </tr>
+
+        foreach (var subj in Model)
+        {
+            <tr>
+                <td>@subj.SubjectName</td>
+                <td style="max-width: 300px;"><small>@subj.SelectedTags.Select(t => t.TagName).ToSeparatedString(", ")</small></td>
+                <td>@subj.CostPerHour UAH</td>
+                <td>
+                    <form asp-controller="UserCabinet" asp-action="DeleteMentorSubject" asp-route-subjectId="@subj.SubjectId" method="post">
+                        <a class="btn btn-sm btn-warning" asp-controller="UserCabinet" asp-action="EditingMentorSubject" asp-route-subjectId="@subj.SubjectId">Edit</a>
+                        <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    }
+    else
+    {
+        <div class="text-center">No Data</div>
+    }
+</table>

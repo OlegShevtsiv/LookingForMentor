@@ -1,0 +1,24 @@
+.file-upload{
+    display: none;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+.edit-personal-data__user-photo{
+    width: 200px;
+    max-height: 200px;
+    height: auto;
+    background: #fff;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.3);
+    margin-right: 15px;
+    overflow: hidden;
+}
+
+.scrollable-menu {
+    height: auto;
+    max-height: 250px;
+    overflow-x: hidden;
+}

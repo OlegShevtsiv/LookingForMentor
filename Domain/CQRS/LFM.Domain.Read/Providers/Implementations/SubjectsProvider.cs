@@ -7,6 +7,7 @@ using LFM.Core.Common.Exceptions;
 using LFM.DataAccess.DB.Core.Entities.SubjectEntities;
 using LFM.DataAccess.DB.Core.Repository;
 using LFM.Domain.Read.Caching;
+using LFM.Domain.Read.EntityProvideServices;
 using Lfm.Domain.ReadModels.ReviewModels.Subject;
 using Microsoft.EntityFrameworkCore;
 
@@ -17,6 +18,7 @@ namespace LFM.Domain.Read.Providers.Implementations
         private readonly IRepository<Subject> _subjectsRepo;
         private readonly IMapper _mapper;
         private readonly SubjectCachingService _subjectsCachingService;
+        private readonly SubjectProvideService _subjectProvideService;
 
         public SubjectsProvider(
             IRepository<Subject> subjectsRepo, 
@@ -26,27 +28,21 @@ namespace LFM.Domain.Read.Providers.Implementations
             _subjectsRepo = subjectsRepo;
             _mapper = mapper;
             _subjectsCachingService = cachingService;
+            _subjectProvideService = new SubjectProvideService(_subjectsRepo, _mapper, _subjectsCachingService);
         }
 
-        public async Task<ICollection<SubjectReviewModel>> GetAllSubjects()
+        public async Task<IEnumerable<SubjectReviewModel>> GetAllSubjects()
         {
-            ICollection<SubjectReviewModel> subjects;
-            
-            if (!await _subjectsCachingService.TryGetAllSubjects(out subjects))
-            {
-                subjects = await _subjectsRepo.GetQueryable()
-                    .ProjectTo<SubjectReviewModel>(_mapper.ConfigurationProvider)
-                    .ToListAsync();
-
-                if (!subjects.Any())
-                    throw new LfmException(Messages.DataNotFound);
-
-                await _subjectsCachingService.TryCacheAllSubjects(subjects);
-            }
-            
-            return subjects;
+            return (await _subjectProvideService.GetSubjects<SubjectReviewModel>()).ToList();
         }
-        
+
+        public async Task<IEnumerable<SubjectListItem>> GetSubjectsList()
+        {
+            var subjectsList = await _subjectProvideService.GetSubjects<SubjectListItem>();
+
+            return subjectsList;
+        }
+
         public async Task<SubjectReviewModel> GetSubject(int subjectId)
         {
             SubjectReviewModel subject;
@@ -63,6 +59,17 @@ namespace LFM.Domain.Read.Providers.Implementations
             }
             
             return subject;
+        }
+
+        public async Task<bool> IsExists(int subjectId)
+        {
+            if (!await _subjectsCachingService.TryGetById(subjectId, out _))
+            {
+                return await _subjectsRepo.GetQueryable()
+                    .AnyAsync(s => s.Id == subjectId);
+            }
+
+            return true;
         }
     }
 }

@@ -7,6 +7,7 @@ namespace LFM.Core.Common.Exceptions
         public const string SystemError = "Opps, something goes wrong. \nSystem error.";
         public const string Unauthorized = "You are unauthorized for this action.";
         public const string DataNotFound = "Data not found.";
+        public const string InvalidRequest = "Invalid request.";
         public const string RequiredField = "'{0}' is required field.";
 
         #endregion
@@ -32,6 +33,12 @@ namespace LFM.Core.Common.Exceptions
         public const string UserDoesNotHaveRole = "User doesn't have any role.";
         public const string UserClaimNotFound = "User claim of type '{0}' was not found.";
         public const string InvalidUserClaim = "Invalid User Claim.";
+
+        #endregion
+
+        #region Master data
+
+        public const string TownNotFound = "Town not found.";
 
         #endregion
     }

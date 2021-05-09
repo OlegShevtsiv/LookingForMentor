@@ -1,15 +1,14 @@
-using System;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Routing;
 
 namespace Lfm.Web.Mvc.App.UIRenderers
 {
     public static class CommonUiRenderer
     {
-        public static string ActiveLink(PathString requestPath, string link)
+        public static string ActiveLink(HttpContext context, string controllerName, string actionName)
         {
-            link = link.Trim('/');
-            string currentPath = requestPath.ToString().Trim('/');
-            if (link.Equals(currentPath, StringComparison.InvariantCultureIgnoreCase))
+            if (context.GetRouteValue("controller").ToString() == controllerName &&
+                context.GetRouteValue("action").ToString() == actionName)
             {
                 return "active";
             }

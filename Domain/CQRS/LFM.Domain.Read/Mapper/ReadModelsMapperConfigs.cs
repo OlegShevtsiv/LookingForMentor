@@ -32,9 +32,20 @@ namespace LFM.Domain.Read.Mapper
                 .ForMember(x => x.ProfileImageId, o => o.MapFrom(p => p.ProfileImageId))
                 .ForMember(x => x.AboutMe, o => o.MapFrom(p => p.AboutMe))
                 .ForMember(x => x.SubjectsInfos, o => o.MapFrom(p => p.SubjectsInfo))
-                .ForMember(x => x.LocationInfo, o => o.MapFrom(p => p.LocationInfo))
+                .ForMember(x => x.TownName, o => o.MapFrom(p => p.Town.Name))
                 .ForMember(x => x.StudyingPlace, o => o.MapFrom(p => p.StudyingPlace))
                 .ForMember(x => x.Education, o => o.MapFrom(p => p.Education));
+            
+            CreateMap<MentorsSubjectInfo, MentorSubjectReviewModel>()
+                .ForMember(x => x.CostPerHour, o => o.MapFrom(p => p.CostPerHour))
+                .ForMember(x => x.Description, o => o.MapFrom(p => p.Description))
+                .ForMember(x => x.SubjectId, o => o.MapFrom(p => p.SubjectId))
+                .ForMember(x => x.SubjectName, o => o.MapFrom(p => p.Subject.Name))
+                .ForMember(x => x.SelectedTags, o => o.MapFrom(p => p.Tags));
+
+            CreateMap<MentorsSubjectTag, MentorSubjectReviewModel.MentorsSubjectTag>()
+                .ForMember(x => x.Id, o => o.MapFrom(p => p.TagId))
+                .ForMember(x => x.TagName, o => o.MapFrom(p => p.Tag.Name));
         }
 
         private void CreateSubjectMaps()
@@ -47,6 +58,10 @@ namespace LFM.Domain.Read.Mapper
                 .ForMember(x => x.Id, o => o.MapFrom(p => p.Id))
                 .ForMember(x => x.Name, o => o.MapFrom(p => p.Name))
                 .ForMember(x => x.Tags, o => o.MapFrom(p => p.Tags));
+
+            CreateMap<SubjectReviewModel, SubjectListItem>()
+                .ForMember(x => x.Id, o => o.MapFrom(p => p.Id))
+                .ForMember(x => x.Name, o => o.MapFrom(p => p.Name));
         }
     }
 }

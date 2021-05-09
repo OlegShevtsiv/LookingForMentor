@@ -27,8 +27,8 @@ namespace Lfm.Web.Mvc.Models.ViewsModels.UserCabinet.Mentor
         public string AboutMe { get; set; }
         
         [Required]
-        [MaxLength(250)]
-        public string LocationInfo { get; set; }
+        [Display(Name = "Town")]
+        public int? TownId { get; set; }
 
         [Required]
         public StudyingPlaces? StudyingPlace { get; set; }

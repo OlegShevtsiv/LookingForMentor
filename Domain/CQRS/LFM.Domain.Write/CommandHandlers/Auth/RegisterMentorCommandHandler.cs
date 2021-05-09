@@ -45,7 +45,7 @@ namespace LFM.Domain.Write.CommandHandlers.Auth
                     MiddleName = string.Empty,
                     ProfileImageId = null,
                     AboutMe = string.Empty,
-                    LocationInfo = string.Empty,
+                    TownId = null,
                     StudyingPlace = null,
                     Education = string.Empty
                 };

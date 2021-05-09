@@ -27,6 +27,8 @@ namespace Lfm.Web.Mvc.App.Startup
             
             services.AddLfmSqliteContext<LfmUserClaimsPrincipalFactory>(sqliteDbPath);
             
+            services.ConfigureApplicationCookie(options => options.LoginPath = $"/auth/login");
+
             services.Configure<CookiePolicyOptions>(options =>
             {
                 options.MinimumSameSitePolicy = SameSiteMode.None;

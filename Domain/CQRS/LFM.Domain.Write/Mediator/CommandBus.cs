@@ -32,7 +32,7 @@ namespace LFM.Domain.Write.Mediator
             ICommandHandler<TCommand, TCommandResult> handler = _serviceProvider.GetService<ICommandHandler<TCommand, TCommandResult>>();
             
             if (handler == null) 
-                throw new LfmException($"Command handler for {nameof(TCommand)} not found");
+                throw new Exception($"Command handler for {nameof(TCommand)} not found");
 
             return handler;
         }

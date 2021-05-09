@@ -22,6 +22,7 @@ namespace LFM.DataAccess.DB.Core.Context
 
         public DbSet<SubjectsTag> SubjectsTags { get; set; }
 
+        public DbSet<Town> UkrainianTowns { get; set; }
 
         public LfmDbContext()
         {
