@@ -1,13 +1,13 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace Lfm.Web.Mvc.Models.ViewsModels.Auth
+namespace Lfm.Web.Mvc.Models.FormModels.Auth
 {
-    public sealed class RegisterMentorVM
+    public class RegisterStudentFormModel
     {
         [Required]
         [Display(Name = "Name")]
         public string Name { get; set; }
-        
+
         [Required]
         [EmailAddress]
         [Display(Name = "Email")]

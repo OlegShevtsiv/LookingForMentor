@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using LFM.Core.Common.Data;
 using LFM.Core.Common.Exceptions;
 using LFM.DataAccess.DB.Core.Context;
 using LFM.Domain.Write.Commands.MentorProfile;

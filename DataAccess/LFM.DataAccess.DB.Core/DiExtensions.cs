@@ -10,10 +10,5 @@ namespace LFM.DataAccess.DB.Core
         {
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
         }
-        
-        public static void AddMasterDataProviders(this IServiceCollection services)
-        {
-            services.AddScoped<TownsResourceProvider>();
-        } 
     }
 }

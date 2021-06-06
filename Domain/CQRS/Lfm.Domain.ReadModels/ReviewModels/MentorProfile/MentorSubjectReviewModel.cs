@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Lfm.Domain.ReadModels.ReviewModels.Subject;
 
 namespace Lfm.Domain.ReadModels.ReviewModels.MentorProfile
 {
@@ -12,13 +13,6 @@ namespace Lfm.Domain.ReadModels.ReviewModels.MentorProfile
 
         public string SubjectName { get; set; }
         
-        public virtual List<MentorsSubjectTag> SelectedTags { get; set; }
-        
-        public class MentorsSubjectTag
-        {
-            public int Id { get; set; }
-
-            public string TagName { get; set; }
-        }
+        public virtual List<TagReviewModel> SelectedTags { get; set; }
     }
 }

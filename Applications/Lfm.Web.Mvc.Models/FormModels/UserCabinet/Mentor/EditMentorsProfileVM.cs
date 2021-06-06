@@ -2,9 +2,9 @@ using System.ComponentModel.DataAnnotations;
 using LFM.DataAccess.DB.Core.Types;
 using Microsoft.AspNetCore.Http;
 
-namespace Lfm.Web.Mvc.Models.ViewsModels.UserCabinet.Mentor
+namespace Lfm.Web.Mvc.Models.FormModels.UserCabinet.Mentor
 {
-    public class EditMentorsProfileVM
+    public class EditMentorsProfileFormModel
     {
         [Required]
         [MaxLength(20)]

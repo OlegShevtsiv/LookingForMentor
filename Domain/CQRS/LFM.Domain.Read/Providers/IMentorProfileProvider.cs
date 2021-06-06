@@ -18,5 +18,9 @@ namespace LFM.Domain.Read.Providers
         Task<bool> CanAddSubject(int mentorId, int subjectId);
         
         Task<byte[]> GetAvatar(int mentorId);
+
+        Task<ICollection<T>> GetPersonalOrders<T>(int mentorId) where T : MentorPersonalOrdersMinReviewModel;
+
+        Task<MentorPersonalOrdersDetailedReviewModel> GetPersonalOrderDetails(int mentorId, int orderId);
     }
 }

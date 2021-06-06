@@ -1,0 +1,58 @@
+@model Lfm.Domain.ReadModels.SearchModels.MentorsMinSearchModel;
+@using LFM.Domain.Read.Providers
+@using LFM.DataAccess.DB.Core.Types
+@using Lfm.Web.Mvc.App.UIRenderers
+
+
+@inject IMasterDataProvider MasterDataProvider;
+
+
+<form asp-controller="Home" asp-action="LookingForMentors" class="row gy-2 gx-3 align-items-center" method="post">
+    <div class="col-auto">
+        <label>Subject</label>
+        @{
+            var subjects = await MasterDataProvider.GetSubjectsList();
+                          <select asp-for="SubjectId" class="form-control" style="max-height: 250px;">
+                              <option value="">---</option>
+                              @foreach (var s in subjects)
+                              {
+                                  <option value="@s.Id">@s.Name</option>
+                              }
+                          </select>
+        }
+    </div>
+    <div class="col-auto">
+        <label>Studying places</label>
+        <select asp-for="StudyingPlace" class="form-control">
+            <option value="">---</option>
+            <option value="@StudyingPlaces.ONLINE_ONLY">@CommonUiRenderer.StudyingPlaceToString(StudyingPlaces.ONLINE_ONLY)</option>
+            <option value="@StudyingPlaces.OFFLINE_ONLY">@CommonUiRenderer.StudyingPlaceToString(StudyingPlaces.OFFLINE_ONLY)</option>
+            <option value="@StudyingPlaces.ONLINE_AND_OFFLINE">@CommonUiRenderer.StudyingPlaceToString(StudyingPlaces.ONLINE_AND_OFFLINE)</option>
+        </select>
+    </div>
+    <div class="col-auto">
+        <label>Town</label>
+        @{
+            var towns = await MasterDataProvider.GetTownsList();
+            var firstFive = towns.Take(5).ToList();
+            towns = towns.Skip(5).ToList();
+
+          <select asp-for="TownId" class="form-control" style="max-height: 250px;">
+              <option value="">---</option>
+              @foreach (var t in firstFive)
+              {
+                  <option value="@t.Id">@t.Name</option>
+              }
+              <optgroup label="----------------------">
+                  @foreach (var t in towns)
+                  {
+                      <option value="@t.Id">@t.Name</option>
+                  }
+              </optgroup>
+          </select>
+        }
+    </div>
+    <div class="col-auto">
+        <button type="submit" class="btn btn-primary">Find</button>
+    </div>
+</form>

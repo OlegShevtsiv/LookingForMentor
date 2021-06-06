@@ -19,7 +19,7 @@
             <div class="dropdown-menu scrollable-menu" aria-labelledby="dropdownMenuLink">
                 @foreach (var s in availableSubjects)
                 {
-                    <a class="dropdown-item" asp-controller="UserCabinet" asp-action="AddingMentorSubject" asp-route-subjectId="@s.Id">@s.Name</a>
+                    <a class="dropdown-item" asp-controller="MentorUserCabinet" asp-action="AddingMentorSubject" asp-route-subjectId="@s.Id">@s.Name</a>
                 }
             </div>
         </div>
@@ -38,11 +38,11 @@
         {
             <tr>
                 <td>@subj.SubjectName</td>
-                <td style="max-width: 300px;"><small>@subj.SelectedTags.Select(t => t.TagName).ToSeparatedString(", ")</small></td>
+                <td style="max-width: 300px;"><small>@subj.SelectedTags.Select(t => t.Name).ToSeparatedString(", ")</small></td>
                 <td>@subj.CostPerHour UAH</td>
                 <td>
-                    <form asp-controller="UserCabinet" asp-action="DeleteMentorSubject" asp-route-subjectId="@subj.SubjectId" method="post">
-                        <a class="btn btn-sm btn-warning" asp-controller="UserCabinet" asp-action="EditingMentorSubject" asp-route-subjectId="@subj.SubjectId">Edit</a>
+                    <form asp-controller="MentorUserCabinet" asp-action="DeleteMentorSubject" asp-route-subjectId="@subj.SubjectId" method="post">
+                        <a class="btn btn-sm btn-warning" asp-controller="MentorUserCabinet" asp-action="EditingMentorSubject" asp-route-subjectId="@subj.SubjectId">Edit</a>
                         <button type="submit" class="btn btn-sm btn-danger">Delete</button>
                     </form>
                 </td>

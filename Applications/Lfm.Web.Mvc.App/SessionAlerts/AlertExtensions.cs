@@ -20,9 +20,9 @@ namespace Lfm.Web.Mvc.App.SessionAlerts
             context.Session.SetObject(AlertKey, sessionAlerts);
         }
 
-        public static void Alert(this HttpContext context, string message, AlertTypes type)
+        public static void Alert(this HttpContext context, string message, AlertTypes type, params string[] messageParameters)
         {
-            context.AddAlert(new AlertDataModel(message, type));
+            context.AddAlert(new AlertDataModel(string.Format(message, messageParameters), type));
         }
 
         public static void AlertError(this Controller controller, string message)

@@ -11,7 +11,6 @@ namespace LFM.DataAccess.DB.Core.Entities.MentorEntities
         public virtual MentorsSubjectInfo MentorsSubjectInfo { get; set; }
         
         
-        
         public int TagId { get; set; }
 
         public virtual SubjectsTag Tag { get; set; }

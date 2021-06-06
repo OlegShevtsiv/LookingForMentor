@@ -43,7 +43,7 @@ namespace Lfm.Web.Mvc.App.Startup
             services.AddScoped<AlertModelStateErrorsAttribute>();
 
             services.AddCommands();
-            services.AddAutoMapper(typeof(ViewModelsCommandsMapperConfigs));
+            services.AddAutoMapper(typeof(ApplicationMapperConfigs));
             services.AddHttpContextAccessor();
 
             services.AddDataProviders();

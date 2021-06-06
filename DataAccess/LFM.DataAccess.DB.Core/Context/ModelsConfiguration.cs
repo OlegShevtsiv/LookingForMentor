@@ -91,6 +91,40 @@ namespace LFM.DataAccess.DB.Core.Context
                     .WithMany(s => s.Tags)
                     .HasForeignKey(s => s.MentorsSubjectInfoId);
             });
+            
+            builder.Entity<MentorsOrder>(e =>
+            {
+                e.HasOne(p => p.Mentor)
+                    .WithMany()
+                    .HasForeignKey(p => p.MentorId);
+                
+                e.HasOne(p => p.Subject)
+                    .WithMany()
+                    .HasForeignKey(p => p.SubjectId);
+                
+                e.HasOne(p => p.SubjectsTag)
+                    .WithMany()
+                    .HasForeignKey(p => p.TagId);
+            });
+
+            #endregion
+
+            #region Orders 
+
+            builder.Entity<OrderRequest>(e =>
+            {
+                e.HasOne(p => p.Mentor)
+                    .WithMany()
+                    .HasForeignKey(p => p.MentorId);
+                
+                e.HasOne(p => p.Subject)
+                    .WithMany()
+                    .HasForeignKey(p => p.SubjectId);
+                
+                e.HasOne(p => p.SubjectsTag)
+                    .WithMany()
+                    .HasForeignKey(p => p.TagId);
+            });
 
             #endregion
             

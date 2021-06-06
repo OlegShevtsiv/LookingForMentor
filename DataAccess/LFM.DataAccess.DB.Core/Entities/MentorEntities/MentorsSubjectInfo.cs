@@ -12,6 +12,7 @@ namespace LFM.DataAccess.DB.Core.Entities.MentorEntities
         
         public int MentorId { get; set; }
 
+        [Range(50, 500)]
         public int CostPerHour { get; set; }
         
         [Required]

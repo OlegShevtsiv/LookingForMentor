@@ -35,7 +35,7 @@
     <div class="list-group-item flex-column align-items-start border-dark">
         <label>Where can I conduct lessons?</label>
         <hr>
-        <p>@UserCabinetUiRenderer.StudyingPlaceToString(Model.StudyingPlace)</p>
+        <p>@CommonUiRenderer.StudyingPlaceToString(Model.StudyingPlace)</p>
     </div>
     
     
@@ -45,6 +45,6 @@
         <p>@Model.Education</p>
     </div>
     
-    <a class="page-link border-info" asp-controller="UserCabinet" asp-action="EditMentorGeneralInfo">Edit info...</a>
+    <a class="page-link border-info" asp-controller="MentorUserCabinet" asp-action="EditMentorGeneralInfo">Edit info...</a>
 </div>
 

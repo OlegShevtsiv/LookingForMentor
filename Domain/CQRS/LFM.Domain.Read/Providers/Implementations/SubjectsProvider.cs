@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
+using LFM.Core.Common.Data;
 using LFM.Core.Common.Exceptions;
 using LFM.DataAccess.DB.Core.Entities.SubjectEntities;
 using LFM.DataAccess.DB.Core.Repository;
@@ -34,13 +35,6 @@ namespace LFM.Domain.Read.Providers.Implementations
         public async Task<IEnumerable<SubjectReviewModel>> GetAllSubjects()
         {
             return (await _subjectProvideService.GetSubjects<SubjectReviewModel>()).ToList();
-        }
-
-        public async Task<IEnumerable<SubjectListItem>> GetSubjectsList()
-        {
-            var subjectsList = await _subjectProvideService.GetSubjects<SubjectListItem>();
-
-            return subjectsList;
         }
 
         public async Task<SubjectReviewModel> GetSubject(int subjectId)

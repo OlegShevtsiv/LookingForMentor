@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using LFM.DataAccess.DB.Core.Types;
+using Lfm.Domain.ReadModels.ReviewModels.Subject;
 
 namespace Lfm.Domain.ReadModels.ReviewModels.MentorProfile
 {
@@ -27,14 +28,7 @@ namespace Lfm.Domain.ReadModels.ReviewModels.MentorProfile
             
             public string SubjectName { get; set; }
             
-            public List<TagInfo> Tags { get; set; }
-        }
-        
-        public class TagInfo
-        {
-            public int Id { get; set; }
-            
-            public string Name { get; set; }
+            public List<TagReviewModel> Tags { get; set; }
         }
     }
 }

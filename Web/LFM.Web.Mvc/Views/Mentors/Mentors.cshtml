@@ -1,0 +1,45 @@
+@using LFM.Core.Common.Extensions
+@using Lfm.Web.Mvc.App.UIRenderers
+@model Lfm.Domain.ReadModels.Common.PageModel<Lfm.Domain.ReadModels.ReviewModels.Mentor.MentorPreviewModel>
+
+@{
+    ViewData["Title"] = "Looking for Mentors";
+}
+
+<div class="row text-center text-white mb-5">
+    <div class="col-lg-7 mx-auto">
+        <h1 class="display-5">Found mentors</h1>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-8 mx-auto">
+        <ul class="list-group shadow">
+            
+            @{
+                if (Model.TotalCount == 0)
+                {
+                    <li class="list-group-item">No data</li>
+                }
+                else
+                {
+                    foreach (var mentor in Model)
+                    {
+                        <li class="list-group-item">
+                            <div class="media align-items-lg-center flex-column flex-lg-row p-3">
+                                <div class="media-body order-2 order-lg-1">
+                                    <h5 class="mt-0 font-weight-bold mb-2">@mentor.Name</h5>
+                                    <p class="font-italic text-muted mb-0 small">@mentor.SubjectsList.Select(s => s.Name).ToSeparatedString(", ")</p>
+                                    <p class="font-italic text-muted mb-0 small">@CommonUiRenderer.StudyingPlaceToString(mentor.StudyingPlace)</p>
+                                    <h6 class="font-weight-bold my-2">@mentor.TownName</h6>
+                                    <a class="btn btn-sm btn-success stretched-link" asp-controller="Mentors" asp-action="MentorDetails" asp-route-mentorId="@mentor.MentorId">Details</a>
+                                </div>
+                                <img src="@Url.Action("GetMentorAvatar", "UserCabinet", new { mentorId = mentor.MentorId })" class="ml-lg-5 order-1 order-lg-2 mentors_photo" alt="@mentor.Name">
+                            </div>
+                        </li>
+                    }
+                }
+            }
+        </ul>
+    </div>
+</div>

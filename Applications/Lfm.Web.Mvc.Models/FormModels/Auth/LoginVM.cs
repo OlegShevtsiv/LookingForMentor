@@ -1,9 +1,9 @@
 using System.ComponentModel.DataAnnotations;
 using Lfm.Core.Common.Web.Models;
 
-namespace Lfm.Web.Mvc.Models.ViewsModels.Auth
+namespace Lfm.Web.Mvc.Models.FormModels.Auth
 {
-    public sealed class LoginVM : ReturnUrlModel
+    public sealed class LoginFormModel : ReturnUrlModel
     {
         [Required]
         [EmailAddress]

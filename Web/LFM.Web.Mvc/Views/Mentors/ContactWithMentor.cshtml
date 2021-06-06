@@ -1,0 +1,146 @@
+@using Lfm.Domain.ReadModels.ReviewModels.Mentor
+@using LFM.DataAccess.DB.Core.Types
+@using Lfm.Web.Mvc.App.UIRenderers
+@using Lfm.Web.Mvc.Models.FormModels.Mentor
+@model Lfm.Web.Mvc.Models.FormModels.Mentor.ContactMentorFormModel;
+@{
+    var mentorInfo = ViewBag.ContactMentorInfo as ContactMentorInfo;
+}
+
+<div class="row justify-content-md-center">
+    <div class="col-8">
+        <form asp-controller="Mentors" asp-action="ContactWithMentor" method="post">
+            <input asp-for="MentorId" hidden/>
+            <h4>Fill the form to contact with @mentorInfo.Name about @mentorInfo.Subject.SubjectName (@mentorInfo.Subject.CostPerHour UAH per hour)</h4>
+            <hr/>
+
+            <div class="form-group">
+                <div class="form-group">
+                    <label>Lesson info</label>
+                </div>
+                
+                <div class="form-group">
+                    <input asp-for="Lesson.SubjectId" hidden/>
+
+                    <select asp-for="Lesson.TagId" class="form-control" style="max-height: 250px;" size="@mentorInfo.Subject.Tags.Count">
+                        <option selected value="@(mentorInfo.Subject.Tags.FirstOrDefault()?.Id)">@(mentorInfo.Subject.Tags.FirstOrDefault()?.Name)</option>
+                        @foreach (var t in mentorInfo.Subject.Tags.Skip(1))
+                        {
+                            <option value="@(t.Id)">@t.Name</option>
+                        }
+                    </select>
+                    
+                    <span asp-validation-for="Lesson.TagId" class="text-danger"></span>
+                </div>
+                
+                <div class="form-group">
+                    
+                    @if (mentorInfo.StudyingPlace == StudyingPlaces.ONLINE_AND_OFFLINE)
+                    {
+                        int i = 1;
+                        foreach (var box in CommonUiRenderer.StudyingPlacesCheckboxesInfo(StudyingPlaces.ONLINE_ONLY))
+                        {
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="Lesson.StudyingPlace" id="StudyingPlace_@i" value="@box.Value" @box.Checked>
+                                <label class="form-check-label" for="StudyingPlace_@i">
+                                    @box.Name
+                                </label>
+                            </div>
+                            i++;
+                        }
+                    }
+                    else
+                    {
+                        <input hidden type="radio" name="Lesson.StudyingPlace" value="@(mentorInfo.StudyingPlace)" checked>
+                        <input type="text" class="form-control" value="@CommonUiRenderer.StudyingPlaceToString(mentorInfo.StudyingPlace)" disabled>
+                    }
+                </div>
+                
+                <div class="form-group">
+                    <input type="number" min="1" max="7" class="form-control" asp-for="Lesson.AmountOfLessonsPerWeek" placeholder="Amount of lessons per week">
+                    <span asp-validation-for="Lesson.AmountOfLessonsPerWeek" class="text-danger"></span>
+                </div>
+                
+                
+                <div class="form-group">
+                    
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="Lesson.LessonDuration" id="LessonDuration_1" value="@((int) LessonDuration.ONE_HOUR)" checked>
+                        <label class="form-check-label" for="LessonDuration_1">
+                            @CommonUiRenderer.LessonDurationToString(LessonDuration.ONE_HOUR)
+                        </label>
+                    </div>
+
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="Lesson.LessonDuration" id="LessonDuration_2" value="@((int) LessonDuration.ONE_HALF_HOUR)">
+                        <label class="form-check-label" for="LessonDuration_2">
+                            @CommonUiRenderer.LessonDurationToString(LessonDuration.ONE_HALF_HOUR)
+                        </label>
+                    </div>
+
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="Lesson.LessonDuration" id="LessonDuration_3" value="@((int) LessonDuration.TWO_HOURS)">
+                        <label class="form-check-label" for="LessonDuration_3">
+                            @CommonUiRenderer.LessonDurationToString(LessonDuration.TWO_HOURS)
+                        </label>
+                    </div>
+
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="Lesson.LessonDuration" id="LessonDuration_4" value="@((int) LessonDuration.MORE)">
+                        <label class="form-check-label" for="LessonDuration_4">
+                            @CommonUiRenderer.LessonDurationToString(LessonDuration.MORE)
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <hr/>
+
+            <div class="form-group">
+                <div class="form-group">
+                    <label>Contact Info</label>
+                </div>
+                <div class="form-group">
+                    <input type="text" class="form-control" asp-for="UserContact.Name" placeholder="Name">
+                    <span asp-validation-for="UserContact.Name" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input type="text" class="form-control" asp-for="UserContact.Email" placeholder="Email">
+                    <span asp-validation-for="UserContact.Email" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                <input type="text" class="form-control" asp-for="UserContact.PhoneNumber" placeholder="Phone number">
+                <span asp-validation-for="UserContact.PhoneNumber" class="text-danger"></span>
+                </div>
+            </div>
+
+            <hr/>
+
+            <div class="form-group">
+                <div class="form-group">
+                    <label>Additional Info</label>
+                </div>
+                
+                <div class="form-group">
+                    <textarea type="text" class="form-control" asp-for="Additional.WhenToPractice" placeholder="What is convenient time of lessons for you?"></textarea>
+                    <span asp-validation-for="Additional.WhenToPractice" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <textarea type="text" class="form-control" asp-for="Additional.WhichHelp" placeholder="What help do you need?"></textarea>
+                    <span asp-validation-for="Additional.WhichHelp" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <textarea type="text" class="form-control" asp-for="Additional.AdditionalWishes" placeholder="Additional wishes?"></textarea>
+                    <span asp-validation-for="Additional.AdditionalWishes" class="text-danger"></span>
+                </div>
+            </div>
+            <hr/>
+
+            <div class="form-group">
+                <button class="btn btn-success" type="submit">Submit</button>
+            </div>
+        </form>
+    </div>
+</div>

@@ -4,7 +4,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
+using LFM.Core.Common.Data;
 using LFM.Core.Common.Exceptions;
+using LFM.DataAccess.DB.Core.Entities;
 using LFM.DataAccess.DB.Core.Entities.MentorEntities;
 using LFM.DataAccess.DB.Core.Repository;
 using LFM.Domain.Read.EntityProvideServices;
@@ -18,17 +20,20 @@ namespace LFM.Domain.Read.Providers.Implementations
     {
         private readonly IRepository<MentorsProfile> _mentorsProfileRepo;
         private readonly IRepository<MentorsSubjectInfo> _mentorsSubjectInfo;
+        private readonly IRepository<OrderRequest> _personalOrderRepo;
         private readonly IMapper _mapper;
         private readonly SubjectProvideService _subjectProvideService;
 
         public MentorProfileProvider(
             IRepository<MentorsProfile> mentorsProfileRepo,
             IRepository<MentorsSubjectInfo> mentorsSubjectInfo,
+            IRepository<OrderRequest> personalOrderRepo,
             IMapper mapper, 
             SubjectProvideService subjectProvideService)
         {
             _mentorsProfileRepo = mentorsProfileRepo;
             _mentorsSubjectInfo = mentorsSubjectInfo;
+            _personalOrderRepo = personalOrderRepo;
             _mapper = mapper;
             _subjectProvideService = subjectProvideService;
         }
@@ -102,6 +107,29 @@ namespace LFM.Domain.Read.Providers.Implementations
             }
 
             return null;
+        }
+        
+        public async Task<ICollection<T>> GetPersonalOrders<T>(int mentorId) where T : MentorPersonalOrdersMinReviewModel
+        {
+            var data = await _personalOrderRepo.GetQueryable()
+                .Where(m => m.MentorId.HasValue && m.MentorId == mentorId)
+                .ProjectTo<T>(_mapper.ConfigurationProvider)
+                .ToListAsync();
+            
+            return data;
+        }
+        
+        public async Task<MentorPersonalOrdersDetailedReviewModel> GetPersonalOrderDetails(int mentorId, int orderId)
+        {
+            var order = await _personalOrderRepo.GetQueryable()
+                .Where(m => m.MentorId.HasValue && m.MentorId == mentorId && m.Id == orderId)
+                .ProjectTo<MentorPersonalOrdersDetailedReviewModel>(_mapper.ConfigurationProvider)
+                .FirstOrDefaultAsync();
+
+            if (order == null)
+                throw new LfmException(Messages.DataNotFound);
+
+            return order;
         }
     }
 }

@@ -1,5 +1,6 @@
 using System;
 using System.Security.Claims;
+using LFM.Core.Common.Data;
 using LFM.Core.Common.Exceptions;
 using LFM.DataAccess.DB.Core.Types;
 
@@ -10,6 +11,16 @@ namespace Lfm.Domain.Common.Extensions
         public static string GetName(this ClaimsPrincipal claimsPrincipal)
         {
             return GetClaimValue(claimsPrincipal, ClaimTypes.GivenName);
+        }
+        
+        public static string GetEmail(this ClaimsPrincipal claimsPrincipal)
+        {
+            return GetClaimValue(claimsPrincipal, ClaimTypes.Email);
+        }
+        
+        public static string GetPhoneNumber(this ClaimsPrincipal claimsPrincipal)
+        {
+            return GetClaimValue(claimsPrincipal, ClaimTypes.MobilePhone);
         }
         
         public static int GetId(this ClaimsPrincipal claimsPrincipal)

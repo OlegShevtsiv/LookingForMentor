@@ -1,5 +1,6 @@
 using System.Linq;
 using System.Threading.Tasks;
+using LFM.Core.Common.Data;
 using LFM.Core.Common.Exceptions;
 using LFM.DataAccess.DB.Core.Context;
 using LFM.DataAccess.DB.Core.Entities.MentorEntities;

@@ -54,12 +54,8 @@ namespace LFM.Domain.Read.Caching
 
         public Task<bool> TryCacheAllSubjects(ICollection<SubjectReviewModel> subjects)
         {
-            if (_subjectsCacheStorage.Values.Count > 0 &&
-                DateTime.UtcNow < _subjectsCacheStorage.Values.First().ExpirationDateTime)
-            {
-                return  Task.FromResult(false);
-            }
-
+            _subjectsCacheStorage.Clear();
+            
             var expirationDateTime = DateTime.UtcNow.AddHours(24);
 
             bool isAllAdded = true;

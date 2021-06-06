@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using LFM.Core.Common.Data;
 using LFM.Core.Common.Exceptions;
 using LFM.DataAccess.DB.Core.Entities;
 using LFM.DataAccess.DB.Core.Types;
@@ -26,19 +27,9 @@ namespace Lfm.Domain.Common.Services.Role
             return await _roleManager.FindByNameAsync(roleType.ToString());
         }
 
-        public async Task<bool> IsUserInRole(LfmUser user, LfmIdentityRolesEnum roleType)
-        {
-            return await _userManager.IsInRoleAsync(user, roleType.ToString());
-        }
-
         public async Task SetRoleToUser(LfmUser user, LfmIdentityRolesEnum roleType)
         {
             await _userManager.AddToRoleAsync(user, roleType.ToString());
-        }
-        
-        public async Task RiseRoleFromUser(LfmUser user, LfmIdentityRolesEnum roleType)
-        {
-            await _userManager.RemoveFromRoleAsync(user, roleType.ToString());
         }
 
         public async Task<LfmIdentityRolesEnum> RetrieveUserRole(int userId)

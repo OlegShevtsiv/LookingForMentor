@@ -1,37 +1,41 @@
 using System.Linq;
 using AutoMapper;
 using Lfm.Core.Common.Web.Extensions;
+using LFM.DataAccess.DB.Core.Entities;
 using LFM.DataAccess.DB.Core.Entities.MentorEntities;
 using Lfm.Domain.ReadModels.ReviewModels.MentorProfile;
 using LFM.Domain.Write.Commands.Auth;
 using LFM.Domain.Write.Commands.MentorProfile;
-using Lfm.Web.Mvc.Models.ViewsModels.Auth;
-using Lfm.Web.Mvc.Models.ViewsModels.UserCabinet.Mentor;
+using LFM.Domain.Write.Commands.Order;
+using Lfm.Web.Mvc.Models.FormModels.Auth;
+using Lfm.Web.Mvc.Models.FormModels.Mentor;
+using Lfm.Web.Mvc.Models.FormModels.UserCabinet.Mentor;
 
 namespace Lfm.Web.Mvc.App.Mapper.Configurations
 {
-    internal class ViewModelsCommandsMapperConfigs : Profile
+    internal class ApplicationMapperConfigs : Profile
     {
-        public ViewModelsCommandsMapperConfigs()
+        public ApplicationMapperConfigs()
         {
             CreateAuthModelsMaps();
             CreateMentorProfileModelsMaps();
+            CreateOrdersModelsMaps();
         }
 
         private void CreateAuthModelsMaps()
         {
-            CreateMap<LoginVM, LoginUserCommand>()
+            CreateMap<LoginFormModel, LoginUserCommand>()
                 .ForMember(x => x.Email, o => o.MapFrom(p => p.Email))
                 .ForMember(x => x.Password, o => o.MapFrom(p => p.Password))
                 .ForMember(x => x.RememberMe, o => o.MapFrom(p => p.RememberMe));
             
-            CreateMap<RegisterMentorVM, RegisterMentorCommand>()
+            CreateMap<RegisterMentorFormModel, RegisterMentorCommand>()
                 .ForMember(x => x.Name, o => o.MapFrom(p => p.Name))
                 .ForMember(x => x.Email, o => o.MapFrom(p => p.Email))
                 .ForMember(x => x.PhoneNumber, o => o.MapFrom(p => p.PhoneNumber))
                 .ForMember(x => x.Password, o => o.MapFrom(p => p.Password));
             
-            CreateMap<RegisterStudentVM, RegisterStudentCommand>()
+            CreateMap<RegisterStudentFormModel, RegisterStudentCommand>()
                 .ForMember(x => x.Name, o => o.MapFrom(p => p.Name))
                 .ForMember(x => x.Email, o => o.MapFrom(p => p.Email))
                 .ForMember(x => x.PhoneNumber, o => o.MapFrom(p => p.PhoneNumber))
@@ -40,7 +44,7 @@ namespace Lfm.Web.Mvc.App.Mapper.Configurations
         
         private void CreateMentorProfileModelsMaps()
         {
-            CreateMap<MentorsProfile, EditMentorsProfileVM>()
+            CreateMap<MentorsProfile, EditMentorsProfileFormModel>()
                 .ForMember(x => x.Name, o => o.Ignore())
                 .ForMember(x => x.Surname, o => o.MapFrom(p => p.Surname))
                 .ForMember(x => x.MiddleName, o => o.MapFrom(p => p.MiddleName))
@@ -51,7 +55,7 @@ namespace Lfm.Web.Mvc.App.Mapper.Configurations
                 .ForMember(x => x.StudyingPlace, o => o.MapFrom(p => p.StudyingPlace))
                 .ForMember(x => x.Education, o => o.MapFrom(p => p.Education));
             
-            CreateMap<EditMentorsProfileVM, EditMentorProfileCommand>()
+            CreateMap<EditMentorsProfileFormModel, EditMentorProfileCommand>()
                 .ForMember(x => x.MentorId, o => o.Ignore())
                 .ForMember(x => x.Name, o => o.MapFrom(p => p.Name))
                 .ForMember(x => x.Surname, o => o.MapFrom(p => p.Surname))
@@ -62,25 +66,43 @@ namespace Lfm.Web.Mvc.App.Mapper.Configurations
                 .ForMember(x => x.StudyingPlace, o => o.MapFrom(p => p.StudyingPlace))
                 .ForMember(x => x.Education, o => o.MapFrom(p => p.Education));
 
-            CreateMap<AddMentorsSubjectVM, AddMentorSubjectCommand>()
+            CreateMap<AddMentorsSubjectFormModel, AddMentorSubjectCommand>()
                 .ForMember(x => x.MentorId, o => o.Ignore())
                 .ForMember(x => x.SubjectId, o => o.MapFrom(p => p.SubjectId))
                 .ForMember(x => x.CostPerHour, o => o.MapFrom(p => p.CostPerHour))
                 .ForMember(x => x.Description, o => o.MapFrom(p => p.Description))
                 .ForMember(x => x.TagIds, o => o.MapFrom(p => p.TagIds));
             
-            CreateMap<EditMentorsSubjectVM, EditMentorSubjectCommand>()
+            CreateMap<EditMentorsSubjectFormModel, EditMentorSubjectCommand>()
                 .ForMember(x => x.MentorId, o => o.Ignore())
                 .ForMember(x => x.SubjectId, o => o.MapFrom(p => p.SubjectId))
                 .ForMember(x => x.CostPerHour, o => o.MapFrom(p => p.CostPerHour))
                 .ForMember(x => x.Description, o => o.MapFrom(p => p.Description))
                 .ForMember(x => x.TagIds, o => o.MapFrom(p => p.TagIds));
             
-            CreateMap<MentorSubjectReviewModel, EditMentorsSubjectVM>()
+            CreateMap<MentorSubjectReviewModel, EditMentorsSubjectFormModel>()
                 .ForMember(x => x.SubjectId, o => o.MapFrom(p => p.SubjectId))
                 .ForMember(x => x.CostPerHour, o => o.MapFrom(p => p.CostPerHour))
                 .ForMember(x => x.Description, o => o.MapFrom(p => p.Description))
                 .ForMember(x => x.TagIds, o => o.MapFrom(p => p.SelectedTags.Select(t => t.Id).ToList()));
+        }
+
+        private void CreateOrdersModelsMaps()
+        {
+            CreateMap<ContactMentorFormModel, CreatePersonalOrderToMentorCommand>()
+                .ForMember(x => x.MentorId, o => o.MapFrom(p => p.MentorId))
+                .ForMember(x => x.StudentId, o => o.Ignore())
+                .ForMember(x => x.SubjectId, o => o.MapFrom(p => p.Lesson.SubjectId))
+                .ForMember(x => x.TagId, o => o.MapFrom(p => p.Lesson.TagId))
+                .ForMember(x => x.StudyingPlace, o => o.MapFrom(p => p.Lesson.StudyingPlace))
+                .ForMember(x => x.AmountOfLessonsPerWeek, o => o.MapFrom(p => p.Lesson.AmountOfLessonsPerWeek))
+                .ForMember(x => x.LessonDuration, o => o.MapFrom(p => p.Lesson.LessonDuration))
+                .ForMember(x => x.StudentName, o => o.MapFrom(p => p.UserContact.Name))
+                .ForMember(x => x.StudentEmail, o => o.MapFrom(p => p.UserContact.Email))
+                .ForMember(x => x.StudentPhoneNumber, o => o.MapFrom(p => p.UserContact.PhoneNumber))
+                .ForMember(x => x.WhenToPractice, o => o.MapFrom(p => p.Additional.WhenToPractice))
+                .ForMember(x => x.WhichHelp, o => o.MapFrom(p => p.Additional.WhichHelp))
+                .ForMember(x => x.AdditionalWishes, o => o.MapFrom(p => p.Additional.AdditionalWishes));
         }
     }
 }

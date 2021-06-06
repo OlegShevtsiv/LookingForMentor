@@ -1,17 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using System.Resources;
 using System.Threading;
 using System.Threading.Tasks;
+using LFM.Core.Common.Data;
 using LFM.Core.Common.Exceptions;
 using LFM.DataAccess.DB.Core.Entities;
 using LFM.DataAccess.DB.Core.Resources;
 
 namespace LFM.DataAccess.DB.Core.MasterDataProviders
 {
-    public class TownsResourceProvider
+    internal class TownsResourceProvider
     {
         public Task<ICollection<Town>> GetAllTowns()
         {

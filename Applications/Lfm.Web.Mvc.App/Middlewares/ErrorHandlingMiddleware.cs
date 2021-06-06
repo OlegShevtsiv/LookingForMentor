@@ -1,5 +1,6 @@
 using System;
 using System.Threading.Tasks;
+using LFM.Core.Common.Data;
 using LFM.Core.Common.Exceptions;
 using Lfm.Web.Mvc.App.SessionAlerts;
 using Microsoft.AspNetCore.Http;

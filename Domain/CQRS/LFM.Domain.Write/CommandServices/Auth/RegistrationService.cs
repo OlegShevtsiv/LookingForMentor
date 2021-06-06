@@ -1,4 +1,7 @@
+using System;
+using System.Linq;
 using System.Threading.Tasks;
+using LFM.Core.Common.Data;
 using LFM.Core.Common.Exceptions;
 using LFM.DataAccess.DB.Core.Entities;
 using LFM.DataAccess.DB.Core.Types;
@@ -50,8 +53,7 @@ namespace LFM.Domain.Write.CommandServices.Auth
             }
             else
             {
-                //log exception
-                //throw new Exception(result.Errors.Select(e => $"[({e.Code}) : {e.Description}] \n").ToCommaSeparatedString());
+                //throw new LfmException(Messages.RegistrationFailed);
             }
 
             return result.Succeeded;

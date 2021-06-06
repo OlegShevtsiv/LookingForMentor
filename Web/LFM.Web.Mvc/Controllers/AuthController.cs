@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 using AutoMapper;
+using LFM.Core.Common.Data;
 using LFM.Core.Common.Exceptions;
 using Lfm.Core.Common.Web.Data;
 using Lfm.Core.Common.Web.Extensions;
@@ -8,7 +9,7 @@ using LFM.Domain.Write.Mediator;
 using LFM.Domain.Write.Models;
 using Lfm.Web.Mvc.App.Attributes.Action;
 using Lfm.Web.Mvc.App.SessionAlerts;
-using Lfm.Web.Mvc.Models.ViewsModels.Auth;
+using Lfm.Web.Mvc.Models.FormModels.Auth;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -36,7 +37,7 @@ namespace LFM.Web.Mvc.Controllers
         public async Task<IActionResult> Login(string returnUrl = Constants.DefaultUrl)
         {
             await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
-            return View(new LoginVM{ReturnUrl = returnUrl});
+            return View(new LoginFormModel{ReturnUrl = returnUrl});
         }
 
         [HttpGet("register")]
@@ -48,13 +49,13 @@ namespace LFM.Web.Mvc.Controllers
         [HttpGet("register/mentor")]
         public IActionResult RegisterMentor()
         {
-            return View(new RegisterMentorVM());
+            return View(new RegisterMentorFormModel());
         }
         
         [HttpGet("register/student")]
         public IActionResult RegisterStudent()
         {
-            return View(new RegisterStudentVM());
+            return View(new RegisterStudentFormModel());
         }
         #endregion
 
@@ -62,61 +63,94 @@ namespace LFM.Web.Mvc.Controllers
         
         [HttpPost("login")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Login(LoginVM model)
+        public async Task<IActionResult> Login(LoginFormModel model)
         {
             if (ModelState.IsValid)
             {
-                var command = _mapper.Map<LoginUserCommand>(model);
-                
-                CommandResult loginResult = await _commandBus.ExecuteCommand<LoginUserCommand, CommandResult>(command);
-                
-                if (loginResult.IsSuccess)
+                try
                 {
-                    this.AlertSuccess(Messages.LoginSuccessful);
-                    return this.Redirect(model);
+                    var command = _mapper.Map<LoginUserCommand>(model);
+                    
+                    CommandResult loginResult = await _commandBus.ExecuteCommand<LoginUserCommand, CommandResult>(command);
+                    
+                    if (loginResult.IsSuccess)
+                    {
+                        this.AlertSuccess(Messages.LoginSuccessful);
+                        return this.Redirect(model);
+                    }
+                    this.AlertError(Messages.LoginFailed);
+                }
+                catch (LfmException exc)
+                {
+                    this.AlertError(exc.Message);
+                }
+                catch
+                {
+                    this.AlertError(Messages.SystemError);
                 }
             }
-            this.AlertError(Messages.LoginFailed);
             return View(model);
         }
 
         [HttpPost("register/mentor")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> RegisterMentor(RegisterMentorVM model)
+        public async Task<IActionResult> RegisterMentor(RegisterMentorFormModel model)
         {
             if (ModelState.IsValid)
             {
-                var command = _mapper.Map<RegisterMentorCommand>(model);
-                
-                CommandResult loginResult = await _commandBus.ExecuteCommand<RegisterMentorCommand, CommandResult>(command);
-                
-                if (loginResult.IsSuccess)
+                try
                 {
-                    this.AlertSuccess(Messages.RegistrationSuccessful);
-                    return RedirectToAction("Index", "UserCabinet");
+                    var command = _mapper.Map<RegisterMentorCommand>(model);
+                
+                    CommandResult loginResult = await _commandBus.ExecuteCommand<RegisterMentorCommand, CommandResult>(command);
+                
+                    if (loginResult.IsSuccess)
+                    {
+                        this.AlertSuccess(Messages.RegistrationSuccessful);
+                        return RedirectToAction("Index", "UserCabinet");
+                    }
+                    this.AlertError(Messages.RegistrationFailed);
+                }
+                catch (LfmException exc)
+                {
+                    this.AlertError(exc.Message);
+                }
+                catch
+                {
+                    this.AlertError(Messages.SystemError);
                 }
             }
-            this.AlertError(Messages.RegistrationFailed);
             return View(model);
         }
         
         [HttpPost("register/student")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> RegisterStudent(RegisterStudentVM model)
+        public async Task<IActionResult> RegisterStudent(RegisterStudentFormModel model)
         {
             if (ModelState.IsValid)
             {
-                var command = _mapper.Map<RegisterStudentCommand>(model);
-                
-                CommandResult registrationResult = await _commandBus.ExecuteCommand<RegisterStudentCommand, CommandResult>(command);
-                
-                if (registrationResult.IsSuccess)
+                try
                 {
-                    this.AlertSuccess(Messages.RegistrationSuccessful);
-                    return RedirectToAction("Index", "UserCabinet");
+                    var command = _mapper.Map<RegisterStudentCommand>(model);
+                    
+                    CommandResult registrationResult = await _commandBus.ExecuteCommand<RegisterStudentCommand, CommandResult>(command);
+                    
+                    if (registrationResult.IsSuccess)
+                    {
+                        this.AlertSuccess(Messages.RegistrationSuccessful);
+                        return RedirectToAction("Index", "UserCabinet");
+                    }
+                    this.AlertError(Messages.RegistrationFailed);
+                }
+                catch (LfmException exc)
+                {
+                    this.AlertError(exc.Message);
+                }
+                catch
+                {
+                    this.AlertError(Messages.SystemError);
                 }
             }
-            this.AlertError(Messages.RegistrationFailed);
             return View(model);
         }
 

@@ -1,0 +1,76 @@
+@using Lfm.Web.Mvc.App.UIRenderers
+@model Lfm.Domain.ReadModels.ReviewModels.MentorProfile.MentorPersonalOrdersDetailedReviewModel
+
+@{
+    ViewData["Title"] = "Personal order details";
+    Layout = "../_UserCabinetLayout.cshtml";
+}
+
+	
+<div class="card">
+	<div class="row">
+		<article class="card-body p-5">
+			<h3 class="title mb-3">@Model.SubjectName, @Model.TagName</h3>
+
+			<dl class="param param-feature">
+				<dt>Student name</dt>
+				<dd>@Model.StudentName</dd>
+			</dl>
+			
+			<dl class="param param-feature">
+				<dt>Email</dt>
+				<dd>@Model.StudentEmail</dd>
+			</dl>
+
+			<dl class="param param-feature">
+				<dt>Phone Number</dt>
+				<dd>@Model.StudentPhoneNumber</dd>
+			</dl>
+			
+			<hr>
+
+			<dl class="param param-feature">
+				<dt>Studying place</dt>
+				<dd>@CommonUiRenderer.StudyingPlaceToString(Model.StudyingPlace)</dd>
+			</dl>  
+			
+			<dl class="param param-feature">
+				<dt>Amount of lessons per week</dt>
+				<dd>@Model.AmountOfLessonsPerWeek</dd>
+			</dl> 
+			
+			<dl class="param param-feature">
+				<dt>LessonDuration</dt>
+				<dd>@CommonUiRenderer.LessonDurationToString(Model.LessonDuration)</dd>
+			</dl>
+
+			<hr>
+
+			<dl class="item-property">
+				<dt>Convenient time of lessons for student.</dt>
+				<dd><p>@Model.WhenToPractice</p></dd>
+			</dl>
+			
+			<dl class="item-property">
+				<dt>Which help student needs.</dt>
+				<dd><p>@Model.WhichHelp</p></dd>
+			</dl>
+			
+			<dl class="item-property">
+				<dt>Additional wishes</dt>
+				<dd><p>@Model.AdditionalWishes</p></dd>
+			</dl>
+			
+			<hr>
+			
+			<form asp-controller="MentorUserCabinet" asp-action="ApprovePersonalOrderRequest" asp-route-orderId="@Model.Id" method="post">
+				<button class="btn btn-lg btn-success">Approve</button>
+			</form>
+			
+			<form asp-controller="MentorUserCabinet" asp-action="RejectPersonalOrderRequest" asp-route-orderId="@Model.Id" method="post">
+				<button class="btn btn-lg btn-outline-danger">Reject</button>
+			</form>
+			
+		</article>
+	</div>
+</div>

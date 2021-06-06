@@ -13,9 +13,11 @@ namespace LFM.Domain.Read
         {
             services.AddAutoMapper(typeof(ReadModelsMapperConfigs));
             services.AddSingleton<SubjectCachingService>();
-            
+            services.AddSingleton<TownsCachingService>();
+
             AddProviders(services);
-            AddProvideServices(services);
+            
+            AddInternalServices(services);
         }
 
         private static void AddProviders(IServiceCollection services)
@@ -26,9 +28,10 @@ namespace LFM.Domain.Read
             services.AddScoped<IMasterDataProvider, MasterDataProvider>();
         }
         
-        private static void AddProvideServices(IServiceCollection services)
+        private static void AddInternalServices(IServiceCollection services)
         {
             services.AddScoped<SubjectProvideService>();
+            services.AddScoped<TownsProvideService>();
         }
     }
 }

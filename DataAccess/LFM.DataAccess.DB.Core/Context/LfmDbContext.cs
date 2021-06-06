@@ -17,12 +17,16 @@ namespace LFM.DataAccess.DB.Core.Context
         public DbSet<MentorsProfileImage> MentorsProfileImages { get; set; }
         
         public DbSet<MentorsSubjectInfo> MentorsSubjectsInfo { get; set; }
+        
+        public DbSet<MentorsOrder> MentorsOrders { get; set; }
 
         public DbSet<Subject> Subjects { get; set; }
 
         public DbSet<SubjectsTag> SubjectsTags { get; set; }
 
         public DbSet<Town> UkrainianTowns { get; set; }
+        
+        public DbSet<OrderRequest> OrdersRequests { get; set; }
 
         public LfmDbContext()
         {

@@ -2,9 +2,9 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using LFM.Core.Common.Attributes;
 
-namespace Lfm.Web.Mvc.Models.ViewsModels.UserCabinet.Mentor
+namespace Lfm.Web.Mvc.Models.FormModels.UserCabinet.Mentor
 {
-    public class AddMentorsSubjectVM
+    public class AddMentorsSubjectFormModel
     {
         [Range(50, 500)]
         public int CostPerHour { get; set; }

@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using LFM.Core.Common.Data;
 using LFM.Core.Common.DataProcessors;
 using LFM.Core.Common.Exceptions;
 using LFM.DataAccess.DB.Core.Context;

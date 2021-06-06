@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
+using LFM.Core.Common.Data;
 using LFM.Core.Common.Exceptions;
 using LFM.DataAccess.DB.Core.Entities.SubjectEntities;
 using LFM.DataAccess.DB.Core.Repository;
@@ -34,7 +35,7 @@ namespace LFM.Domain.Read.EntityProvideServices
         /// <typeparam name="T">Should be mapped from Lfm.Domain.ReadModels.ReviewModels.Subject.SubjectReviewModel</typeparam>
         /// <returns></returns>
         /// <exception cref="LfmException"></exception>
-        public async Task<IEnumerable<T>> GetSubjects<T>() where T : class
+        public async Task<ICollection<T>> GetSubjects<T>() where T : class
         {
             if (!await _subjectsCachingService.TryGetAllSubjects(out var subjects))
             {
@@ -48,7 +49,7 @@ namespace LFM.Domain.Read.EntityProvideServices
                 await _subjectsCachingService.TryCacheAllSubjects(subjects);
             }
 
-            return _mapper.Map<IEnumerable<T>>(subjects);
+            return _mapper.Map<ICollection<T>>(subjects);
         }
     }
 }

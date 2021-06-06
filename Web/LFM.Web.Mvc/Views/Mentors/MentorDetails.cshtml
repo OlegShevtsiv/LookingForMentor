@@ -1,0 +1,77 @@
+@using Lfm.Web.Mvc.App.UIRenderers
+@using LFM.Core.Common.Extensions
+@model Lfm.Domain.ReadModels.ReviewModels.Mentor.MentorDetailedPreviewModel
+
+@{
+    ViewData["Title"] = Model.Name;
+}
+
+<div class="col-md-8">
+    
+    <div class="list-group-item flex-column align-items-start border-dark">
+        <img src="@(Url.Action("GetMentorAvatar", "UserCabinet", new { mentorId = Model.MentorId }))" class="profile-pic" alt="">
+    </div>
+    
+    <div class="list-group-item flex-column align-items-start border-dark">
+        <label>Full name</label>
+        <hr>
+        <p>@Model.Name</p>
+    </div>
+    
+    <div class="list-group-item flex-column align-items-start border-dark">
+        <label>About Me</label>
+        <hr>
+        <p>@Model.AboutInfo</p>
+    </div>
+
+    <div class="list-group-item flex-column align-items-start border-dark">
+        <label>My town</label>
+        <hr>
+        <p>@Model.TownName</p>
+    </div>
+    
+
+    <div class="list-group-item flex-column align-items-start border-dark">
+        <label>Where can I conduct lessons?</label>
+        <hr>
+        <p>@CommonUiRenderer.StudyingPlaceToString(Model.StudyingPlace)</p>
+    </div>
+    
+    
+    <div class="list-group-item flex-column align-items-start border-dark">
+        <label>My education</label>
+        <hr>
+        <p>@Model.EducationInfo</p>
+    </div>
+
+    <table class="table">
+        
+        <tr>
+            <th>Name</th><th style="max-width: 300px;">Tags</th><th>Cost per hour</th>
+        </tr>
+
+        @foreach (var subj in Model.SubjectsList)
+        {
+            <tr>
+                <td>@subj.SubjectName</td>
+                <td style="max-width: 300px;"><small>@subj.Tags.ToSeparatedString(", ")</small></td>
+                <td>@subj.CostPerHour UAH</td>
+            </tr>
+        }
+    </table>
+    
+    @if (Model.SubjectsList.Any())
+    {
+        <div class="dropdown show">
+            <button class="btn btn-sm btn-success dropdown-toggle" type="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Contact
+            </button>
+            <div class="dropdown-menu scrollable-menu" aria-labelledby="dropdownMenuLink">
+                @foreach (var s in Model.SubjectsList)
+                {
+                    <a class="dropdown-item" asp-controller="Mentors" asp-action="ContactWithMentor" asp-route-mentorId="@Model.MentorId" asp-route-subjectId="@s.SubjectId">@s.SubjectName</a>
+                }
+            </div>
+        </div>
+    }
+</div>

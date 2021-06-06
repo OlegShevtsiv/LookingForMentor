@@ -1,27 +1,32 @@
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using LFM.DataAccess.DB.Core.MasterDataProviders;
+using LFM.Domain.Read.EntityProvideServices;
+using Lfm.Domain.ReadModels.ReviewModels.Subject;
 using Lfm.Domain.ReadModels.ReviewModels.Town;
 
 namespace LFM.Domain.Read.Providers.Implementations
 {
     internal class MasterDataProvider : IMasterDataProvider
     {
-        private readonly TownsResourceProvider _townsResourceProvider;
+        private readonly TownsProvideService _townsProvideService;
+        private readonly SubjectProvideService _subjectProvideService;
 
-        public MasterDataProvider(TownsResourceProvider townsResourceProvider)
+        public MasterDataProvider(
+            TownsProvideService townsProvideService,
+            SubjectProvideService subjectProvideService)
         {
-            _townsResourceProvider = townsResourceProvider;
+            _townsProvideService = townsProvideService;
+            _subjectProvideService = subjectProvideService;
         }
 
-        public async Task<ICollection<TownPreviewModel>> GetAllTowns()
+        public async Task<ICollection<TownPreviewModel>> GetTownsList()
         {
-            return (await _townsResourceProvider.GetAllTowns()).Select(t => new TownPreviewModel
-            {
-                Id = t.Id,
-                Name = t.Name
-            }).ToList();
+            return await _townsProvideService.GetTowns();
+        }
+        
+        public async Task<ICollection<SubjectListItem>> GetSubjectsList()
+        {
+            return await _subjectProvideService.GetSubjects<SubjectListItem>();
         }
     }
 }

@@ -1,4 +1,4 @@
-namespace LFM.Core.Common.Exceptions
+namespace LFM.Core.Common.Data
 {
     public static class Messages
     {
@@ -11,7 +11,7 @@ namespace LFM.Core.Common.Exceptions
         public const string RequiredField = "'{0}' is required field.";
 
         #endregion
-        
+
         #region Auth
 
         public const string LoginSuccessful = "Login successful.";
@@ -39,6 +39,13 @@ namespace LFM.Core.Common.Exceptions
         #region Master data
 
         public const string TownNotFound = "Town not found.";
+
+        #endregion
+
+        #region Order
+
+        public const string PersonalOrderSuccessful = "You contact request was sent, wait for {0} response.";
+        public const string PersonalOrderFailed = "You contact request failed, please contact to administration.";
 
         #endregion
     }

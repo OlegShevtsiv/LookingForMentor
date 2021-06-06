@@ -22,3 +22,9 @@ img {
     max-height: 250px;
     overflow-x: hidden;
 }
+
+.mentors_photo{
+    width: 200px;
+    max-height: 200px;
+    height: auto;
+}
