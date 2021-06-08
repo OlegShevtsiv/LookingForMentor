@@ -39,7 +39,7 @@ namespace LFM.Domain.Write.CommandHandlers.MentorProfile
                 .FindByIdAsync(command.MentorId.ToString());
 
             if (mentor == null)
-                throw new LfmException(Messages.UserNotFound);
+                throw new LfmException(Messages.DataNotFound, "User");
 
             var profile = await _context.MentorsProfiles
                 .Include(m => m.ProfileImage)
@@ -51,7 +51,7 @@ namespace LFM.Domain.Write.CommandHandlers.MentorProfile
             var isTownExist = await _context.UkrainianTowns.AnyAsync(t => t.Id == command.TownId);
             if (!isTownExist)
             {
-                throw new LfmException(Messages.TownNotFound);
+                throw new LfmException(Messages.DataNotFound, "Town");
             }
 
             if (!mentor.Name.Equals(command.Name, StringComparison.InvariantCulture))
@@ -69,6 +69,7 @@ namespace LFM.Domain.Write.CommandHandlers.MentorProfile
             
             if (HasChangesAndApply(profile, command))
             {
+                profile.IsVerified = true;
                 await _context.SaveChangesAsync();
             }
             

@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace LFM.Web.Mvc.Controllers
 {
+    [Authorize(Roles = LfmIdentityRolesNames.Student + ","+ LfmIdentityRolesNames.Mentor)]
     [Route("user-cabinet")]
     public class UserCabinetController : Controller
     {
@@ -24,13 +25,13 @@ namespace LFM.Web.Mvc.Controllers
             _environment = environment;
         }
 
-        [Authorize(Roles = LfmIdentityRolesNames.Mentor + "," + LfmIdentityRolesNames.Student)]
         [HttpGet]
         public IActionResult Index()
         {
             return View();
         }
         
+        [AllowAnonymous]
         [HttpGet("mentor/avatar")]
         public async Task<IActionResult> GetMentorAvatar(int? mentorId)
         {
@@ -46,7 +47,7 @@ namespace LFM.Web.Mvc.Controllers
         [NonAction]
         private IActionResult ReturnDefaultMentorAvatar()
         {
-            Image im = Image.FromFile($"{this._environment.WebRootPath}/images/default-avatar.png");
+            Image im = Image.FromFile($"{_environment.WebRootPath}/images/default-avatar.png");
 
             MemoryStream ms = new MemoryStream();
             im.Save(ms, im.RawFormat);

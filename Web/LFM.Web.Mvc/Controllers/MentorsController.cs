@@ -35,13 +35,6 @@ namespace LFM.Web.Mvc.Controllers
             _mapper = mapper;
             _commandBus = commandBus;
         }
-
-        [HttpGet("looking-for-mentors")]
-        public async Task<IActionResult> Mentors()
-        {
-            var mentors = await _mentorsProvider.LookingForMentors(null);
-            return View(mentors);
-        }
         
         [HttpGet("mentor-details")]
         public async Task<IActionResult> MentorDetails(int mentorId)
@@ -101,8 +94,7 @@ namespace LFM.Web.Mvc.Controllers
 
                     if (commandResult.IsSuccess)
                     {
-                        HttpContext.Alert(Messages.PersonalOrderSuccessful, AlertTypes.Success,
-                            commandResult.MentorName);
+                        this.AlertSuccess(Messages.PersonalOrderSuccessful, commandResult.MentorName);
                         return RedirectToAction("Index", "Home");
                     }
 

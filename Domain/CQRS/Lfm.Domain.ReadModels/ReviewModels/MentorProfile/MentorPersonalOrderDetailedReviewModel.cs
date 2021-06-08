@@ -3,7 +3,7 @@ using LFM.DataAccess.DB.Core.Types;
 
 namespace Lfm.Domain.ReadModels.ReviewModels.MentorProfile
 {
-    public class MentorPersonalOrdersDetailedReviewModel
+    public class MentorPersonalOrderDetailedReviewModel
     {
         public int Id { get; set; }
         

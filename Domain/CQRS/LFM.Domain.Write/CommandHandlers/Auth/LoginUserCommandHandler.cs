@@ -29,7 +29,7 @@ namespace LFM.Domain.Write.CommandHandlers.Auth
 
             if (user == null)
             {
-                throw new LfmException(Messages.UserNotFound);
+                throw new LfmException(Messages.DataNotFound, "User");
             }
 
             var loginResult = await _signInManager.PasswordSignInAsync(user.UserName, command.Password, command.RememberMe, lockoutOnFailure: false);

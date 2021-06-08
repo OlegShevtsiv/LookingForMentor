@@ -1,11 +1,14 @@
 ﻿using System.Threading.Tasks;
 using LFM.Core.Common.Data;
-using LFM.Core.Common.Exceptions;
+using Lfm.Core.Common.Web.Configurations;
 using LFM.Domain.Read.Providers;
 using Lfm.Domain.ReadModels.SearchModels;
 using Lfm.Web.Mvc.App.SessionAlerts;
+using Lfm.Web.Mvc.App.StaticServices;
+using Lfm.Web.Mvc.Models.FormModels.Mentor;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 
 namespace LFM.Web.Mvc.Controllers
 {
@@ -13,13 +16,16 @@ namespace LFM.Web.Mvc.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly IMentorsProvider _mentorsProvider;
+        private readonly AppConfigurations _appConfigs;
 
         public HomeController(
             ILogger<HomeController> logger, 
-            IMentorsProvider mentorsProvider)
+            IMentorsProvider mentorsProvider,
+            IOptions<AppConfigurations> configOptions)
         {
             _logger = logger;
             _mentorsProvider = mentorsProvider;
+            _appConfigs = configOptions.Value;
         }
 
         [HttpGet]
@@ -28,20 +34,23 @@ namespace LFM.Web.Mvc.Controllers
             return View();
         }
 
-        [HttpPost("looking-for-mentors")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> LookingForMentors(MentorsMinSearchModel searchModel)
+        [HttpGet("looking-for-mentors")]
+        public async Task<IActionResult> LookingForMentors([FromQuery]MentorsSearchModel searchModel, int? pageNumber)
         {
-            var mentors = await _mentorsProvider.LookingForMentors(searchModel);
+            var mentors = await _mentorsProvider.LookingForMentors(searchModel, pageNumber);
 
             if (mentors.TotalCount == 0)
             {
                 this.AlertWarning(Messages.DataNotFound);
             }
             
-            return View("../Mentors/Mentors", mentors);
+            CommonStaticService.PushLastSearchMentorsRequest(HttpContext, searchModel);
+
+            MentorPageModel pageModel = new MentorPageModel(mentors, searchModel, _appConfigs.SearchingMentorsPageSize);
+            
+            return View("../Mentors/Mentors", pageModel);
         }
-        
+
         public async Task<IActionResult> Privacy()
         {
             return View();

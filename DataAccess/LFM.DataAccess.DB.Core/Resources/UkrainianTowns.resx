@@ -63,19 +63,19 @@
     </resheader>
 
     <data name="1" xml:space="preserve">
-        <value>Київ</value>
+        <value>Kiev</value>
     </data>
     <data name="2" xml:space="preserve">
-        <value>Харків</value>
+        <value>Kharkiv</value>
     </data>
     <data name="3" xml:space="preserve">
-        <value>Дніпро</value>
+        <value>Dnipro</value>
     </data>
     <data name="4" xml:space="preserve">
-        <value>Одеса</value>
+        <value>Odessa</value>
     </data>
     <data name="5" xml:space="preserve">
-        <value>Львів</value>
+        <value>Lviv</value>
     </data>
     <data name="6" xml:space="preserve">
         <value>Авдіївка</value>

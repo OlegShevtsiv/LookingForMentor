@@ -14,6 +14,10 @@ namespace Lfm.Web.Mvc.App.UIRenderers
             {
                 return MentorNavItems;
             }
+            if (context.User.GetRole() == LfmIdentityRolesEnum.Student)
+            {
+                return StudentNavItems;
+            }
 
             return new List<LinkItem>();
         }
@@ -35,9 +39,26 @@ namespace Lfm.Web.Mvc.App.UIRenderers
                 },
                 new LinkItem
                 {
-                    Name = "My personal orders",
+                    Name = "My personal orders requests",
                     ControllerName = "MentorUserCabinet",
                     ActionName = "MentorPersonalOrders"
+                },
+                new LinkItem
+                {
+                    Name = "My approved orders",
+                    ControllerName = "MentorUserCabinet",
+                    ActionName = "MentorApprovedOrders"
+                }
+            };
+        
+        private static List<LinkItem> StudentNavItems =>
+            new List<LinkItem>
+            {
+                new LinkItem
+                {
+                    Name = "Find Mentors requests",
+                    ControllerName = "StudentUserCabinet",
+                    ActionName = "FindMentorsRequests"
                 }
             };
     }

@@ -68,8 +68,8 @@ namespace LFM.DataAccess.DB.Core.Context
                     .HasForeignKey(m => m.MentorId);
                 
                 e.HasOne(m => m.Town)
-                    .WithOne()
-                    .HasForeignKey<MentorsProfile>(m => m.TownId);
+                    .WithMany()
+                    .HasForeignKey(m => m.TownId);
             });
 
             builder.Entity<MentorsSubjectInfo>(e =>
@@ -91,21 +91,6 @@ namespace LFM.DataAccess.DB.Core.Context
                     .WithMany(s => s.Tags)
                     .HasForeignKey(s => s.MentorsSubjectInfoId);
             });
-            
-            builder.Entity<MentorsOrder>(e =>
-            {
-                e.HasOne(p => p.Mentor)
-                    .WithMany()
-                    .HasForeignKey(p => p.MentorId);
-                
-                e.HasOne(p => p.Subject)
-                    .WithMany()
-                    .HasForeignKey(p => p.SubjectId);
-                
-                e.HasOne(p => p.SubjectsTag)
-                    .WithMany()
-                    .HasForeignKey(p => p.TagId);
-            });
 
             #endregion
 
@@ -125,9 +110,45 @@ namespace LFM.DataAccess.DB.Core.Context
                     .WithMany()
                     .HasForeignKey(p => p.TagId);
             });
+            
+            builder.Entity<ApprovedOrder>(e =>
+            {
+                e.HasOne(p => p.Mentor)
+                    .WithMany()
+                    .HasForeignKey(p => p.MentorId);
+                
+                e.HasOne(p => p.Subject)
+                    .WithMany()
+                    .HasForeignKey(p => p.SubjectId);
+                
+                e.HasOne(p => p.SubjectsTag)
+                    .WithMany()
+                    .HasForeignKey(p => p.TagId);
+            });
+            
+            builder.Entity<RejectedOrder>(e =>
+            {
+                e.HasOne(p => p.Mentor)
+                    .WithMany()
+                    .HasForeignKey(p => p.MentorId);
+                
+                e.HasOne(p => p.Student)
+                    .WithMany()
+                    .HasForeignKey(p => p.StudentId);
+                
+                e.HasOne(p => p.Subject)
+                    .WithMany()
+                    .HasForeignKey(p => p.SubjectId);
+                
+                e.HasOne(p => p.SubjectsTag)
+                    .WithMany()
+                    .HasForeignKey(p => p.TagId);
+            });
 
             #endregion
-            
+
+            #region Master Data
+
             builder.Entity<Subject>(e =>
             {
                 e.HasMany(s => s.Tags)
@@ -146,6 +167,8 @@ namespace LFM.DataAccess.DB.Core.Context
                             j.HasKey(t => new { t.SubjectId, t.TagId });
                         });
             });
+
+            #endregion
         }
     }
 }

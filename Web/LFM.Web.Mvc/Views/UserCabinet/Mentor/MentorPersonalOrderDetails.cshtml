@@ -1,5 +1,5 @@
 @using Lfm.Web.Mvc.App.UIRenderers
-@model Lfm.Domain.ReadModels.ReviewModels.MentorProfile.MentorPersonalOrdersDetailedReviewModel
+@model Lfm.Domain.ReadModels.ReviewModels.MentorProfile.MentorPersonalOrderDetailedReviewModel
 
 @{
     ViewData["Title"] = "Personal order details";
@@ -45,24 +45,46 @@
 			</dl>
 
 			<hr>
+			
+			@if (!string.IsNullOrWhiteSpace(Model.WhenToPractice) || 
+			     !string.IsNullOrWhiteSpace(Model.WhichHelp) ||
+			     !string.IsNullOrWhiteSpace(Model.AdditionalWishes))
+			{
 
-			<dl class="item-property">
-				<dt>Convenient time of lessons for student.</dt>
-				<dd><p>@Model.WhenToPractice</p></dd>
-			</dl>
+				if (!string.IsNullOrWhiteSpace(Model.WhenToPractice))
+				{
+					<dl class="item-property">
+						<dt>Convenient time of lessons for student.</dt>
+						<dd><p>@Model.WhenToPractice</p></dd>
+					</dl>
+				}
+
+				if (!string.IsNullOrWhiteSpace(Model.WhichHelp))
+				{
+					<dl class="item-property">
+						<dt>Which help student needs.</dt>
+						<dd><p>@Model.WhichHelp</p></dd>
+					</dl>	
+				}
+
+				if (!string.IsNullOrWhiteSpace(Model.AdditionalWishes))
+				{
+					<dl class="item-property">
+						<dt>Additional wishes</dt>
+						<dd><p>@Model.AdditionalWishes</p></dd>
+					</dl>	
+				}
+
+				<hr>
+			}
 			
 			<dl class="item-property">
-				<dt>Which help student needs.</dt>
-				<dd><p>@Model.WhichHelp</p></dd>
-			</dl>
-			
-			<dl class="item-property">
-				<dt>Additional wishes</dt>
-				<dd><p>@Model.AdditionalWishes</p></dd>
+				<dt>Created</dt>
+				<dd><p>@Model.CreationDateTime.ToString("dd/MM/yyyy")</p></dd>
 			</dl>
 			
 			<hr>
-			
+
 			<form asp-controller="MentorUserCabinet" asp-action="ApprovePersonalOrderRequest" asp-route-orderId="@Model.Id" method="post">
 				<button class="btn btn-lg btn-success">Approve</button>
 			</form>

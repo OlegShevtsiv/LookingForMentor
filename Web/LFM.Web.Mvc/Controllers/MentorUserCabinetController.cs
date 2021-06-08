@@ -24,15 +24,19 @@ namespace LFM.Web.Mvc.Controllers
         private readonly IMapper _mapper;
         private readonly IMentorProfileProvider _mentorProfileProvider;
         private readonly ICommandBus _commandBus;
+        private readonly ISubjectsProvider _subjectsProvider;
+
         
         public MentorUserCabinetController(
             IMapper mapper,
             IMentorProfileProvider mentorProfileProvider,
-            ICommandBus commandBus)
+            ICommandBus commandBus, 
+            ISubjectsProvider subjectsProvider)
         {
             _mapper = mapper;
             _mentorProfileProvider = mentorProfileProvider;
             _commandBus = commandBus;
+            _subjectsProvider = subjectsProvider;
         }
         
         
@@ -111,6 +115,12 @@ namespace LFM.Web.Mvc.Controllers
         {
             if (ModelState.IsValid)
             {
+                if (!await _subjectsProvider.IsExists(model.SubjectId))
+                {
+                    this.AlertError(Messages.DataNotFound, "Subject");
+                    return RedirectToAction("MentorSubjectsInfo");
+                }
+                
                 var command = _mapper.Map<AddMentorSubjectCommand>(model);
                 command.MentorId = User.GetId();
                 try
@@ -190,6 +200,12 @@ namespace LFM.Web.Mvc.Controllers
         {
             try
             {
+                if (!await _subjectsProvider.IsExists(subjectId))
+                {
+                    this.AlertError(Messages.DataNotFound, "Subject");
+                    return RedirectToAction("MentorSubjectsInfo");
+                }
+                
                 DeleteMentorSubjectCommand command = new DeleteMentorSubjectCommand
                 {
                     MentorId = User.GetId(),
@@ -218,7 +234,7 @@ namespace LFM.Web.Mvc.Controllers
         [HttpGet("mentor/personal-orders")]
         public async Task<IActionResult> MentorPersonalOrders()
         {
-            var data = await _mentorProfileProvider.GetPersonalOrders<MentorPersonalOrdersMinReviewModel>(HttpContext.User.GetId());
+            var data = await _mentorProfileProvider.GetPersonalOrdersRequests<MentorsOrderMinReviewModel>(User.GetId());
 
             return View("../UserCabinet/Mentor/MentorPersonalOrders", data);
         }
@@ -226,7 +242,7 @@ namespace LFM.Web.Mvc.Controllers
         [HttpGet("mentor/personal-order-details")]
         public async Task<IActionResult> MentorPersonalOrderDetails(int orderId)
         {
-            var data = await _mentorProfileProvider.GetPersonalOrderDetails(HttpContext.User.GetId(), orderId);
+            var data = await _mentorProfileProvider.GetPersonalOrderRequestDetails(User.GetId(), orderId);
 
             return View("../UserCabinet/Mentor/MentorPersonalOrderDetails", data);
         }
@@ -238,7 +254,7 @@ namespace LFM.Web.Mvc.Controllers
             {
                 ApprovePersonalOrderCommand command = new ApprovePersonalOrderCommand
                 {
-                    MentorId = HttpContext.User.GetId(),
+                    MentorId = User.GetId(),
                     OrderRequestId = orderId
                 };
                 
@@ -269,7 +285,7 @@ namespace LFM.Web.Mvc.Controllers
             {
                 RejectPersonalOrderCommand command = new RejectPersonalOrderCommand
                 {
-                    MentorId = HttpContext.User.GetId(),
+                    MentorId = User.GetId(),
                     OrderRequestId = orderId
                 };
                 
@@ -291,6 +307,22 @@ namespace LFM.Web.Mvc.Controllers
                 this.AlertError(Messages.SystemError);
             }
             return RedirectToAction("MentorPersonalOrderDetails", new {orderId });
+        }
+        
+        [HttpGet("mentor/approved-orders")]
+        public async Task<IActionResult> MentorApprovedOrders()
+        {
+            var data = await _mentorProfileProvider.GetMentorsOrders<MentorsOrderMinReviewModel>(User.GetId());
+
+            return View("../UserCabinet/Mentor/MentorApprovedOrders", data);
+        }
+        
+        [HttpGet("mentor/approved-order-details")]
+        public async Task<IActionResult> MentorApprovedOrderDetails(int orderId)
+        {
+            var data = await _mentorProfileProvider.GetMentorsOrderDetails(User.GetId(), orderId);
+
+            return View("../UserCabinet/Mentor/MentorApprovedOrderDetails", data);
         }
     }
 }

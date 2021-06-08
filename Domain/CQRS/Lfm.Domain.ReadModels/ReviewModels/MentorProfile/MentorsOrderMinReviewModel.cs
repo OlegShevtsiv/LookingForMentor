@@ -1,9 +1,8 @@
 using System;
-using LFM.DataAccess.DB.Core.Types;
 
 namespace Lfm.Domain.ReadModels.ReviewModels.MentorProfile
 {
-    public class MentorPersonalOrdersMinReviewModel
+    public class MentorsOrderMinReviewModel
     {
         public int Id { get; set; }
         
@@ -17,6 +16,6 @@ namespace Lfm.Domain.ReadModels.ReviewModels.MentorProfile
         
         public string StudentEmail { get; set; }
         
-        public DateTime CreationDateTime { get; set; }
+        public DateTime DateTime { get; set; }
     }
 }

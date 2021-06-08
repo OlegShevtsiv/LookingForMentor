@@ -38,7 +38,7 @@
                     @if (mentorInfo.StudyingPlace == StudyingPlaces.ONLINE_AND_OFFLINE)
                     {
                         int i = 1;
-                        foreach (var box in CommonUiRenderer.StudyingPlacesCheckboxesInfo(StudyingPlaces.ONLINE_ONLY))
+                        foreach (var box in CommonUiRenderer.StudyingPlacesCheckboxes(StudyingPlaces.ONLINE_ONLY))
                         {
                             <div class="form-check">
                                 <input class="form-check-input" type="radio" name="Lesson.StudyingPlace" id="StudyingPlace_@i" value="@box.Value" @box.Checked>
@@ -64,33 +64,21 @@
                 
                 <div class="form-group">
                     
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" name="Lesson.LessonDuration" id="LessonDuration_1" value="@((int) LessonDuration.ONE_HOUR)" checked>
-                        <label class="form-check-label" for="LessonDuration_1">
-                            @CommonUiRenderer.LessonDurationToString(LessonDuration.ONE_HOUR)
-                        </label>
-                    </div>
-
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" name="Lesson.LessonDuration" id="LessonDuration_2" value="@((int) LessonDuration.ONE_HALF_HOUR)">
-                        <label class="form-check-label" for="LessonDuration_2">
-                            @CommonUiRenderer.LessonDurationToString(LessonDuration.ONE_HALF_HOUR)
-                        </label>
-                    </div>
-
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" name="Lesson.LessonDuration" id="LessonDuration_3" value="@((int) LessonDuration.TWO_HOURS)">
-                        <label class="form-check-label" for="LessonDuration_3">
-                            @CommonUiRenderer.LessonDurationToString(LessonDuration.TWO_HOURS)
-                        </label>
-                    </div>
-
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" name="Lesson.LessonDuration" id="LessonDuration_4" value="@((int) LessonDuration.MORE)">
-                        <label class="form-check-label" for="LessonDuration_4">
-                            @CommonUiRenderer.LessonDurationToString(LessonDuration.MORE)
-                        </label>
-                    </div>
+                    @{
+                        int j = 1;
+                        foreach (var box in CommonUiRenderer.LessonDurationCheckboxes(LessonDuration.ONE_HOUR))
+                        {
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="Lesson.LessonDuration" id="LessonDuration_@j" value="@(box.Value)" @box.Checked>
+                                <label class="form-check-label" for="LessonDuration_@j">
+                                    @box.Name
+                                </label>
+                            </div>
+                            
+                            j++;
+                        }
+                    }
+                    
                 </div>
             </div>
 

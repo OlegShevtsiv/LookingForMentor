@@ -17,8 +17,8 @@ namespace Lfm.Core.Common.Web.Models
         public int TotalPages { get; private set; }
         
         private uint _pagesDimension;
-        private List<int> _numbersAllNextPages;
-        private List<int> _numbersAllPreviousPages;
+        private List<int> _numbersAllNextPages = new List<int>();
+        private List<int> _numbersAllPreviousPages = new List<int>();
 
 
         /// <summary>
@@ -35,7 +35,10 @@ namespace Lfm.Core.Common.Web.Models
             int pageSize = Constants.DefaultPageSize, 
             uint dim = Constants.DefaultPaginationDimension)
         {
-            if (recordsCount < 1 || pageNumber < 1 || pageSize < 1)
+            if (recordsCount < 1)
+                return;
+
+            if (pageNumber < 1 || pageSize < 1)
             {
                 throw new LfmException(Messages.InvalidRequest);
             }
@@ -49,7 +52,6 @@ namespace Lfm.Core.Common.Web.Models
 
             this.PageNumber = pageNumber;
             this.SetDimension(dim);
-            this.InitNumbersPrevBeforePages();
         }
 
         public void SetDimension(uint amount)
@@ -77,22 +79,21 @@ namespace Lfm.Core.Common.Web.Models
 
             while (i - j < _pagesDimension)
             {
+                if (j == 1 && i == TotalPages)
+                {
+                    break;
+                }
+                
                 if (j > 1)
                 {
                     j--;
+                    _numbersAllPreviousPages.Insert(0, j);
                 }
 
                 if (i < TotalPages)
                 {
                     i++;
-                }
-                
-                _numbersAllPreviousPages.Add(j);
-                _numbersAllNextPages.Add(i);
-
-                if (j == 1 && j == TotalPages)
-                {
-                    break;
+                    _numbersAllNextPages.Add(i);
                 }
             }
         }

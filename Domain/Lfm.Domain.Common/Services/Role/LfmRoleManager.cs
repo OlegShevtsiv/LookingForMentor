@@ -38,7 +38,7 @@ namespace Lfm.Domain.Common.Services.Role
             
             if (user == null)
             {
-                throw new LfmException(Messages.UserNotFound);
+                throw new LfmException(Messages.DataNotFound, "User");
             }
 
             var roleName = (await _userManager.GetRolesAsync(user)).FirstOrDefault();

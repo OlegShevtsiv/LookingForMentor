@@ -9,6 +9,7 @@ using LFM.Domain.Write.Commands.MentorProfile;
 using LFM.Domain.Write.Commands.Order;
 using Lfm.Web.Mvc.Models.FormModels.Auth;
 using Lfm.Web.Mvc.Models.FormModels.Mentor;
+using Lfm.Web.Mvc.Models.FormModels.Order;
 using Lfm.Web.Mvc.Models.FormModels.UserCabinet.Mentor;
 
 namespace Lfm.Web.Mvc.App.Mapper.Configurations
@@ -103,6 +104,9 @@ namespace Lfm.Web.Mvc.App.Mapper.Configurations
                 .ForMember(x => x.WhenToPractice, o => o.MapFrom(p => p.Additional.WhenToPractice))
                 .ForMember(x => x.WhichHelp, o => o.MapFrom(p => p.Additional.WhichHelp))
                 .ForMember(x => x.AdditionalWishes, o => o.MapFrom(p => p.Additional.AdditionalWishes));
+
+            CreateMap<CreateOrderFormModel, CreateLookingForMentorRequestCommand>()
+                .ForMember(x => x.StudentId, o => o.Ignore());
         }
     }
 }

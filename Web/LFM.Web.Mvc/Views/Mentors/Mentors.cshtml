@@ -1,6 +1,6 @@
 @using LFM.Core.Common.Extensions
 @using Lfm.Web.Mvc.App.UIRenderers
-@model Lfm.Domain.ReadModels.Common.PageModel<Lfm.Domain.ReadModels.ReviewModels.Mentor.MentorPreviewModel>
+@model Lfm.Web.Mvc.Models.FormModels.Mentor.MentorPageModel
 
 @{
     ViewData["Title"] = "Looking for Mentors";
@@ -17,13 +17,13 @@
         <ul class="list-group shadow">
             
             @{
-                if (Model.TotalCount == 0)
+                if (Model.PageList.TotalCount == 0)
                 {
                     <li class="list-group-item">No data</li>
                 }
                 else
                 {
-                    foreach (var mentor in Model)
+                    foreach (var mentor in Model.PageList)
                     {
                         <li class="list-group-item">
                             <div class="media align-items-lg-center flex-column flex-lg-row p-3">
@@ -41,5 +41,53 @@
                 }
             }
         </ul>
+        
+        <nav>
+            <ul class="pagination justify-content-center">
+                
+                @{
+                    var routeData = Model.GetAllRouteData();
+                }
+                
+                @if (Model.Pagination.PageNumber > 1)
+                {
+                    <li class="page-item">
+                        <a class="page-link" asp-controller="Home" asp-action="LookingForMentors" asp-all-route-data="routeData" asp-route-pageNumber="@(Model.Pagination.PageNumber - 1)">Previous</a>
+                    </li>
+                }
+                
+                @foreach (var prev in Model.Pagination.GetNumbersAllPreviousPages())
+                {
+                    <li class="page-item">
+                        <a class="page-link" asp-controller="Home" asp-action="LookingForMentors" asp-all-route-data="routeData" asp-route-pageNumber="@prev">@prev</a>
+                    </li>
+                }
+
+                
+                @if (Model.Pagination.PageNumber > 0)
+                {
+                    <li class="page-item active">
+                        <a class="page-link">@Model.Pagination.PageNumber</a>
+                    </li>   
+                }
+
+
+                @foreach (var next in Model.Pagination.GetNumbersAllNextPages())
+                {
+                    <li class="page-item">
+                        <a class="page-link" asp-controller="Home" asp-action="LookingForMentors" asp-all-route-data="routeData" asp-route-pageNumber="@next">@next</a>
+                    </li>
+                }
+                
+
+                 @if (Model.Pagination.PageNumber < Model.Pagination.TotalPages)
+                 {
+                     <li class="page-item">
+                         <a class="page-link" asp-controller="Home" asp-action="LookingForMentors" asp-all-route-data="routeData" asp-route-pageNumber="@(Model.Pagination.PageNumber + 1)">Next</a>
+                     </li>
+                 }
+
+            </ul>
+        </nav>
     </div>
 </div>

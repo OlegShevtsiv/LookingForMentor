@@ -12,6 +12,7 @@ using LFM.DataAccess.DB.Core.Types;
 using Lfm.Domain.ReadModels.Common;
 using Lfm.Domain.ReadModels.ReviewModels.Mentor;
 using Lfm.Domain.ReadModels.SearchModels;
+using Lfm.Domain.ReadModels.SortModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 
@@ -33,10 +34,10 @@ namespace LFM.Domain.Read.Providers.Implementations
             _appConfigs = configOptions.Value;
         }
 
-        public async Task<PageModel<MentorPreviewModel>> LookingForMentors(MentorsMinSearchModel searchModel)
+        public async Task<PageList<MentorPreviewModel>> LookingForMentors(MentorsSearchModel searchModel, int? pageNumber)
         {
             var mentorsQuery = _mentorProfilesRepo.GetQueryable()
-                .Where(m => m.SubjectsInfo.Any())
+                .Where(m => m.IsVerified && m.SubjectsInfo.Any())
                 .ProjectTo<MentorPreviewModel>(_mapper.ConfigurationProvider);
 
             if (searchModel != null)
@@ -52,15 +53,24 @@ namespace LFM.Domain.Read.Providers.Implementations
 
             int count = await mentorsQuery.CountAsync();
 
-            var data = await mentorsQuery.Take(_appConfigs.SearchingMentorsPageSize).ToListAsync();
+            int skip = 0;
+            if (pageNumber.HasValue && pageNumber.Value > 0)
+            {
+                skip = (pageNumber.Value - 1) * _appConfigs.SearchingMentorsPageSize;
+            }
+
+            var data = await mentorsQuery
+                .Skip(skip)
+                .Take(_appConfigs.SearchingMentorsPageSize)
+                .ToListAsync();
             
-            return new PageModel<MentorPreviewModel>(data, count);
+            return new PageList<MentorPreviewModel>(data, count, pageNumber);
         }
         
         public async Task<MentorDetailedPreviewModel> GetMentorInfo(int mentorId)
         {
             MentorDetailedPreviewModel mentorsProfile = await _mentorProfilesRepo.GetQueryable()
-                .Where(m => m.MentorId == mentorId) 
+                .Where(m => m.IsVerified && m.MentorId == mentorId) 
                 .ProjectTo<MentorDetailedPreviewModel>(_mapper.ConfigurationProvider)
                 .SingleOrDefaultAsync();
             
@@ -73,7 +83,7 @@ namespace LFM.Domain.Read.Providers.Implementations
         public async Task<ContactMentorInfo> GetContactMentorInfo(int mentorId, int subjectId)
         {
             ContactMentorInfo mentorContactInfo = await _mentorProfilesRepo.GetQueryable()
-                .Where(m => m.MentorId == mentorId) 
+                .Where(m => m.IsVerified && m.MentorId == mentorId) 
                 .ProjectTo<ContactMentorInfo>(_mapper.ConfigurationProvider)
                 .SingleOrDefaultAsync();
             

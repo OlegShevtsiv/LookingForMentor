@@ -18,7 +18,6 @@ namespace LFM.DataAccess.DB.Core.Context
         
         public DbSet<MentorsSubjectInfo> MentorsSubjectsInfo { get; set; }
         
-        public DbSet<MentorsOrder> MentorsOrders { get; set; }
 
         public DbSet<Subject> Subjects { get; set; }
 
@@ -26,7 +25,14 @@ namespace LFM.DataAccess.DB.Core.Context
 
         public DbSet<Town> UkrainianTowns { get; set; }
         
+        
+        
         public DbSet<OrderRequest> OrdersRequests { get; set; }
+        
+        public DbSet<ApprovedOrder> ApprovedOrders { get; set; }
+
+        public DbSet<RejectedOrder> RejectedOrders { get; set; }
+
 
         public LfmDbContext()
         {

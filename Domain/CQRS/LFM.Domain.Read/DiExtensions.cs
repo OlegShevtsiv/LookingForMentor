@@ -26,6 +26,7 @@ namespace LFM.Domain.Read
             services.AddScoped<ISubjectsProvider, SubjectsProvider>();
             services.AddScoped<IMentorsProvider, MentorsProvider>();
             services.AddScoped<IMasterDataProvider, MasterDataProvider>();
+            services.AddScoped<IStudentProfileProvider, StudentProfileProvider>();
         }
         
         private static void AddInternalServices(IServiceCollection services)

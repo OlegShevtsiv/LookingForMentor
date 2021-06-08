@@ -1,33 +1,51 @@
-@model Lfm.Domain.ReadModels.SearchModels.MentorsMinSearchModel;
+@model Lfm.Domain.ReadModels.SearchModels.MentorsSearchModel;
 @using LFM.Domain.Read.Providers
-@using LFM.DataAccess.DB.Core.Types
+@using Lfm.Web.Mvc.App.StaticServices
 @using Lfm.Web.Mvc.App.UIRenderers
 
+@{
+    var lastSearchRequest = CommonStaticService.PullLastSearchMentorsRequest(Context);
+}
 
 @inject IMasterDataProvider MasterDataProvider;
 
 
-<form asp-controller="Home" asp-action="LookingForMentors" class="row gy-2 gx-3 align-items-center" method="post">
+<form asp-controller="Home" asp-action="LookingForMentors" class="row gy-2 gx-3 align-items-center" method="get">
     <div class="col-auto">
         <label>Subject</label>
         @{
             var subjects = await MasterDataProvider.GetSubjectsList();
-                          <select asp-for="SubjectId" class="form-control" style="max-height: 250px;">
-                              <option value="">---</option>
-                              @foreach (var s in subjects)
-                              {
-                                  <option value="@s.Id">@s.Name</option>
-                              }
-                          </select>
+              <select asp-for="SubjectId" class="form-control" style="max-height: 250px;">
+                  <option value="">---</option>
+                   @foreach (var s in subjects)
+                   {
+                        if (lastSearchRequest.SubjectId.HasValue && s.Id == lastSearchRequest.SubjectId.Value)
+                        {
+                            <option value="@s.Id" selected>@s.Name</option>
+                        }
+                        else
+                        {
+                            <option value="@s.Id">@s.Name</option>
+                        }
+                    }
+              </select>
         }
     </div>
     <div class="col-auto">
         <label>Studying places</label>
         <select asp-for="StudyingPlace" class="form-control">
             <option value="">---</option>
-            <option value="@StudyingPlaces.ONLINE_ONLY">@CommonUiRenderer.StudyingPlaceToString(StudyingPlaces.ONLINE_ONLY)</option>
-            <option value="@StudyingPlaces.OFFLINE_ONLY">@CommonUiRenderer.StudyingPlaceToString(StudyingPlaces.OFFLINE_ONLY)</option>
-            <option value="@StudyingPlaces.ONLINE_AND_OFFLINE">@CommonUiRenderer.StudyingPlaceToString(StudyingPlaces.ONLINE_AND_OFFLINE)</option>
+            @foreach (var item in CommonUiRenderer.StudyingPlacesSelectItems(lastSearchRequest.StudyingPlace))
+            {
+                if (!string.IsNullOrWhiteSpace(item.Selected))
+                {
+                    <option value="@(item.Value)" selected>@(item.Name)</option>
+                }
+                else
+                {
+                    <option value="@(item.Value)">@(item.Name)</option>
+                }
+            }
         </select>
     </div>
     <div class="col-auto">
@@ -35,20 +53,20 @@
         @{
             var towns = await MasterDataProvider.GetTownsList();
             var firstFive = towns.Take(5).ToList();
-            towns = towns.Skip(5).ToList();
 
           <select asp-for="TownId" class="form-control" style="max-height: 250px;">
               <option value="">---</option>
               @foreach (var t in firstFive)
               {
-                  <option value="@t.Id">@t.Name</option>
-              }
-              <optgroup label="----------------------">
-                  @foreach (var t in towns)
+                  if (lastSearchRequest.TownId.HasValue && lastSearchRequest.TownId.Value == t.Id)
+                  {
+                      <option value="@t.Id" selected>@t.Name</option>
+                  }
+                  else
                   {
                       <option value="@t.Id">@t.Name</option>
                   }
-              </optgroup>
+              }
           </select>
         }
     </div>

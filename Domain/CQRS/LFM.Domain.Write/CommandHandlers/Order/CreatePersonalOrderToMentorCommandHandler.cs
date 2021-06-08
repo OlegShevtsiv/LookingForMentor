@@ -1,7 +1,10 @@
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using LFM.DataAccess.DB.Core.Context;
 using LFM.DataAccess.DB.Core.Entities;
+using LFM.DataAccess.DB.Core.Entities.MentorEntities;
 using LFM.DataAccess.DB.Core.Types;
 using LFM.Domain.Write.Commands.Order;
 using LFM.Domain.Write.Declarations;
@@ -25,15 +28,27 @@ namespace LFM.Domain.Write.CommandHandlers.Order
 
         public async Task<CreatePersonalOrderResult> ExecuteAsync(CreatePersonalOrderToMentorCommand command)
         {
-            if (!await CanCreate(command.MentorId, command.SubjectId))
+            var mentor = await _context.MentorsProfiles
+                .Include(m => m.SubjectsInfo)
+                .ThenInclude(s => s.Tags)
+                .Where(m => 
+                    m.IsVerified && 
+                    m.SubjectsInfo.Any() && 
+                    m.MentorId == command.MentorId)
+                .Select(m => new { m.StudyingPlace, m.SubjectsInfo })
+                .FirstOrDefaultAsync();
+
+            if (mentor == null)
+                return new CreatePersonalOrderResult(false);
+
+            if (command.StudentId.HasValue && !await CanCreate(command, mentor.SubjectsInfo))
             {
                 return new CreatePersonalOrderResult(false);
             }
 
             OrderRequest order = _mapper.Map<CreatePersonalOrderToMentorCommand, OrderRequest>(command);
 
-            StudyingPlaces? mentorStudyingPlace =
-                (await _context.MentorsProfiles.FirstOrDefaultAsync(m => m.MentorId == command.MentorId)).StudyingPlace;
+            StudyingPlaces? mentorStudyingPlace = mentor.StudyingPlace;
 
             if (mentorStudyingPlace.HasValue && mentorStudyingPlace != StudyingPlaces.ONLINE_AND_OFFLINE)
                 order.StudyingPlace = mentorStudyingPlace.Value;
@@ -47,14 +62,17 @@ namespace LFM.Domain.Write.CommandHandlers.Order
             return new CreatePersonalOrderResult(true) { MentorName = mentorName};
         }
 
-        private async Task<bool> CanCreate(int mentorId, int subjectId)
+        private async Task<bool> CanCreate(CreatePersonalOrderToMentorCommand command, List<MentorsSubjectInfo> subjects)
         {
             bool isOrderExists = await _context.OrdersRequests
                 .AnyAsync(p => p.MentorId.HasValue && 
-                               p.MentorId.Value == mentorId && 
-                               p.SubjectId == subjectId);
+                               p.MentorId.Value == command.MentorId && 
+                               p.StudentId == command.StudentId);
 
-            return !isOrderExists;
+            bool isTagAvailable = subjects.FirstOrDefault(s => s.SubjectId == command.SubjectId)?
+                .Tags.FirstOrDefault(t => t.TagId == command.TagId) != null;
+
+            return !isOrderExists && isTagAvailable;
         }
     }
 }

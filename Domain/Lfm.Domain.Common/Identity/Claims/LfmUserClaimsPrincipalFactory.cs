@@ -19,7 +19,8 @@ namespace Lfm.Domain.Common.Identity.Claims
         protected override async Task<ClaimsIdentity> GenerateClaimsAsync(LfmUser user)
         {
             var identity = await base.GenerateClaimsAsync(user);
-            identity.AddClaim(new Claim(ClaimTypes.GivenName, user.Name));         
+            identity.AddClaim(new Claim(ClaimTypes.GivenName, user.Name));    
+            identity.AddClaim(new Claim(ClaimTypes.MobilePhone, user.PhoneNumber));
             return identity;
         }
     }

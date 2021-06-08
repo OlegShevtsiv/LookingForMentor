@@ -25,24 +25,24 @@ namespace Lfm.Web.Mvc.App.SessionAlerts
             context.AddAlert(new AlertDataModel(string.Format(message, messageParameters), type));
         }
 
-        public static void AlertError(this Controller controller, string message)
+        public static void AlertError(this Controller controller, string message, params string[] messageParameters)
         {
-            controller.HttpContext.AddAlert(new AlertDataModel(message, AlertTypes.Error));
+            controller.HttpContext.AddAlert(new AlertDataModel(string.Format(message, messageParameters), AlertTypes.Error));
         }
         
-        public static void AlertWarning(this Controller controller, string message)
+        public static void AlertWarning(this Controller controller, string message, params string[] messageParameters)
         {
-            controller.HttpContext.AddAlert(new AlertDataModel(message, AlertTypes.Warning));
+            controller.HttpContext.AddAlert(new AlertDataModel(string.Format(message, messageParameters), AlertTypes.Warning));
         }
         
-        public static void AlertSuccess(this Controller controller, string message)
+        public static void AlertSuccess(this Controller controller, string message, params string[] messageParameters)
         {
-            controller.HttpContext.AddAlert(new AlertDataModel(message, AlertTypes.Success));
+            controller.HttpContext.AddAlert(new AlertDataModel(string.Format(message, messageParameters), AlertTypes.Success));
         }
         
-        public static void AlertInfo(this Controller controller, string message)
+        public static void AlertInfo(this Controller controller, string message, params string[] messageParameters)
         {
-            controller.HttpContext.AddAlert(new AlertDataModel(message, AlertTypes.Info));
+            controller.HttpContext.AddAlert(new AlertDataModel(string.Format(message, messageParameters), AlertTypes.Info));
         }
 
         public static List<AlertDataModel> RetrieveAlerts(this RazorPage page)
@@ -52,9 +52,9 @@ namespace Lfm.Web.Mvc.App.SessionAlerts
             return alerts;
         }
         
-        public static void AlertErrorAndRedirect(string errorMessage, HttpContext context)
+        public static void AlertErrorAndRedirect(string errorMessage, HttpContext context, params string[] messageParameters)
         {
-            context.Alert(errorMessage, AlertTypes.Error);
+            context.Alert(errorMessage, AlertTypes.Error, messageParameters);
             context.Response.Redirect(Constants.DefaultUrl, true);
         }
     }

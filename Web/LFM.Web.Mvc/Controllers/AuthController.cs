@@ -106,8 +106,8 @@ namespace LFM.Web.Mvc.Controllers
                 
                     if (loginResult.IsSuccess)
                     {
-                        this.AlertSuccess(Messages.RegistrationSuccessful);
-                        return RedirectToAction("Index", "UserCabinet");
+                        this.AlertSuccess(Messages.RegistrationSuccessful, "Fill your profile to finish registration process.");
+                        return RedirectToAction("EditMentorGeneralInfo", "MentorUserCabinet");
                     }
                     this.AlertError(Messages.RegistrationFailed);
                 }
@@ -137,7 +137,7 @@ namespace LFM.Web.Mvc.Controllers
                     
                     if (registrationResult.IsSuccess)
                     {
-                        this.AlertSuccess(Messages.RegistrationSuccessful);
+                        this.AlertSuccess(Messages.RegistrationSuccessful, string.Empty);
                         return RedirectToAction("Index", "UserCabinet");
                     }
                     this.AlertError(Messages.RegistrationFailed);

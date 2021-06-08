@@ -1,7 +1,6 @@
 using LFM.DataAccess.DB.Core.Types;
 using System.ComponentModel.DataAnnotations;
 using LFM.Core.Common.Data;
-using LFM.Core.Common.Exceptions;
 
 namespace Lfm.Web.Mvc.Models.FormModels.Mentor
 {

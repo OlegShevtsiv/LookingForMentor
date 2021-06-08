@@ -35,7 +35,7 @@ namespace LFM.Domain.Write.CommandHandlers.MentorProfile
             if (orderRequest == null)
                 throw new LfmException(Messages.DataNotFound);
             
-            MentorsOrder mentorsOrder = _mapper.Map<OrderRequest, MentorsOrder>(orderRequest);
+            ApprovedOrder mentorsOrder = _mapper.Map<OrderRequest, ApprovedOrder>(orderRequest);
 
             int? costPerHour = (await _context.MentorsSubjectsInfo
                 .FirstOrDefaultAsync(s => s.MentorId == command.MentorId && 
@@ -46,7 +46,7 @@ namespace LFM.Domain.Write.CommandHandlers.MentorProfile
 
             mentorsOrder.CostPerHour = costPerHour.Value;
 
-            _context.MentorsOrders.Add(mentorsOrder);
+            _context.ApprovedOrders.Add(mentorsOrder);
             _context.OrdersRequests.Remove(orderRequest);
 
             await _context.SaveChangesAsync();

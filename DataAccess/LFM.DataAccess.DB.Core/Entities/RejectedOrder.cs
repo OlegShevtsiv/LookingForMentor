@@ -4,16 +4,16 @@ using System.ComponentModel.DataAnnotations.Schema;
 using LFM.DataAccess.DB.Core.Entities.SubjectEntities;
 using LFM.DataAccess.DB.Core.Types;
 
-namespace LFM.DataAccess.DB.Core.Entities.MentorEntities
+namespace LFM.DataAccess.DB.Core.Entities
 {
-    [Table("MentorsOrders")]
-    public class MentorsOrder
+    [Table("RejectedOrders")]
+    public class RejectedOrder
     {
         public int Id { get; set; }
         
         public int MentorId { get; set; }
         
-        public int? StudentId { get; set; }
+        public int StudentId { get; set; }
 
         public int SubjectId { get; set; }
 
@@ -26,8 +26,11 @@ namespace LFM.DataAccess.DB.Core.Entities.MentorEntities
         public LessonDuration LessonDuration { get; set; }
 
         [Range(50, 500)]
-        public int CostPerHour { get; set; }
-
+        public int? CostFrom { get; set; }
+        
+        [Range(50, 500)]
+        public int? CostTo { get; set; }
+        
         [Required]
         [MaxLength(20)]
         public string StudentName { get; set; }
@@ -49,10 +52,15 @@ namespace LFM.DataAccess.DB.Core.Entities.MentorEntities
         [MaxLength(255)]
         public string AdditionalWishes { get; set; }
 
-        public DateTime ApprovedDateTime { get; set; }
+        public DateTime RejectedDateTime { get; set; }
+        
+        [Required]
+        public string RejectReason { get; set; }
         
         
         public virtual LfmUser Mentor { get; set; }
+        
+        public virtual LfmUser Student { get; set; }
 
         public virtual Subject Subject { get; set; }
         

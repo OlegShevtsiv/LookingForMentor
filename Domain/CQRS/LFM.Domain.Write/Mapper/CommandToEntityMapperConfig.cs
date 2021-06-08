@@ -22,11 +22,18 @@ namespace LFM.Domain.Write.Mapper
                 .ForMember(x => x.Mentor, o => o.Ignore())
                 .ForMember(x => x.CreationDateTime, o => o.MapFrom(p => DateTime.UtcNow));
 
-            CreateMap<OrderRequest, MentorsOrder>(MemberList.Destination)
+            CreateMap<OrderRequest, ApprovedOrder>(MemberList.Destination)
                 .ForMember(x => x.Id, o => o.Ignore())
                 .ForMember(x => x.CostPerHour, o => o.Ignore())
-                .ForMember(x => x.ApprovedDateTime, o => o.MapFrom(p => DateTime.UtcNow))
-                ;
+                .ForMember(x => x.ApprovedDateTime, o => o.MapFrom(p => DateTime.UtcNow));
+            
+            CreateMap<OrderRequest, RejectedOrder>(MemberList.Destination)
+                .ForMember(x => x.Id, o => o.Ignore())
+                .ForMember(x => x.RejectedDateTime, o => o.MapFrom(p => DateTime.UtcNow));
+            
+            CreateMap<CreateLookingForMentorRequestCommand, OrderRequest>(MemberList.Destination)
+                .ForMember(x => x.Id, o => o.Ignore())
+                .ForMember(x => x.CreationDateTime, o => o.MapFrom(p => DateTime.UtcNow));
         }
     }
 }

@@ -21,19 +21,22 @@ namespace LFM.Domain.Read.Providers.Implementations
         private readonly IRepository<MentorsProfile> _mentorsProfileRepo;
         private readonly IRepository<MentorsSubjectInfo> _mentorsSubjectInfo;
         private readonly IRepository<OrderRequest> _personalOrderRepo;
+        private readonly IRepository<ApprovedOrder> _approvedOrderRepo;
         private readonly IMapper _mapper;
         private readonly SubjectProvideService _subjectProvideService;
 
         public MentorProfileProvider(
             IRepository<MentorsProfile> mentorsProfileRepo,
             IRepository<MentorsSubjectInfo> mentorsSubjectInfo,
-            IRepository<OrderRequest> personalOrderRepo,
+            IRepository<OrderRequest> personalOrderRepo, 
+            IRepository<ApprovedOrder> approvedOrderRepo,
             IMapper mapper, 
             SubjectProvideService subjectProvideService)
         {
             _mentorsProfileRepo = mentorsProfileRepo;
             _mentorsSubjectInfo = mentorsSubjectInfo;
             _personalOrderRepo = personalOrderRepo;
+            _approvedOrderRepo = approvedOrderRepo;
             _mapper = mapper;
             _subjectProvideService = subjectProvideService;
         }
@@ -89,7 +92,7 @@ namespace LFM.Domain.Read.Providers.Implementations
                 .Where(m => m.MentorId == mentorId);
 
             if ((await query.CountAsync()) != 1)
-                throw new LfmException(Messages.UserNotFound);
+                throw new LfmException(Messages.DataNotFound, "User");
 
             return !await query.AnyAsync(m => m.SubjectsInfo.Any(s => s.SubjectId == subjectId));
         }
@@ -109,21 +112,44 @@ namespace LFM.Domain.Read.Providers.Implementations
             return null;
         }
         
-        public async Task<ICollection<T>> GetPersonalOrders<T>(int mentorId) where T : MentorPersonalOrdersMinReviewModel
+        public async Task<ICollection<T>> GetPersonalOrdersRequests<T>(int mentorId) where T : MentorsOrderMinReviewModel
         {
             var data = await _personalOrderRepo.GetQueryable()
-                .Where(m => m.MentorId.HasValue && m.MentorId == mentorId)
+                .Where(m => m.MentorId == mentorId)
                 .ProjectTo<T>(_mapper.ConfigurationProvider)
                 .ToListAsync();
             
             return data;
         }
         
-        public async Task<MentorPersonalOrdersDetailedReviewModel> GetPersonalOrderDetails(int mentorId, int orderId)
+        public async Task<MentorPersonalOrderDetailedReviewModel> GetPersonalOrderRequestDetails(int mentorId, int orderId)
         {
             var order = await _personalOrderRepo.GetQueryable()
-                .Where(m => m.MentorId.HasValue && m.MentorId == mentorId && m.Id == orderId)
-                .ProjectTo<MentorPersonalOrdersDetailedReviewModel>(_mapper.ConfigurationProvider)
+                .Where(m => m.MentorId == mentorId && m.Id == orderId)
+                .ProjectTo<MentorPersonalOrderDetailedReviewModel>(_mapper.ConfigurationProvider)
+                .FirstOrDefaultAsync();
+
+            if (order == null)
+                throw new LfmException(Messages.DataNotFound);
+
+            return order;
+        }
+
+        public async Task<ICollection<T>> GetMentorsOrders<T>(int mentorId) where T : MentorsOrderMinReviewModel
+        {
+            var data = await _approvedOrderRepo.GetQueryable()
+                .Where(m => m.MentorId == mentorId)
+                .ProjectTo<T>(_mapper.ConfigurationProvider)
+                .ToListAsync();
+            
+            return data;
+        }
+        
+        public async Task<MentorsOrderDetailedReviewModel> GetMentorsOrderDetails(int mentorId, int orderId)
+        {
+            var order = await _approvedOrderRepo.GetQueryable()
+                .Where(m => m.MentorId == mentorId && m.Id == orderId)
+                .ProjectTo<MentorsOrderDetailedReviewModel>(_mapper.ConfigurationProvider)
                 .FirstOrDefaultAsync();
 
             if (order == null)

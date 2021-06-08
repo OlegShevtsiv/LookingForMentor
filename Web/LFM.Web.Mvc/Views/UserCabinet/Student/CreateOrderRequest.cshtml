@@ -1,0 +1,120 @@
+@using LFM.DataAccess.DB.Core.Types
+@using LFM.Domain.Read.Providers
+@using Lfm.Web.Mvc.App.UIRenderers
+@model Lfm.Web.Mvc.Models.FormModels.Order.CreateOrderFormModel
+@inject ISubjectsProvider SubjectsProvider;
+@{
+    ViewData["Title"] = "Create order";
+    Layout = "../_UserCabinetLayout.cshtml";
+    
+    var subject = await SubjectsProvider.GetSubject(Model.SubjectId);
+}
+
+<form asp-controller="StudentUserCabinet" asp-action="CreateOrderRequest" method="post">
+    <h4>Fill the form to find the mentor</h4>
+    <hr/>
+
+    <div class="form-group">
+        <div class="form-group">
+            <label>Lesson info</label>
+        </div>
+                
+        <div class="form-group">
+            <input asp-for="SubjectId" hidden/>
+
+            <select asp-for="TagId" class="form-control" style="max-height: 250px;" size="@subject.Tags.Count">
+                <option selected value="@(subject.Tags.FirstOrDefault()?.Id)">@(subject.Tags.FirstOrDefault()?.Name)</option>
+                @foreach (var t in subject.Tags.Skip(1))
+                {
+                    <option value="@(t.Id)">@t.Name</option>
+                }
+            </select>
+                    
+            <span asp-validation-for="TagId" class="text-danger"></span>
+        </div>
+                
+        <div class="form-group">
+                    
+            @{
+                int i = 1;
+                foreach (var box in CommonUiRenderer.StudyingPlacesCheckboxes(StudyingPlaces.ONLINE_ONLY))
+                {
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="StudyingPlace" id="radio_@i" value="@box.Value" @box.Checked>
+                        <label class="form-check-label" for="radio_@i">
+                            @box.Name
+                        </label>
+                    </div>
+                            
+                    i++;
+                }
+            }
+        </div>
+                
+        <div class="form-group">
+            <input type="number" min="1" max="7" class="form-control" asp-for="AmountOfLessonsPerWeek" placeholder="Amount of lessons per week">
+            <span asp-validation-for="AmountOfLessonsPerWeek" class="text-danger"></span>
+        </div>
+                
+                
+        <div class="form-group">
+                    
+            @{
+                int j = 1;
+                foreach (var box in CommonUiRenderer.LessonDurationCheckboxes(LessonDuration.ONE_HOUR))
+                {
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="LessonDuration" id="LessonDuration_@j" value="@(box.Value)" @box.Checked>
+                        <label class="form-check-label" for="LessonDuration_@j">
+                            @box.Name
+                        </label>
+                    </div>
+                            
+                    j++;
+                }
+            }
+                    
+        </div>
+                
+        <div class="form-group">
+            <input type="number" min="50" max="500" class="form-control" asp-for="CostFrom" placeholder="Minimum cost">
+            <span asp-validation-for="CostFrom" class="text-danger"></span>
+        </div>
+                
+        <div class="form-group">
+            <input type="number" min="50" max="500" class="form-control" asp-for="CostTo" placeholder="Maximum cost">
+            <span asp-validation-for="CostTo" class="text-danger"></span>
+        </div>
+                
+    </div>
+            
+    <hr/>
+
+    <div class="form-group">
+        <div class="form-group">
+            <label>Additional Info</label>
+        </div>
+                
+        <div class="form-group">
+            <textarea type="text" class="form-control" asp-for="WhenToPractice" placeholder="What is convenient time of lessons for you?"></textarea>
+            <span asp-validation-for="WhenToPractice" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <textarea type="text" class="form-control" asp-for="WhichHelp" placeholder="What help do you need?"></textarea>
+            <span asp-validation-for="WhichHelp" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <textarea type="text" class="form-control" asp-for="AdditionalWishes" placeholder="Additional wishes?"></textarea>
+            <span asp-validation-for="AdditionalWishes" class="text-danger"></span>
+        </div>
+    </div>
+    <hr/>
+
+    <div class="form-group">
+        <button class="btn btn-success" type="submit">Submit</button>
+    </div>
+</form>
+
+

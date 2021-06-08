@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Lfm.Domain.ReadModels.Common
 {
-    public class PageModel<T> : IEnumerable<T>
+    public class PageList<T> : IEnumerable<T>
     {
         private readonly IEnumerable<T> _data;
 
@@ -11,10 +11,11 @@ namespace Lfm.Domain.ReadModels.Common
 
         public int PageNumber { get; }
 
-        public PageModel(IEnumerable<T> data, int totalCount, int pageNumber = 1)
+        public PageList(IEnumerable<T> data, int totalCount, int? pageNumber = 1)
         {
             this._data = data;
             this.TotalCount = totalCount;
+            this.PageNumber = pageNumber ?? 1;
         }
         
         public IEnumerator<T> GetEnumerator()

@@ -19,8 +19,12 @@ namespace LFM.Domain.Read.Providers
         
         Task<byte[]> GetAvatar(int mentorId);
 
-        Task<ICollection<T>> GetPersonalOrders<T>(int mentorId) where T : MentorPersonalOrdersMinReviewModel;
+        Task<ICollection<T>> GetPersonalOrdersRequests<T>(int mentorId) where T : MentorsOrderMinReviewModel;
 
-        Task<MentorPersonalOrdersDetailedReviewModel> GetPersonalOrderDetails(int mentorId, int orderId);
+        Task<MentorPersonalOrderDetailedReviewModel> GetPersonalOrderRequestDetails(int mentorId, int orderId);
+
+        Task<ICollection<T>> GetMentorsOrders<T>(int mentorId) where T : MentorsOrderMinReviewModel;
+
+        Task<MentorsOrderDetailedReviewModel> GetMentorsOrderDetails(int mentorId, int orderId);
     }
 }

@@ -20,8 +20,9 @@ namespace LFM.Domain.Write
             services.AddAutoMapper(typeof(CommandToEntityMapperConfig));
             services.AddTransient<ICommandBus, CommandBus>();
 
-            AddCommandHandlers(services);
             AddInternalServices(services);
+
+            AddCommandHandlers(services);
         }
 
         private static void AddCommandHandlers(IServiceCollection services)
@@ -37,7 +38,7 @@ namespace LFM.Domain.Write
             services.AddScoped<ICommandHandler<CreatePersonalOrderToMentorCommand, CreatePersonalOrderResult>, CreatePersonalOrderToMentorCommandHandler>();
             services.AddScoped<ICommandHandler<ApprovePersonalOrderCommand, CommandResult>, ApprovePersonalOrderCommandHandler>();
             services.AddScoped<ICommandHandler<RejectPersonalOrderCommand, CommandResult>, RejectPersonalOrderCommandHandler>();
-
+            services.AddScoped<ICommandHandler<CreateLookingForMentorRequestCommand, CommandResult>, CreateLookingForMentorRequestCommandHandler>();
         }
         
         private static void AddInternalServices(IServiceCollection services)

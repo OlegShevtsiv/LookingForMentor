@@ -7,8 +7,8 @@ namespace LFM.Domain.Read.Providers
 {
     public interface IMentorsProvider
     {
-        Task<PageModel<MentorPreviewModel>> LookingForMentors(MentorsMinSearchModel searchModel);
-
+        Task<PageList<MentorPreviewModel>> LookingForMentors(MentorsSearchModel searchModel, int? pageNumber);
+        
         Task<MentorDetailedPreviewModel> GetMentorInfo(int mentorId);
 
         Task<ContactMentorInfo> GetContactMentorInfo(int mentorId, int subjectId);

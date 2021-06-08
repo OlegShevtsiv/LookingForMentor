@@ -61,7 +61,7 @@ namespace LFM.DataAccess.DB.Core.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Київ.
+        ///   Looks up a localized string similar to Kiev.
         /// </summary>
         internal static string _1 {
             get {
@@ -1060,7 +1060,7 @@ namespace LFM.DataAccess.DB.Core.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Харків.
+        ///   Looks up a localized string similar to Kharkiv.
         /// </summary>
         internal static string _2 {
             get {
@@ -2059,7 +2059,7 @@ namespace LFM.DataAccess.DB.Core.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Дніпро.
+        ///   Looks up a localized string similar to Dnipro.
         /// </summary>
         internal static string _3 {
             get {
@@ -2986,7 +2986,7 @@ namespace LFM.DataAccess.DB.Core.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Одеса.
+        ///   Looks up a localized string similar to Odessa.
         /// </summary>
         internal static string _4 {
             get {
@@ -3085,7 +3085,7 @@ namespace LFM.DataAccess.DB.Core.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Львів.
+        ///   Looks up a localized string similar to Lviv.
         /// </summary>
         internal static string _5 {
             get {

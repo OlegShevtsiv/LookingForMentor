@@ -5,6 +5,7 @@ using LFM.DataAccess.DB.Core.Entities.MentorEntities;
 using LFM.DataAccess.DB.Core.Entities.SubjectEntities;
 using Lfm.Domain.ReadModels.ReviewModels.Mentor;
 using Lfm.Domain.ReadModels.ReviewModels.MentorProfile;
+using Lfm.Domain.ReadModels.ReviewModels.StudentProfile;
 using Lfm.Domain.ReadModels.ReviewModels.Subject;
 
 namespace LFM.Domain.Read.Mapper
@@ -15,6 +16,7 @@ namespace LFM.Domain.Read.Mapper
         {
             CreateMentorProfileMaps();
             CreateSubjectMaps();
+            CreateStudentProfileMaps();
         }
 
         private void CreateMentorProfileMaps()
@@ -84,13 +86,31 @@ namespace LFM.Domain.Read.Mapper
                 .ForMember(x => x.CostPerHour, o => o.MapFrom(p => p.CostPerHour))
                 .ForMember(x => x.Tags, o => o.MapFrom(p => p.Tags));
 
-            CreateMap<OrderRequest, MentorPersonalOrdersDetailedReviewModel>()
+            CreateMap<OrderRequest, MentorPersonalOrderDetailedReviewModel>()
                 .ForMember(x => x.SubjectName, o => o.MapFrom(p => p.Subject.Name))
                 .ForMember(x => x.TagName, o => o.MapFrom(p => p.SubjectsTag.Name));
             
-            CreateMap<OrderRequest, MentorPersonalOrdersMinReviewModel>()
+            CreateMap<OrderRequest, MentorsOrderMinReviewModel>()
+                .ForMember(x => x.SubjectName, o => o.MapFrom(p => p.Subject.Name))
+                .ForMember(x => x.TagName, o => o.MapFrom(p => p.SubjectsTag.Name))
+                .ForMember(x => x.DateTime, o => o.MapFrom(p => p.CreationDateTime));
+
+            CreateMap<ApprovedOrder, MentorsOrderMinReviewModel>()
+                .ForMember(x => x.SubjectName, o => o.MapFrom(p => p.Subject.Name))
+                .ForMember(x => x.TagName, o => o.MapFrom(p => p.SubjectsTag.Name))
+                .ForMember(x => x.DateTime, o => o.MapFrom(p => p.ApprovedDateTime));
+            
+            CreateMap<ApprovedOrder, MentorsOrderDetailedReviewModel>()
                 .ForMember(x => x.SubjectName, o => o.MapFrom(p => p.Subject.Name))
                 .ForMember(x => x.TagName, o => o.MapFrom(p => p.SubjectsTag.Name));
+        }
+
+        private void CreateStudentProfileMaps()
+        {
+            CreateMap<OrderRequest, FindMentorRequestReviewModel>()
+                .ForMember(x => x.SubjectName, o => o.MapFrom(p => p.Subject.Name))
+                .ForMember(x => x.TagName, o => o.MapFrom(p => p.SubjectsTag.Name))
+                .ForMember(x => x.DateTime, o => o.MapFrom(p => p.CreationDateTime));
         }
 
         private void CreateSubjectMaps()
