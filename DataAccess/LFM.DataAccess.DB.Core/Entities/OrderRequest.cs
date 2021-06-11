@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using LFM.DataAccess.DB.Core.Entities.SubjectEntities;
@@ -30,6 +31,9 @@ namespace LFM.DataAccess.DB.Core.Entities
         
         [Range(50, 500)]
         public int? CostTo { get; set; }
+        
+        [Range(50, 500)]
+        public int? CostPerHour { get; set; }
 
         [Required]
         [MaxLength(20)]
@@ -60,5 +64,7 @@ namespace LFM.DataAccess.DB.Core.Entities
         public virtual Subject Subject { get; set; }
         
         public virtual SubjectsTag SubjectsTag { get; set; }
+        
+        public virtual IEnumerable<InterestedMentorsOrdersRelation> InterestedMentors { get; set; }
     }
 }

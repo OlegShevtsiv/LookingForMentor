@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using LFM.DataAccess.DB.Core.Types;
 using Lfm.Domain.Common.Extensions;
@@ -29,25 +30,31 @@ namespace Lfm.Web.Mvc.App.UIRenderers
                 {
                     Name = "General Info",
                     ControllerName = "MentorUserCabinet",
-                    ActionName = "MentorGeneralInfo"
+                    ActionName = "GeneralInfo"
                 },
                 new LinkItem
                 {
                     Name = "My subjects",
                     ControllerName = "MentorUserCabinet",
-                    ActionName = "MentorSubjectsInfo"
+                    ActionName = "SubjectsInfo"
                 },
                 new LinkItem
                 {
                     Name = "My personal orders requests",
                     ControllerName = "MentorUserCabinet",
-                    ActionName = "MentorPersonalOrders"
+                    ActionName = "PersonalOrders"
                 },
                 new LinkItem
                 {
                     Name = "My approved orders",
                     ControllerName = "MentorUserCabinet",
-                    ActionName = "MentorApprovedOrders"
+                    ActionName = "ApprovedOrders"
+                },
+                new LinkItem
+                {
+                    Name = "Potentials orders",
+                    ControllerName = "MentorUserCabinet",
+                    ActionName = "PotentialOrders"
                 }
             };
         
@@ -58,7 +65,19 @@ namespace Lfm.Web.Mvc.App.UIRenderers
                 {
                     Name = "Find Mentors requests",
                     ControllerName = "StudentUserCabinet",
-                    ActionName = "FindMentorsRequests"
+                    ActionName = "LfmRequests"
+                },
+                new LinkItem
+                {
+                    Name = "Personal requests to mentors",
+                    ControllerName = "StudentUserCabinet",
+                    ActionName = "PersonalRequestsToMentors"
+                },
+                new LinkItem
+                {
+                    Name = "My approved orders",
+                    ControllerName = "StudentUserCabinet",
+                    ActionName = "ApprovedOrders"
                 }
             };
     }

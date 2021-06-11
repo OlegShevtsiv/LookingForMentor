@@ -13,7 +13,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace LFM.Domain.Write.CommandHandlers.Order
 {
-    public class CreatePersonalOrderToMentorCommandHandler : ICommandHandler<CreatePersonalOrderToMentorCommand, CreatePersonalOrderResult>
+    internal class CreatePersonalOrderToMentorCommandHandler : ICommandHandler<CreatePersonalOrderToMentorCommand, CreatePersonalOrderResult>
     {
         private readonly LfmDbContext _context;
         private readonly IMapper _mapper;

@@ -13,7 +13,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace LFM.Domain.Write.CommandHandlers.MentorProfile
 {
-    public class RejectPersonalOrderCommandHandler : ICommandHandler<RejectPersonalOrderCommand, CommandResult>
+    internal class RejectPersonalOrderCommandHandler : ICommandHandler<RejectPersonalOrderCommand, CommandResult>
     {
         private readonly LfmDbContext _context;
         private readonly IMapper _mapper;

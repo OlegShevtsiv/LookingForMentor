@@ -1,14 +1,16 @@
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using LFM.Core.Common.Data;
+using LFM.Core.Common.Exceptions;
 using LFM.DataAccess.DB.Core.Context;
 using LFM.DataAccess.DB.Core.Entities;
-using LFM.Domain.Write.Commands.Order;
+using LFM.Domain.Write.Commands.StudentProfile;
 using LFM.Domain.Write.Declarations;
 using LFM.Domain.Write.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace LFM.Domain.Write.CommandHandlers.Order
+namespace LFM.Domain.Write.CommandHandlers.StudentProfile
 {
     internal class CreateLookingForMentorRequestCommandHandler : ICommandHandler<CreateLookingForMentorRequestCommand, CommandResult>
     {
@@ -26,8 +28,11 @@ namespace LFM.Domain.Write.CommandHandlers.Order
         public async Task<CommandResult> ExecuteAsync(CreateLookingForMentorRequestCommand command)
         {
             if (!await CanCreate(command))
-                return new CommandResult(false);
-
+            {
+                string subjectName = (await _context.Subjects.FirstOrDefaultAsync(s => s.Id == command.SubjectId)).Name;
+                throw new LfmException(Messages.OrderRequestAlreadyExist, subjectName);
+            }
+            
             OrderRequest order = _mapper.Map<CreateLookingForMentorRequestCommand, OrderRequest>(command);
 
             _context.OrdersRequests.Add(order);

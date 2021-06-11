@@ -1,9 +1,11 @@
 using LFM.Domain.Write.CommandHandlers.Auth;
 using LFM.Domain.Write.CommandHandlers.MentorProfile;
 using LFM.Domain.Write.CommandHandlers.Order;
+using LFM.Domain.Write.CommandHandlers.StudentProfile;
 using LFM.Domain.Write.Commands.Auth;
 using LFM.Domain.Write.Commands.MentorProfile;
 using LFM.Domain.Write.Commands.Order;
+using LFM.Domain.Write.Commands.StudentProfile;
 using LFM.Domain.Write.CommandServices.Auth;
 using LFM.Domain.Write.Declarations;
 using LFM.Domain.Write.Mapper;
@@ -39,6 +41,9 @@ namespace LFM.Domain.Write
             services.AddScoped<ICommandHandler<ApprovePersonalOrderCommand, CommandResult>, ApprovePersonalOrderCommandHandler>();
             services.AddScoped<ICommandHandler<RejectPersonalOrderCommand, CommandResult>, RejectPersonalOrderCommandHandler>();
             services.AddScoped<ICommandHandler<CreateLookingForMentorRequestCommand, CommandResult>, CreateLookingForMentorRequestCommandHandler>();
+            services.AddScoped<ICommandHandler<DeleteLookingForMentorRequestCommand, CommandResult>, DeleteLookingForMentorRequestCommandHandler>();
+            services.AddScoped<ICommandHandler<InterestOrderCommand, CommandResult>, InterestOrderCommandHandler>();
+            services.AddScoped<ICommandHandler<ApproveMentorProposeCommand, ApproveMentorProposeResult>, ApproveMentorProposeCommandHandler>();
         }
         
         private static void AddInternalServices(IServiceCollection services)

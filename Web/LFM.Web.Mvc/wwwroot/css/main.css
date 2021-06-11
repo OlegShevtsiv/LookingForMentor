@@ -28,3 +28,9 @@ img {
     max-height: 200px;
     height: auto;
 }
+
+.mentors_min_photo{
+    width: 80px;
+    max-height: 80px;
+    height: auto;
+}

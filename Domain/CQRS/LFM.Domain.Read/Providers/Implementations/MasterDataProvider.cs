@@ -1,8 +1,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using LFM.Domain.Read.EntityProvideServices;
-using Lfm.Domain.ReadModels.ReviewModels.Subject;
-using Lfm.Domain.ReadModels.ReviewModels.Town;
+using Lfm.Domain.ReadModels.Common;
 
 namespace LFM.Domain.Read.Providers.Implementations
 {
@@ -19,14 +18,14 @@ namespace LFM.Domain.Read.Providers.Implementations
             _subjectProvideService = subjectProvideService;
         }
 
-        public async Task<ICollection<TownPreviewModel>> GetTownsList()
+        public async Task<ICollection<CommonReviewModel>> GetTownsList()
         {
             return await _townsProvideService.GetTowns();
         }
         
-        public async Task<ICollection<SubjectListItem>> GetSubjectsList()
+        public async Task<ICollection<CommonReviewModel>> GetSubjectsList()
         {
-            return await _subjectProvideService.GetSubjects<SubjectListItem>();
+            return await _subjectProvideService.GetSubjects<CommonReviewModel>();
         }
     }
 }

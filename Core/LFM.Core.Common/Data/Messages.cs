@@ -9,6 +9,8 @@ namespace LFM.Core.Common.Data
         public const string DataNotFound = "{0} not found.";
         public const string InvalidRequest = "Invalid request.";
         public const string RequiredField = "'{0}' is required field.";
+        public const string AccessDenied = "Access denied.";
+        public const string ActionNotAllowed = "Action not allowed.";
 
         #endregion
 
@@ -42,7 +44,10 @@ namespace LFM.Core.Common.Data
         
         public const string OrderRequestSuccessful = "You looking for Mentor request was created.";
         public const string OrderRequestFailed = "You looking for Mentor request was failed, please contact to administration.";
+        public const string OrderRequestAlreadyExist = "You already created request on subject {0}.";
 
         #endregion
+        
+        public const string MentorNotAbleToGetPotentialOrders = "You are not able to get potential orders.";
     }
 }

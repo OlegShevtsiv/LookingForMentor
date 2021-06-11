@@ -7,10 +7,11 @@ using Lfm.Domain.ReadModels.ReviewModels.MentorProfile;
 using LFM.Domain.Write.Commands.Auth;
 using LFM.Domain.Write.Commands.MentorProfile;
 using LFM.Domain.Write.Commands.Order;
+using LFM.Domain.Write.Commands.StudentProfile;
 using Lfm.Web.Mvc.Models.FormModels.Auth;
 using Lfm.Web.Mvc.Models.FormModels.Mentor;
-using Lfm.Web.Mvc.Models.FormModels.Order;
 using Lfm.Web.Mvc.Models.FormModels.UserCabinet.Mentor;
+using Lfm.Web.Mvc.Models.FormModels.UserCabinet.Student;
 
 namespace Lfm.Web.Mvc.App.Mapper.Configurations
 {
@@ -105,7 +106,7 @@ namespace Lfm.Web.Mvc.App.Mapper.Configurations
                 .ForMember(x => x.WhichHelp, o => o.MapFrom(p => p.Additional.WhichHelp))
                 .ForMember(x => x.AdditionalWishes, o => o.MapFrom(p => p.Additional.AdditionalWishes));
 
-            CreateMap<CreateOrderFormModel, CreateLookingForMentorRequestCommand>()
+            CreateMap<CreateLookingForMentorRequestFormModel, CreateLookingForMentorRequestCommand>()
                 .ForMember(x => x.StudentId, o => o.Ignore());
         }
     }

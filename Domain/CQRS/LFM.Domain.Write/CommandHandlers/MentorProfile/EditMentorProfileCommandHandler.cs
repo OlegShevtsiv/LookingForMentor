@@ -17,7 +17,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace LFM.Domain.Write.CommandHandlers.MentorProfile
 {
-    public class EditMentorProfileCommandHandler : ICommandHandler<EditMentorProfileCommand, CommandResult>
+    internal class EditMentorProfileCommandHandler : ICommandHandler<EditMentorProfileCommand, CommandResult>
     {
         private readonly LfmDbContext _context;
         private readonly SignInManager<LfmUser> _signInManager;

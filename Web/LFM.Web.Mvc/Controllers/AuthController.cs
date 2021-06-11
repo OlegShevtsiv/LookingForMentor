@@ -107,7 +107,7 @@ namespace LFM.Web.Mvc.Controllers
                     if (loginResult.IsSuccess)
                     {
                         this.AlertSuccess(Messages.RegistrationSuccessful, "Fill your profile to finish registration process.");
-                        return RedirectToAction("EditMentorGeneralInfo", "MentorUserCabinet");
+                        return RedirectToAction("EditGeneralInfo", "MentorUserCabinet");
                     }
                     this.AlertError(Messages.RegistrationFailed);
                 }

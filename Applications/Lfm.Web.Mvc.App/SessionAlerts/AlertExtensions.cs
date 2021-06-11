@@ -55,7 +55,7 @@ namespace Lfm.Web.Mvc.App.SessionAlerts
         public static void AlertErrorAndRedirect(string errorMessage, HttpContext context, params string[] messageParameters)
         {
             context.Alert(errorMessage, AlertTypes.Error, messageParameters);
-            context.Response.Redirect(Constants.DefaultUrl, true);
+            context.Response.Redirect(Constants.DefaultUrl, false);
         }
     }
 }

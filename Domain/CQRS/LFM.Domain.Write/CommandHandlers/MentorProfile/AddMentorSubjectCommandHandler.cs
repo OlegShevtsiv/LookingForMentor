@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace LFM.Domain.Write.CommandHandlers.MentorProfile
 {
-    public class AddMentorSubjectCommandHandler : ICommandHandler<AddMentorSubjectCommand, CommandResult>
+    internal class AddMentorSubjectCommandHandler : ICommandHandler<AddMentorSubjectCommand, CommandResult>
     {
         private readonly LfmDbContext _context;
 

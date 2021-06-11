@@ -2,7 +2,7 @@ using System;
 
 namespace Lfm.Domain.ReadModels.ReviewModels.StudentProfile
 {
-    public class FindMentorRequestReviewModel
+    public class LfmRequestReviewModel
     {
         public int Id { get; set; }
         
@@ -14,6 +14,6 @@ namespace Lfm.Domain.ReadModels.ReviewModels.StudentProfile
         
         public int CostTo { get; set; }
 
-        public DateTime DateTime { get; set; }
+        public DateTime CreationDateTime { get; set; }
     }
 }

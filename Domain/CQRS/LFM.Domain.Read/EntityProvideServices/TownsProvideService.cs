@@ -6,7 +6,7 @@ using LFM.Core.Common.Exceptions;
 using LFM.DataAccess.DB.Core.Entities;
 using LFM.DataAccess.DB.Core.Repository;
 using LFM.Domain.Read.Caching;
-using Lfm.Domain.ReadModels.ReviewModels.Town;
+using Lfm.Domain.ReadModels.Common;
 using Microsoft.EntityFrameworkCore;
 
 namespace LFM.Domain.Read.EntityProvideServices
@@ -24,12 +24,12 @@ namespace LFM.Domain.Read.EntityProvideServices
             _townsCachingService = townsCachingService;
         }
         
-        public async Task<ICollection<TownPreviewModel>> GetTowns()
+        public async Task<ICollection<CommonReviewModel>> GetTowns()
         {
             if (!await _townsCachingService.TryGetAllTowns(out var towns))
             {
                 towns = await _townsRepo.GetQueryable()
-                    .Select(t => new TownPreviewModel
+                    .Select(t => new CommonReviewModel
                     {
                         Id = t.Id,
                         Name = t.Name

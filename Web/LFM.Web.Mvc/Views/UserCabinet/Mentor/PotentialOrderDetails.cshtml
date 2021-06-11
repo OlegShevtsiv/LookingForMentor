@@ -1,0 +1,88 @@
+@using Lfm.Web.Mvc.App.UIRenderers
+@model Lfm.Domain.ReadModels.ReviewModels.MentorProfile.MentorPotentialOrderDetailsReviewModel
+
+@{
+    ViewData["Title"] = "Potential order details";
+    Layout = "../_UserCabinetLayout.cshtml";
+}
+
+<div class="card">
+	<div class="row">
+		<article class="card-body p-5">
+			<h3 class="title mb-3">@Model.SubjectName, @Model.TagName</h3>
+
+			<dl class="param param-feature">
+				<dt>Student name</dt>
+				<dd>@Model.StudentName</dd>
+			</dl>
+			
+			<dl class="param param-feature">
+				<dt>Studying place</dt>
+				<dd>@CommonUiRenderer.StudyingPlaceToString(Model.StudyingPlace)</dd>
+			</dl>  
+			
+			<dl class="param param-feature">
+				<dt>Amount of lessons per week</dt>
+				<dd>@Model.AmountOfLessonsPerWeek</dd>
+			</dl> 
+			
+			<dl class="param param-feature">
+				<dt>LessonDuration</dt>
+				<dd>@CommonUiRenderer.LessonDurationToString(Model.LessonDuration)</dd>
+			</dl>
+
+			<hr>
+			
+			@if (!string.IsNullOrWhiteSpace(Model.WhenToPractice) || 
+			     !string.IsNullOrWhiteSpace(Model.WhichHelp) ||
+			     !string.IsNullOrWhiteSpace(Model.AdditionalWishes))
+			{
+
+				if (!string.IsNullOrWhiteSpace(Model.WhenToPractice))
+				{
+					<dl class="item-property">
+						<dt>Convenient time of lessons for student.</dt>
+						<dd><p>@Model.WhenToPractice</p></dd>
+					</dl>
+				}
+
+				if (!string.IsNullOrWhiteSpace(Model.WhichHelp))
+				{
+					<dl class="item-property">
+						<dt>Which help student needs.</dt>
+						<dd><p>@Model.WhichHelp</p></dd>
+					</dl>	
+				}
+
+				if (!string.IsNullOrWhiteSpace(Model.AdditionalWishes))
+				{
+					<dl class="item-property">
+						<dt>Additional wishes</dt>
+						<dd><p>@Model.AdditionalWishes</p></dd>
+					</dl>	
+				}
+
+				<hr>
+			}
+			
+			<dl class="item-property">
+				<dt>Created</dt>
+				<dd><p>@Model.CreationDateTime.ToString("dd/MM/yyyy")</p></dd>
+			</dl>
+			
+			<hr>
+
+			@if (!Model.IsInterestRequestSend)
+			{
+				<form asp-controller="MentorUserCabinet" asp-action="PotentialOrderPropose" asp-route-orderId="@Model.Id" method="post">
+					<button class="btn btn-success">Interested</button>
+				</form>
+			}
+			else
+			{
+				<button class="btn btn-outline-warning" disabled>Waiting for student approve.</button>
+			}
+			
+		</article>
+	</div>
+</div>

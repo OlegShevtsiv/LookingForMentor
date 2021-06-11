@@ -1,8 +1,9 @@
 @using Lfm.Web.Mvc.App.UIRenderers
-@model Lfm.Domain.ReadModels.ReviewModels.MentorProfile.MentorsOrderDetailedReviewModel
+@model Lfm.Domain.ReadModels.ReviewModels.StudentProfile.ApprovedRequestDetailsReviewModel
 
 @{
-    Layout = "../_UserCabinetLayout.cshtml";
+	ViewData["Title"] = "Approved request details";
+	Layout = "../_UserCabinetLayout.cshtml";
 }
 
 <div class="card">
@@ -11,20 +12,29 @@
 			<h3 class="title mb-3">@Model.SubjectName, @Model.TagName</h3>
 
 			<dl class="param param-feature">
-				<dt>Student name</dt>
-				<dd>@Model.StudentName</dd>
+				<dt>Mentor name</dt>
+				<dd>@Model.MentorName</dd>
+				<dd><a class="btn btn-sm btn-outline-primary" 
+				       asp-controller="Mentors" 
+				       asp-action="MentorDetails" 
+				       asp-route-mentorId="@Model.MentorId">View Profile</a></dd>
 			</dl>
 			
 			<dl class="param param-feature">
-				<dt>Email</dt>
-				<dd>@Model.StudentEmail</dd>
+				<dt>Mentor email</dt>
+				<dd>@Model.MentorEmail</dd>
+			</dl>
+			
+			<dl class="param param-feature">
+				<dt>Mentor phone number</dt>
+				<dd>@Model.MentorPhoneNumber</dd>
 			</dl>
 
 			<dl class="param param-feature">
-				<dt>Phone Number</dt>
-				<dd>@Model.StudentPhoneNumber</dd>
+				<dt>Cost per hour</dt>
+				<dd>@Model.CostPerHour</dd>
 			</dl>
-			
+
 			<hr>
 
 			<dl class="param param-feature">

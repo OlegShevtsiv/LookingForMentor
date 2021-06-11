@@ -1,7 +1,7 @@
 using LFM.DataAccess.DB.Core.Types;
 using LFM.Domain.Write.Declarations;
 
-namespace LFM.Domain.Write.Commands.Order
+namespace LFM.Domain.Write.Commands.StudentProfile
 {
     public class CreateLookingForMentorRequestCommand : ICommand
     {

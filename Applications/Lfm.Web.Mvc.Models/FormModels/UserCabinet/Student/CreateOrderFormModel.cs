@@ -1,9 +1,9 @@
 using System.ComponentModel.DataAnnotations;
 using LFM.DataAccess.DB.Core.Types;
 
-namespace Lfm.Web.Mvc.Models.FormModels.Order
+namespace Lfm.Web.Mvc.Models.FormModels.UserCabinet.Student
 {
-    public class CreateOrderFormModel
+    public class CreateLookingForMentorRequestFormModel
     {
         [Range(1, int.MaxValue)]
         public int SubjectId { get; set; }

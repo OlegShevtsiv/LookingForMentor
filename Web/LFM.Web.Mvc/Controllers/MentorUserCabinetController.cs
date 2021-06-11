@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -18,7 +19,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace LFM.Web.Mvc.Controllers
 {
     [Authorize(Roles = LfmIdentityRolesNames.Mentor)]
-    [Route("user-cabinet")]
+    [Route("user-cabinet/mentor")]
     public class MentorUserCabinetController : Controller
     {
         private readonly IMapper _mapper;
@@ -40,25 +41,25 @@ namespace LFM.Web.Mvc.Controllers
         }
         
         
-        [HttpGet("mentor/general-info")]
-        public async Task<IActionResult> MentorGeneralInfo()
+        [HttpGet("general-info")]
+        public async Task<IActionResult> GeneralInfo()
         {
             var model = await _mentorProfileProvider.GetGeneralInfo<MentorProfilePreviewModel>(User.GetId());
-            return View("../UserCabinet/Mentor/MentorGeneralInfo", model);
+            return View("../UserCabinet/Mentor/GeneralInfo", model);
         }
 
-        [HttpGet("mentor/edit-profile")]
-        public async Task<IActionResult> EditMentorGeneralInfo()
+        [HttpGet("edit-profile")]
+        public async Task<IActionResult> EditGeneralInfo()
         {
             var model = await _mentorProfileProvider.GetGeneralInfo<EditMentorsProfileFormModel>(User.GetId());
             model.Name = User.GetName();
-            return View("../UserCabinet/Mentor/EditMentorGeneralInfo", model);
+            return View("../UserCabinet/Mentor/EditGeneralInfo", model);
         }
 
-        [HttpPost("mentor/edit-profile")]
+        [HttpPost("edit-profile")]
         //[AlertModelStateErrors]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> EditMentorGeneralInfo(EditMentorsProfileFormModel model)
+        public async Task<IActionResult> EditGeneralInfo(EditMentorsProfileFormModel model)
         {
             if (ModelState.IsValid)
             {
@@ -72,7 +73,7 @@ namespace LFM.Web.Mvc.Controllers
                     if (result.IsSuccess)
                     {
                         this.AlertSuccess("Profile info updated successfully.");
-                        return RedirectToAction("MentorGeneralInfo");
+                        return RedirectToAction("GeneralInfo");
                     }
                     this.AlertError("Updating Profile info failed.");
                 }
@@ -85,30 +86,30 @@ namespace LFM.Web.Mvc.Controllers
                     this.AlertError(Messages.SystemError);
                 }
             }
-            return View("../UserCabinet/Mentor/EditMentorGeneralInfo", model);
+            return View("../UserCabinet/Mentor/EditGeneralInfo", model);
         }
 
-        [HttpGet("mentor/subjects-info")]
-        public async Task<IActionResult> MentorSubjectsInfo()
+        [HttpGet("subjects-info")]
+        public async Task<IActionResult> SubjectsInfo()
         {
             var subjectsInfo = await _mentorProfileProvider.GetSubjectsInfo(User.GetId());
 
-            return View("../UserCabinet/Mentor/MentorSubjectsInfo", subjectsInfo);
+            return View("../UserCabinet/Mentor/SubjectsInfo", subjectsInfo);
         }
 
-        [HttpGet("mentor/adding-subject/{subjectId:int}")]
-        public async Task<IActionResult> AddingMentorSubject([Required] int subjectId)
+        [HttpGet("adding-subject/{subjectId:int}")]
+        public async Task<IActionResult> AddSubject([Required] int subjectId)
         {
             if (!await _mentorProfileProvider.CanAddSubject(User.GetId(), subjectId))
             {
                 this.AlertError("Unable to add subject.");
-                return RedirectToAction("MentorSubjectsInfo");
+                return RedirectToAction("SubjectsInfo");
             }
 
-            return View("../UserCabinet/Mentor/AddMentorSubject", new AddMentorsSubjectFormModel {SubjectId = subjectId});
+            return View("../UserCabinet/Mentor/AddSubject", new AddMentorsSubjectFormModel {SubjectId = subjectId});
         }
 
-        [HttpPost("mentor/add-subject")]
+        [HttpPost("add-subject")]
         //[AlertModelStateErrors]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddMentorSubject(AddMentorsSubjectFormModel model)
@@ -118,7 +119,7 @@ namespace LFM.Web.Mvc.Controllers
                 if (!await _subjectsProvider.IsExists(model.SubjectId))
                 {
                     this.AlertError(Messages.DataNotFound, "Subject");
-                    return RedirectToAction("MentorSubjectsInfo");
+                    return RedirectToAction("SubjectsInfo");
                 }
                 
                 var command = _mapper.Map<AddMentorSubjectCommand>(model);
@@ -130,7 +131,7 @@ namespace LFM.Web.Mvc.Controllers
                     if (result.IsSuccess)
                     {
                         this.AlertSuccess("Subject added successfully");
-                        return RedirectToAction("MentorSubjectsInfo");
+                        return RedirectToAction("SubjectsInfo");
                     }
                     this.AlertError("Addition subject failed.");
                 }
@@ -144,27 +145,27 @@ namespace LFM.Web.Mvc.Controllers
                 }
             }
 
-            return View("../UserCabinet/Mentor/AddMentorSubject", model);
+            return View("../UserCabinet/Mentor/AddSubject", model);
         }
 
-        [HttpGet("mentor/editing-subject/{subjectId:int}")]
-        public async Task<IActionResult> EditingMentorSubject([Required] int subjectId)
+        [HttpGet("editing-subject/{subjectId:int}")]
+        public async Task<IActionResult> EditSubject([Required] int subjectId)
         {
             var subject = await _mentorProfileProvider.GetSubject(User.GetId(), subjectId);
             if (subject == null)
             {
                 this.AlertError("Subject not found.");
-                return RedirectToAction("MentorSubjectsInfo");
+                return RedirectToAction("SubjectsInfo");
             }
 
             var model = _mapper.Map<EditMentorsSubjectFormModel>(subject);
-            return View("../UserCabinet/Mentor/EditMentorSubject", model);
+            return View("../UserCabinet/Mentor/EditSubject", model);
         }
 
-        [HttpPost("mentor/edit-subject")]
+        [HttpPost("edit-subject")]
         //[AlertModelStateErrors]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> EditMentorSubject(EditMentorsSubjectFormModel model)
+        public async Task<IActionResult> EditSubject(EditMentorsSubjectFormModel model)
         {
             if (ModelState.IsValid)
             {
@@ -177,7 +178,7 @@ namespace LFM.Web.Mvc.Controllers
                     if (result.IsSuccess)
                     {
                         this.AlertSuccess("Subject edited successfully");
-                        return RedirectToAction("MentorSubjectsInfo");
+                        return RedirectToAction("SubjectsInfo");
                     }
                     this.AlertError("Editing subject failed.");
                 }
@@ -190,22 +191,16 @@ namespace LFM.Web.Mvc.Controllers
                     this.AlertError(Messages.SystemError);
                 }
             }
-            return View("../UserCabinet/Mentor/EditMentorSubject", model);
+            return View("../UserCabinet/Mentor/EditSubject", model);
         }
 
-        [HttpPost("mentor/delete-subject")]
+        [HttpPost("delete-subject")]
         //[AlertModelStateErrors]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteMentorSubject([Required] int subjectId)
+        public async Task<IActionResult> DeleteSubject([Required] int subjectId)
         {
             try
             {
-                if (!await _subjectsProvider.IsExists(subjectId))
-                {
-                    this.AlertError(Messages.DataNotFound, "Subject");
-                    return RedirectToAction("MentorSubjectsInfo");
-                }
-                
                 DeleteMentorSubjectCommand command = new DeleteMentorSubjectCommand
                 {
                     MentorId = User.GetId(),
@@ -217,6 +212,7 @@ namespace LFM.Web.Mvc.Controllers
                 if (result.IsSuccess)
                 {
                     this.AlertSuccess("Subject deleted successfully");
+                    return RedirectToAction("SubjectsInfo");
                 }
                 this.AlertError("Delete subject failed.");
             }
@@ -228,26 +224,26 @@ namespace LFM.Web.Mvc.Controllers
             {
                 this.AlertError(Messages.SystemError);
             }
-            return RedirectToAction("MentorSubjectsInfo");
+            return RedirectToAction("SubjectsInfo");
         }
 
-        [HttpGet("mentor/personal-orders")]
-        public async Task<IActionResult> MentorPersonalOrders()
+        [HttpGet("personal-orders")]
+        public async Task<IActionResult> PersonalOrders()
         {
-            var data = await _mentorProfileProvider.GetPersonalOrdersRequests<MentorsOrderMinReviewModel>(User.GetId());
+            var data = await _mentorProfileProvider.GetPersonalOrdersRequests(User.GetId());
 
-            return View("../UserCabinet/Mentor/MentorPersonalOrders", data);
+            return View("../UserCabinet/Mentor/PersonalOrders", data);
         }
         
-        [HttpGet("mentor/personal-order-details")]
-        public async Task<IActionResult> MentorPersonalOrderDetails(int orderId)
+        [HttpGet("personal-order-details")]
+        public async Task<IActionResult> PersonalOrderDetails(int orderId)
         {
             var data = await _mentorProfileProvider.GetPersonalOrderRequestDetails(User.GetId(), orderId);
 
-            return View("../UserCabinet/Mentor/MentorPersonalOrderDetails", data);
+            return View("../UserCabinet/Mentor/PersonalOrderDetails", data);
         }
 
-        [HttpPost("mentor/approve-personal-order")]
+        [HttpPost("approve-personal-order")]
         public async Task<IActionResult> ApprovePersonalOrderRequest(int orderId)
         {
             try
@@ -263,7 +259,7 @@ namespace LFM.Web.Mvc.Controllers
                 if (commandResult.IsSuccess)
                 {
                     this.AlertSuccess("Approve personal order successful.");
-                    return RedirectToAction("MentorPersonalOrders");
+                    return RedirectToAction("ApprovedOrderDetails", new { orderId });
                 }
                 this.AlertError("Approve personal order failed.");
             }
@@ -275,10 +271,10 @@ namespace LFM.Web.Mvc.Controllers
             {
                 this.AlertError(Messages.SystemError);
             }
-            return RedirectToAction("MentorPersonalOrderDetails", new {orderId });
+            return RedirectToAction("PersonalOrderDetails", new {orderId });
         }
         
-        [HttpPost("mentor/reject-personal-order")]
+        [HttpPost("reject-personal-order")]
         public async Task<IActionResult> RejectPersonalOrderRequest(int orderId)
         {
             try
@@ -294,7 +290,7 @@ namespace LFM.Web.Mvc.Controllers
                 if (commandResult.IsSuccess)
                 {
                     this.AlertSuccess("Reject personal order successful.");
-                    return RedirectToAction("MentorPersonalOrders");
+                    return RedirectToAction("PersonalOrders");
                 }
                 this.AlertError("Reject personal order failed.");
             }
@@ -306,23 +302,88 @@ namespace LFM.Web.Mvc.Controllers
             {
                 this.AlertError(Messages.SystemError);
             }
-            return RedirectToAction("MentorPersonalOrderDetails", new {orderId });
+            return RedirectToAction("PersonalOrderDetails", new {orderId });
         }
         
-        [HttpGet("mentor/approved-orders")]
-        public async Task<IActionResult> MentorApprovedOrders()
+        [HttpGet("approved-orders")]
+        public async Task<IActionResult> ApprovedOrders()
         {
-            var data = await _mentorProfileProvider.GetMentorsOrders<MentorsOrderMinReviewModel>(User.GetId());
+            var data = await _mentorProfileProvider.GetApprovedOrders(User.GetId());
 
-            return View("../UserCabinet/Mentor/MentorApprovedOrders", data);
+            return View("../UserCabinet/Mentor/ApprovedOrders", data);
         }
         
-        [HttpGet("mentor/approved-order-details")]
-        public async Task<IActionResult> MentorApprovedOrderDetails(int orderId)
+        [HttpGet("approved-order-details")]
+        public async Task<IActionResult> ApprovedOrderDetails(int orderId)
         {
-            var data = await _mentorProfileProvider.GetMentorsOrderDetails(User.GetId(), orderId);
+            var data = await _mentorProfileProvider.GetApprovedOrderDetails(User.GetId(), orderId);
 
-            return View("../UserCabinet/Mentor/MentorApprovedOrderDetails", data);
+            return View("../UserCabinet/Mentor/ApprovedOrderDetails", data);
+        }
+        
+        [HttpGet("potential-orders")]
+        public async Task<IActionResult> PotentialOrders()
+        {
+            IEnumerable<MentorPotentialOrderReviewModel> data = new List<MentorPotentialOrderReviewModel>();
+            try
+            {
+                data = await _mentorProfileProvider.GetPotentialOrders(User.GetId());
+            }
+            catch (LfmException exc)
+            {
+                this.AlertWarning(exc.Message);
+            }
+            
+            return View("../UserCabinet/Mentor/PotentialOrders", data);
+        }
+        
+        [HttpGet("potential-order-details")]
+        public async Task<IActionResult> PotentialOrderDetails(int orderId)
+        {
+            MentorPotentialOrderDetailsReviewModel order;
+            try
+            {
+                order = await _mentorProfileProvider.GetPotentialOrderDetails(User.GetId(), orderId);
+            }
+            catch (LfmException exc)
+            {
+                this.AlertError(exc.Message);
+                return RedirectToAction("PotentialOrders");
+            }
+
+            return View("../UserCabinet/Mentor/PotentialOrderDetails", order);
+        }
+        
+        [HttpPost("potential-order-propose")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> PotentialOrderPropose(int orderId)
+        {
+            try
+            {
+                InterestOrderCommand command = new InterestOrderCommand
+                {
+                    MentorId = User.GetId(),
+                    OrderId = orderId
+                };
+                
+                CommandResult commandResult = await _commandBus.ExecuteCommand<InterestOrderCommand, CommandResult>(command);
+
+                if (commandResult.IsSuccess)
+                {
+                    this.AlertSuccess("Your interest was send.");
+                    return RedirectToAction("PotentialOrderDetails", new { orderId });
+                }
+                this.AlertError("Yor interest was not taken into account.");
+            }
+            catch (LfmException exc)
+            {
+                this.AlertError(exc.Message);
+            }
+            catch
+            {
+                this.AlertError(Messages.SystemError);
+            }
+            return RedirectToAction("PotentialOrders", new {orderId });
         }
     }
 }

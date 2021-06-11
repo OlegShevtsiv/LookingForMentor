@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Lfm.Domain.ReadModels.Common;
 
 namespace Lfm.Domain.ReadModels.ReviewModels.Subject
 {
@@ -8,6 +9,6 @@ namespace Lfm.Domain.ReadModels.ReviewModels.Subject
 
         public string Name { get; set; }
 
-        public List<TagReviewModel> Tags { get; set; }
+        public List<CommonReviewModel> Tags { get; set; }
     }
 }

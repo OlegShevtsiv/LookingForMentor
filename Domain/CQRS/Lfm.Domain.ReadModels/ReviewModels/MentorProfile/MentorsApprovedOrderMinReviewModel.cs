@@ -2,7 +2,7 @@ using System;
 
 namespace Lfm.Domain.ReadModels.ReviewModels.MentorProfile
 {
-    public class MentorsOrderMinReviewModel
+    public class MentorsApprovedOrderMinReviewModel
     {
         public int Id { get; set; }
         
@@ -16,6 +16,6 @@ namespace Lfm.Domain.ReadModels.ReviewModels.MentorProfile
         
         public string StudentEmail { get; set; }
         
-        public DateTime DateTime { get; set; }
+        public DateTime ApprovedDateTime { get; set; }
     }
 }

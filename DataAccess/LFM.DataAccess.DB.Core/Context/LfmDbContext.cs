@@ -32,6 +32,8 @@ namespace LFM.DataAccess.DB.Core.Context
         public DbSet<ApprovedOrder> ApprovedOrders { get; set; }
 
         public DbSet<RejectedOrder> RejectedOrders { get; set; }
+        
+        public DbSet<InterestedMentorsOrdersRelation> InterestedMentorsOrdersRelations { get; set; }
 
 
         public LfmDbContext()

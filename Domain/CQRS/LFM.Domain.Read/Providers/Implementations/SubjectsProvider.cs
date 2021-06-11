@@ -18,18 +18,16 @@ namespace LFM.Domain.Read.Providers.Implementations
     {
         private readonly IRepository<Subject> _subjectsRepo;
         private readonly IMapper _mapper;
-        private readonly SubjectCachingService _subjectsCachingService;
         private readonly SubjectProvideService _subjectProvideService;
 
         public SubjectsProvider(
             IRepository<Subject> subjectsRepo, 
             IMapper mapper, 
-            SubjectCachingService cachingService)
+            SubjectProvideService subjectProvideService)
         {
             _subjectsRepo = subjectsRepo;
             _mapper = mapper;
-            _subjectsCachingService = cachingService;
-            _subjectProvideService = new SubjectProvideService(_subjectsRepo, _mapper, _subjectsCachingService);
+            _subjectProvideService = subjectProvideService;
         }
 
         public async Task<IEnumerable<SubjectReviewModel>> GetAllSubjects()
@@ -39,25 +37,16 @@ namespace LFM.Domain.Read.Providers.Implementations
 
         public async Task<SubjectReviewModel> GetSubject(int subjectId)
         {
-            SubjectReviewModel subject;
+            var subject = await _subjectProvideService.GetSubjectById<SubjectReviewModel>(subjectId);
+            if (subject == null)
+                throw new LfmException(Messages.DataNotFound, "Subject");
 
-            if (!await _subjectsCachingService.TryGetById(subjectId, out subject))
-            {
-                subject = await _subjectsRepo.GetQueryable()
-                    .Where(s => s.Id == subjectId)
-                    .ProjectTo<SubjectReviewModel>(_mapper.ConfigurationProvider)
-                    .FirstOrDefaultAsync();
-
-                if (subject == null)
-                    throw new LfmException(Messages.DataNotFound);
-            }
-            
             return subject;
         }
 
         public async Task<bool> IsExists(int subjectId)
         {
-            if (!await _subjectsCachingService.TryGetById(subjectId, out _))
+            if (await _subjectProvideService.GetSubjectById<SubjectReviewModel>(subjectId) == null)
             {
                 return await _subjectsRepo.GetQueryable()
                     .AnyAsync(s => s.Id == subjectId);

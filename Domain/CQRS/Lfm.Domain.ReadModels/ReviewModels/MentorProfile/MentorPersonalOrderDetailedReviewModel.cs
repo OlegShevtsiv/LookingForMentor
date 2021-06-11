@@ -18,11 +18,7 @@ namespace Lfm.Domain.ReadModels.ReviewModels.MentorProfile
         public LessonDuration LessonDuration { get; set; }
         
         public string StudentName { get; set; }
-        
-        public string StudentPhoneNumber { get; set; }
-        
-        public string StudentEmail { get; set; }
-        
+
         public string WhenToPractice { get; set; }
 
         public string WhichHelp { get; set; }

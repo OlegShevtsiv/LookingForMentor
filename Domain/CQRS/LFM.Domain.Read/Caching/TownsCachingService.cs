@@ -3,20 +3,20 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Lfm.Domain.ReadModels.ReviewModels.Town;
+using Lfm.Domain.ReadModels.Common;
 
 namespace LFM.Domain.Read.Caching
 {
     internal class TownsCachingService
     {
-        private readonly ConcurrentDictionary<int, (ICollection<TownPreviewModel> Towns, DateTime ExpirationDateTime)> _townsCacheStorage;
+        private readonly ConcurrentDictionary<int, (ICollection<CommonReviewModel> Towns, DateTime ExpirationDateTime)> _townsCacheStorage;
 
         public TownsCachingService()
         {
-            _townsCacheStorage = new ConcurrentDictionary<int, (ICollection<TownPreviewModel>, DateTime)>();
+            _townsCacheStorage = new ConcurrentDictionary<int, (ICollection<CommonReviewModel>, DateTime)>();
         }
 
-        public Task<bool> TryGetAllTowns(out ICollection<TownPreviewModel> towns)
+        public Task<bool> TryGetAllTowns(out ICollection<CommonReviewModel> towns)
         {
             towns = null;
             if (_townsCacheStorage.Count == 1)
@@ -34,7 +34,7 @@ namespace LFM.Domain.Read.Caching
             return Task.FromResult(false);
         }
 
-        public Task<bool> TryCacheAllTowns(ICollection<TownPreviewModel> towns)
+        public Task<bool> TryCacheAllTowns(ICollection<CommonReviewModel> towns)
         {
             _townsCacheStorage.Clear();
             

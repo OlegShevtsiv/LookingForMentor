@@ -1,27 +1,31 @@
 using System;
 using LFM.DataAccess.DB.Core.Types;
 
-namespace Lfm.Domain.ReadModels.ReviewModels.MentorProfile
+namespace Lfm.Domain.ReadModels.ReviewModels.StudentProfile
 {
-    public class MentorsOrderDetailedReviewModel
+    public class ApprovedRequestDetailsReviewModel
     {
+        public int Id { get; set; }
+        
         public string SubjectName { get; set; }
 
         public string TagName { get; set; }
+        
+        public int MentorId { get; set; }
 
+        public string MentorName { get; set; }
+        
+        public string MentorEmail { get; set; }
+
+        public string MentorPhoneNumber { get; set; }
+
+        public int CostPerHour { get; set; }
+        
         public StudyingPlaces StudyingPlace { get; set; }
 
         public int AmountOfLessonsPerWeek { get; set; }
             
         public LessonDuration LessonDuration { get; set; }
-
-        public int CostPerHour { get; set; }
-        
-        public string StudentName { get; set; }
-        
-        public string StudentPhoneNumber { get; set; }
-        
-        public string StudentEmail { get; set; }
         
         public string WhenToPractice { get; set; }
 

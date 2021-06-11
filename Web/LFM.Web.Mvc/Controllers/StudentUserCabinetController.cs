@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using AutoMapper;
 using LFM.Core.Common.Data;
@@ -6,17 +7,18 @@ using LFM.DataAccess.DB.Core.Types;
 using Lfm.Domain.Common.Extensions;
 using LFM.Domain.Read.Providers;
 using LFM.Domain.Write.Commands.Order;
+using LFM.Domain.Write.Commands.StudentProfile;
 using LFM.Domain.Write.Mediator;
 using LFM.Domain.Write.Models;
 using Lfm.Web.Mvc.App.SessionAlerts;
-using Lfm.Web.Mvc.Models.FormModels.Order;
+using Lfm.Web.Mvc.Models.FormModels.UserCabinet.Student;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LFM.Web.Mvc.Controllers
 {
     [Authorize(Roles = LfmIdentityRolesNames.Student)]
-    [Route("user-cabinet")]
+    [Route("user-cabinet/student")]
     public class StudentUserCabinetController : Controller
     {
         private readonly IMapper _mapper;
@@ -27,7 +29,8 @@ namespace LFM.Web.Mvc.Controllers
         public StudentUserCabinetController(
             IMapper mapper,
             IStudentProfileProvider studentProfileProvider,
-            ICommandBus commandBus, ISubjectsProvider subjectsProvider)
+            ICommandBus commandBus, 
+            ISubjectsProvider subjectsProvider)
         {
             _mapper = mapper;
             _studentProfileProvider = studentProfileProvider;
@@ -35,41 +38,41 @@ namespace LFM.Web.Mvc.Controllers
             _subjectsProvider = subjectsProvider;
         }
         
-        [HttpGet("find-mentors-requests")]
-        public async Task<IActionResult> FindMentorsRequests()
+        [HttpGet("lfm-requests")]
+        public async Task<IActionResult> LfmRequests()
         {
-            var requests = await _studentProfileProvider.GetFindMentorRequests(User.GetId());
+            var requests = await _studentProfileProvider.GetLfmRequests(User.GetId());
             
-            return View("../UserCabinet/Student/FindMentorsRequests", requests);
+            return View("../UserCabinet/Student/LfmRequests", requests);
         }
         
-        [HttpGet("find-mentors-request-details")]
-        public async Task<IActionResult> FindMentorsRequestDetails()
+        [HttpGet("lfm-request-details")]
+        public async Task<IActionResult> LfmRequestDetails(int orderId)
         {
-            var requests = await _studentProfileProvider.GetFindMentorRequests(User.GetId());
+            var request = await _studentProfileProvider.GetLfmRequestDetails(User.GetId(), orderId);
             
-            return View("../UserCabinet/Student/FindMentorsRequests", requests);
+            return View("../UserCabinet/Student/LfmRequestDetails", request);
         }
 
-        [HttpGet("create-looking-for-mentor-request")]
+        [HttpGet("create-lfm-request")]
         public async Task<IActionResult> CreateOrderRequest(int subjectId)
         {
             if (!await _subjectsProvider.IsExists(subjectId))
             {
                 this.AlertError(Messages.DataNotFound, "Subject");
-                return RedirectToAction("FindMentorsRequests");
+                return RedirectToAction("LfmRequests");
             }
 
-            CreateOrderFormModel model = new CreateOrderFormModel
+            CreateLookingForMentorRequestFormModel model = new CreateLookingForMentorRequestFormModel
             {
                 SubjectId = subjectId
             };
             return View("../UserCabinet/Student/CreateOrderRequest", model);
         }
         
-        [HttpPost("create-looking-for-mentor-request")]
+        [HttpPost("create-lfm-request")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CreateOrderRequest(CreateOrderFormModel model)
+        public async Task<IActionResult> CreateOrderRequest(CreateLookingForMentorRequestFormModel model)
         {
             if (ModelState.IsValid)
             {
@@ -78,10 +81,10 @@ namespace LFM.Web.Mvc.Controllers
                     if (!await _subjectsProvider.IsExists(model.SubjectId))
                     {
                         this.AlertError(Messages.DataNotFound, "Subject");
-                        return RedirectToAction("FindMentorsRequests");
+                        return RedirectToAction("LfmRequests");
                     }
                     
-                    var command = _mapper.Map<CreateOrderFormModel, CreateLookingForMentorRequestCommand>(model);
+                    var command = _mapper.Map<CreateLookingForMentorRequestFormModel, CreateLookingForMentorRequestCommand>(model);
                     command.StudentId = User.GetId();
                     command.StudentName = User.GetName();
                     command.StudentEmail = User.GetEmail();
@@ -93,10 +96,7 @@ namespace LFM.Web.Mvc.Controllers
                     if (commandResult.IsSuccess)
                     {
                         this.AlertSuccess(Messages.OrderRequestSuccessful);
-                        return RedirectToAction("Index", "UserCabinet");
                     }
-
-                    this.AlertSuccess(Messages.OrderRequestFailed);
                 }
                 catch (LfmException exc)
                 {
@@ -104,10 +104,107 @@ namespace LFM.Web.Mvc.Controllers
                 }
                 catch
                 {
-                    this.AlertError(Messages.SystemError);
+                    this.AlertError(Messages.OrderRequestFailed);
                 }
             }
-            return View("../UserCabinet/Student/CreateOrderRequest", model);
+            return RedirectToAction("LfmRequests");
+        }
+
+        [HttpPost("delete-lfm-request")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteOrderRequest([Range(1, int.MaxValue)]int orderId)
+        {
+            try
+            {
+                DeleteLookingForMentorRequestCommand command = new DeleteLookingForMentorRequestCommand
+                {
+                    StudentId = User.GetId(),
+                    OrderId = orderId
+                };
+
+                var result = await _commandBus.ExecuteCommand<DeleteLookingForMentorRequestCommand, CommandResult>(command);
+
+                if (result.IsSuccess)
+                {
+                    this.AlertSuccess("Order deleted successfully");
+                    return RedirectToAction("LfmRequests");
+                }
+                this.AlertError("Delete order failed.");
+            }
+            catch (LfmException exc)
+            {
+                this.AlertError(exc.Message);
+            }
+            catch
+            {
+                this.AlertError(Messages.SystemError);
+            }
+            return RedirectToAction("LfmRequests");
+        }
+
+        [HttpPost("approve-mentor-propose")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ApproveMentorPropose(ApproveMentorProposeFormModel model)
+        {
+            try
+            {
+                ApproveMentorProposeCommand command = new ApproveMentorProposeCommand
+                {
+                    StudentId = User.GetId(),
+                    OrderId = model.OrderId,
+                    MentorId = model.MentorId
+                };
+
+                var result = await _commandBus.ExecuteCommand<ApproveMentorProposeCommand, ApproveMentorProposeResult>(command);
+
+                if (result.IsSuccess)
+                {
+                    this.AlertSuccess($"Success. {result.MentorName} is you Mentor.");
+                    return RedirectToAction("ApprovedOrderDetails", new { model.OrderId });
+                }
+                this.AlertError("Approving failed.");
+            }
+            catch (LfmException exc)
+            {
+                this.AlertError(exc.Message);
+            }
+            catch
+            {
+                this.AlertError(Messages.SystemError);
+            }
+            return RedirectToAction("LfmRequests");
+        }
+        
+        [HttpGet("personal-requests-to-mentors")]
+        public async Task<IActionResult> PersonalRequestsToMentors()
+        {
+            var requests = await _studentProfileProvider.GetPersonalRequestsToMentors(User.GetId());
+            
+            return View("../UserCabinet/Student/PersonalRequestsToMentors", requests);
+        }
+        
+        [HttpGet("personal-request-to-mentor-details")]
+        public async Task<IActionResult> PersonalRequestsToMentorDetails(int orderId)
+        {
+            var request = await _studentProfileProvider.GetPersonalRequestToMentorDetails(User.GetId(), orderId);
+            
+            return View("../UserCabinet/Student/PersonalRequestsToMentorDetails", request);
+        }
+        
+        [HttpGet("approved-orders")]
+        public async Task<IActionResult> ApprovedOrders()
+        {
+            var requests = await _studentProfileProvider.GetApprovedRequests(User.GetId());
+            
+            return View("../UserCabinet/Student/ApprovedOrders", requests);
+        }
+        
+        [HttpGet("approved-order-details")]
+        public async Task<IActionResult> ApprovedOrderDetails(int orderId)
+        {
+            var request = await _studentProfileProvider.GetApprovedRequestDetails(User.GetId(), orderId);
+            
+            return View("../UserCabinet/Student/ApprovedOrderDetails", request);
         }
     }
 }

@@ -9,9 +9,10 @@ using LFM.Core.Common.Exceptions;
 using LFM.DataAccess.DB.Core.Entities;
 using LFM.DataAccess.DB.Core.Entities.MentorEntities;
 using LFM.DataAccess.DB.Core.Repository;
+using LFM.DataAccess.DB.Core.Types;
 using LFM.Domain.Read.EntityProvideServices;
+using Lfm.Domain.ReadModels.Common;
 using Lfm.Domain.ReadModels.ReviewModels.MentorProfile;
-using Lfm.Domain.ReadModels.ReviewModels.Subject;
 using Microsoft.EntityFrameworkCore;
 
 namespace LFM.Domain.Read.Providers.Implementations
@@ -20,7 +21,7 @@ namespace LFM.Domain.Read.Providers.Implementations
     {
         private readonly IRepository<MentorsProfile> _mentorsProfileRepo;
         private readonly IRepository<MentorsSubjectInfo> _mentorsSubjectInfo;
-        private readonly IRepository<OrderRequest> _personalOrderRepo;
+        private readonly IRepository<OrderRequest> _ordersRepo;
         private readonly IRepository<ApprovedOrder> _approvedOrderRepo;
         private readonly IMapper _mapper;
         private readonly SubjectProvideService _subjectProvideService;
@@ -28,14 +29,14 @@ namespace LFM.Domain.Read.Providers.Implementations
         public MentorProfileProvider(
             IRepository<MentorsProfile> mentorsProfileRepo,
             IRepository<MentorsSubjectInfo> mentorsSubjectInfo,
-            IRepository<OrderRequest> personalOrderRepo, 
+            IRepository<OrderRequest> ordersRepo, 
             IRepository<ApprovedOrder> approvedOrderRepo,
             IMapper mapper, 
             SubjectProvideService subjectProvideService)
         {
             _mentorsProfileRepo = mentorsProfileRepo;
             _mentorsSubjectInfo = mentorsSubjectInfo;
-            _personalOrderRepo = personalOrderRepo;
+            _ordersRepo = ordersRepo;
             _approvedOrderRepo = approvedOrderRepo;
             _mapper = mapper;
             _subjectProvideService = subjectProvideService;
@@ -54,7 +55,7 @@ namespace LFM.Domain.Read.Providers.Implementations
             return mentorsProfile;
         }
 
-        public async Task<ICollection<MentorSubjectReviewModel>> GetSubjectsInfo(int mentorId)
+        public async Task<IEnumerable<MentorSubjectReviewModel>> GetSubjectsInfo(int mentorId)
         {
             var subjectsInfo = await _mentorsSubjectInfo.GetQueryable()
                 .Where(m => m.MentorId == mentorId)
@@ -64,9 +65,9 @@ namespace LFM.Domain.Read.Providers.Implementations
             return subjectsInfo;
         }
 
-        public async Task<ICollection<SubjectListItem>> GetAvailableSubjects(int mentorId)
+        public async Task<IEnumerable<CommonReviewModel>> GetAvailableSubjects(int mentorId)
         {
-            var subjects = (await _subjectProvideService.GetSubjects<SubjectListItem>()).ToList();
+            var subjects = (await _subjectProvideService.GetSubjects<CommonReviewModel>()).ToList();
             
             var existingSubjects = await _mentorsSubjectInfo.GetQueryable()
                 .Where(m => m.MentorId == mentorId)
@@ -112,11 +113,11 @@ namespace LFM.Domain.Read.Providers.Implementations
             return null;
         }
         
-        public async Task<ICollection<T>> GetPersonalOrdersRequests<T>(int mentorId) where T : MentorsOrderMinReviewModel
+        public async Task<IEnumerable<MentorPersonalOrderReviewModel>> GetPersonalOrdersRequests(int mentorId)
         {
-            var data = await _personalOrderRepo.GetQueryable()
+            var data = await _ordersRepo.GetQueryable()
                 .Where(m => m.MentorId == mentorId)
-                .ProjectTo<T>(_mapper.ConfigurationProvider)
+                .ProjectTo<MentorPersonalOrderReviewModel>(_mapper.ConfigurationProvider)
                 .ToListAsync();
             
             return data;
@@ -124,7 +125,7 @@ namespace LFM.Domain.Read.Providers.Implementations
         
         public async Task<MentorPersonalOrderDetailedReviewModel> GetPersonalOrderRequestDetails(int mentorId, int orderId)
         {
-            var order = await _personalOrderRepo.GetQueryable()
+            var order = await _ordersRepo.GetQueryable()
                 .Where(m => m.MentorId == mentorId && m.Id == orderId)
                 .ProjectTo<MentorPersonalOrderDetailedReviewModel>(_mapper.ConfigurationProvider)
                 .FirstOrDefaultAsync();
@@ -135,27 +136,105 @@ namespace LFM.Domain.Read.Providers.Implementations
             return order;
         }
 
-        public async Task<ICollection<T>> GetMentorsOrders<T>(int mentorId) where T : MentorsOrderMinReviewModel
+        public async Task<IEnumerable<MentorsApprovedOrderMinReviewModel>> GetApprovedOrders(int mentorId)
         {
             var data = await _approvedOrderRepo.GetQueryable()
                 .Where(m => m.MentorId == mentorId)
-                .ProjectTo<T>(_mapper.ConfigurationProvider)
+                .ProjectTo<MentorsApprovedOrderMinReviewModel>(_mapper.ConfigurationProvider)
                 .ToListAsync();
             
             return data;
         }
         
-        public async Task<MentorsOrderDetailedReviewModel> GetMentorsOrderDetails(int mentorId, int orderId)
+        public async Task<MentorsApprovedOrderDetailedReviewModel> GetApprovedOrderDetails(int mentorId, int orderId)
         {
             var order = await _approvedOrderRepo.GetQueryable()
                 .Where(m => m.MentorId == mentorId && m.Id == orderId)
-                .ProjectTo<MentorsOrderDetailedReviewModel>(_mapper.ConfigurationProvider)
+                .ProjectTo<MentorsApprovedOrderDetailedReviewModel>(_mapper.ConfigurationProvider)
                 .FirstOrDefaultAsync();
 
             if (order == null)
                 throw new LfmException(Messages.DataNotFound);
 
             return order;
+        }
+
+        public async Task<IEnumerable<MentorPotentialOrderReviewModel>> GetPotentialOrders(int mentorId)
+        {
+            var mentorInfo = await _mentorsProfileRepo.GetQueryable()
+                .Where(m => m.MentorId == mentorId)
+                .Include(t => t.SubjectsInfo)
+                .ThenInclude(t => t.Tags)
+                .Select(m => new { m.StudyingPlace, Subjects = m.SubjectsInfo })
+                .FirstOrDefaultAsync();
+
+            if (mentorInfo == null || !mentorInfo.Subjects.Any())
+                throw new LfmException(Messages.MentorNotAbleToGetPotentialOrders);
+            
+            var subjectsList = mentorInfo.Subjects.ToList();
+            var subjectsIds = subjectsList.Select(s => s.SubjectId).ToArray();
+            var mentorStudyingPlace = mentorInfo.StudyingPlace;
+
+            var data = _ordersRepo.GetQueryable()
+                .Include(o => o.Subject)
+                .Include(o => o.SubjectsTag)
+                .Where(o => !o.MentorId.HasValue && 
+                            subjectsIds.Any(s => s == o.SubjectId) && 
+                            (o.StudyingPlace == StudyingPlaces.ONLINE_AND_OFFLINE || 
+                             mentorStudyingPlace == StudyingPlaces.ONLINE_AND_OFFLINE || 
+                             o.StudyingPlace == mentorStudyingPlace))
+                .ToList();
+
+            data = data.Where(o =>
+                    subjectsList.FirstOrDefault(s => s.SubjectId == o.SubjectId)?.Tags.Exists(t => t.TagId == o.TagId) == true &&
+                    subjectsList.FirstOrDefault(s => s.SubjectId == o.SubjectId)?.CostPerHour >= o.CostFrom &&
+                    subjectsList.FirstOrDefault(s => s.SubjectId == o.SubjectId)?.CostPerHour <= o.CostTo)
+                .ToList();
+
+            var orders = _mapper.Map<ICollection<MentorPotentialOrderReviewModel>>(data);
+            
+            return orders;
+        }
+
+        public async Task<MentorPotentialOrderDetailsReviewModel> GetPotentialOrderDetails(int mentorId, int orderId)
+        {
+            var entity = await _ordersRepo.GetQueryable()
+                .Include(o => o.Subject)
+                .Include(o => o.SubjectsTag)
+                .Include(o => o.InterestedMentors)
+                .FirstOrDefaultAsync(o => o.Id == orderId);
+
+            if (entity == null)
+                throw new LfmException(Messages.DataNotFound, "Potential Order");
+            
+            var mentorInfo = await _mentorsProfileRepo.GetQueryable()
+                .Where(m => m.MentorId == mentorId)
+                .Include(t => t.SubjectsInfo)
+                .ThenInclude(t => t.Tags)
+                .Select(m => new { m.StudyingPlace, Subject = m.SubjectsInfo.FirstOrDefault(s => s.SubjectId == entity.SubjectId) })
+                .FirstOrDefaultAsync();
+
+            if (mentorInfo?.Subject == null)
+                throw new LfmException(Messages.MentorNotAbleToGetPotentialOrders);
+
+            if ((entity.StudyingPlace == StudyingPlaces.ONLINE_AND_OFFLINE ||
+                mentorInfo.StudyingPlace == StudyingPlaces.ONLINE_AND_OFFLINE ||
+                mentorInfo.StudyingPlace == entity.StudyingPlace) && 
+                mentorInfo.Subject.Tags.Select(t => t.TagId).Contains(entity.TagId) &&
+                mentorInfo.Subject.CostPerHour >= entity.CostFrom &&
+                mentorInfo.Subject.CostPerHour <= entity.CostTo)
+            {
+                var order = _mapper.Map<MentorPotentialOrderDetailsReviewModel>(entity);
+
+                if (entity.InterestedMentors.Any(m => m.MentorId == mentorId))
+                {
+                    order.IsInterestRequestSend = true;
+                }
+
+                return order;
+            }
+
+            throw new LfmException(Messages.DataNotFound, "Potential Order");
         }
     }
 }

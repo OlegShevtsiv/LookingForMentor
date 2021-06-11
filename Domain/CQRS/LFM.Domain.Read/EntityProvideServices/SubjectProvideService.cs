@@ -51,5 +51,17 @@ namespace LFM.Domain.Read.EntityProvideServices
 
             return _mapper.Map<ICollection<T>>(subjects);
         }
+        
+        public async Task<T> GetSubjectById<T>(int subjectId) where T : class
+        {
+            if (!await _subjectsCachingService.TryGetById(subjectId, out var subject))
+            {
+                subject = await _subjectsRepo.GetQueryable()
+                    .ProjectTo<SubjectReviewModel>(_mapper.ConfigurationProvider)
+                    .FirstOrDefaultAsync();
+            }
+
+            return _mapper.Map<T>(subject);
+        }
     }
 }

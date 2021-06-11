@@ -1,9 +1,9 @@
-namespace Lfm.Domain.ReadModels.ReviewModels.Subject
+namespace Lfm.Domain.ReadModels.Common
 {
-    public class SubjectListItem
+    public class CommonReviewModel
     {
         public int Id { get; set; }
-
+        
         public string Name { get; set; }
     }
 }

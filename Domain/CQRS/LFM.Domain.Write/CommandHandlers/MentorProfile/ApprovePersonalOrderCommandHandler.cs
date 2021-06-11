@@ -13,7 +13,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace LFM.Domain.Write.CommandHandlers.MentorProfile
 {
-    public class ApprovePersonalOrderCommandHandler : ICommandHandler<ApprovePersonalOrderCommand, CommandResult>
+    internal class ApprovePersonalOrderCommandHandler : ICommandHandler<ApprovePersonalOrderCommand, CommandResult>
     {
         private readonly LfmDbContext _context;
         private readonly IMapper _mapper;
@@ -33,7 +33,7 @@ namespace LFM.Domain.Write.CommandHandlers.MentorProfile
                 .FirstOrDefaultAsync();
 
             if (orderRequest == null)
-                throw new LfmException(Messages.DataNotFound);
+                throw new LfmException(Messages.DataNotFound, "Order");
             
             ApprovedOrder mentorsOrder = _mapper.Map<OrderRequest, ApprovedOrder>(orderRequest);
 
@@ -42,7 +42,7 @@ namespace LFM.Domain.Write.CommandHandlers.MentorProfile
                                           s.SubjectId == mentorsOrder.SubjectId))?.CostPerHour;
 
             if (!costPerHour.HasValue)
-                throw new LfmException(Messages.DataNotFound);
+                throw new LfmException(Messages.AccessDenied);
 
             mentorsOrder.CostPerHour = costPerHour.Value;
 

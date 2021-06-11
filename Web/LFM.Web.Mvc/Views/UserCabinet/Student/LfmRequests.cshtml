@@ -1,17 +1,18 @@
 @using LFM.Domain.Read.Providers
 @using Lfm.Web.Mvc.App.UIRenderers
-@model ICollection<Lfm.Domain.ReadModels.ReviewModels.StudentProfile.FindMentorRequestReviewModel>
-@inject ISubjectsProvider SubjectsProvider;
+@using Lfm.Domain.Common.Extensions
+@model IEnumerable<Lfm.Domain.ReadModels.ReviewModels.StudentProfile.LfmRequestReviewModel>
+@inject IStudentProfileProvider StudentProfileProvider;
 
 @{
-    ViewData["Title"] = "Find Mentors requests";
+    ViewData["Title"] = "Looking for Mentors requests";
     Layout = "../_UserCabinetLayout.cshtml";
 }
 
-<h4>Find Mentors requests</h4>
+<h4>Looking for Mentors requests</h4>
 
 @{
-    var subjects = (await SubjectsProvider.GetAllSubjects()).ToList();
+    var subjects = (await StudentProfileProvider.GetAvailableSubjectsToOrders(User.GetId())).ToList();
 
     <div class="dropdown show">
         <button class="btn btn-sm btn-success dropdown-toggle" type="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -26,17 +27,15 @@
     </div>
 }
 
-
-
 <div class="list-group">
     @if (Model.Any())
     {
         foreach (var item in Model)
         {
-            <a asp-controller="" asp-action="" asp-route-orderId="@item.Id" class="list-group-item list-group-item-action flex-column align-items-start">
+            <a asp-controller="StudentUserCabinet" asp-action="LfmRequestDetails" asp-route-orderId="@item.Id" class="list-group-item list-group-item-action flex-column align-items-start">
                 <div class="d-flex w-100 justify-content-between">
                     <h5 class="mb-1">@item.SubjectName, @item.TagName</h5>
-                    <small>@CommonUiRenderer.GetDaysPassed(item.DateTime)</small>
+                    <small>@CommonUiRenderer.GetDaysPassed(item.CreationDateTime)</small>
                 </div>
                 <p class="mb-1">Min cost: @item.CostFrom</p>
                 <p class="mb-1">Max cost: @item.CostTo</p>
