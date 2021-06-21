@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 
 namespace Lfm.Web.Mvc.App.UIRenderers.Models
@@ -10,7 +9,8 @@ namespace Lfm.Web.Mvc.App.UIRenderers.Models
         public string ControllerName { get; set; }
         
         public string ActionName { get; set; }
+        
 
-        public Dictionary<string, object> AllRouteData { get; set; }
+        public Dictionary<string, string> AllRouteData { get; set; }
     }
 }

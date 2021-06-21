@@ -7,7 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace LFM.Domain.Read
 {
-    public static class DiExtensions
+    public static class ModuleExporter
     {
         public static void AddDataProviders(this IServiceCollection services)
         {

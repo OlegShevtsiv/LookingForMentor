@@ -7,7 +7,6 @@ using Lfm.Core.Common.Web.Extensions;
 using LFM.Domain.Write.Commands.Auth;
 using LFM.Domain.Write.Mediator;
 using LFM.Domain.Write.Models;
-using Lfm.Web.Mvc.App.Attributes.Action;
 using Lfm.Web.Mvc.App.SessionAlerts;
 using Lfm.Web.Mvc.Models.FormModels.Auth;
 using Microsoft.AspNetCore.Authentication;
@@ -40,12 +39,6 @@ namespace LFM.Web.Mvc.Controllers
             return View(new LoginFormModel{ReturnUrl = returnUrl});
         }
 
-        [HttpGet("register")]
-        public IActionResult Register()
-        {
-            return View();
-        }
-        
         [HttpGet("register/mentor")]
         public IActionResult RegisterMentor()
         {
@@ -138,7 +131,7 @@ namespace LFM.Web.Mvc.Controllers
                     if (registrationResult.IsSuccess)
                     {
                         this.AlertSuccess(Messages.RegistrationSuccessful, string.Empty);
-                        return RedirectToAction("Index", "UserCabinet");
+                        return RedirectToAction("LfmRequests", "StudentUserCabinet");
                     }
                     this.AlertError(Messages.RegistrationFailed);
                 }

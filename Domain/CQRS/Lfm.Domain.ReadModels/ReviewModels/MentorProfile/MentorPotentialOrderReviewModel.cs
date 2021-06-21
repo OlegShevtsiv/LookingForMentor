@@ -12,6 +12,6 @@ namespace Lfm.Domain.ReadModels.ReviewModels.MentorProfile
 
         public string StudentName { get; set; }
 
-        public DateTime DateTime { get; set; }
+        public DateTime CreationDateTime { get; set; }
     }
 }

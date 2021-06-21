@@ -4,7 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Lfm.Domain.Common
 {
-    public static class DIExtensions
+    public static class ModuleExporter
     {
         public static void AddDomainCommonServices(this IServiceCollection services)
         {

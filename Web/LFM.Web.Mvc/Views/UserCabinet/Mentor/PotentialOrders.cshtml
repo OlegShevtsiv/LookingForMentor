@@ -14,7 +14,7 @@
             <a asp-controller="MentorUserCabinet" asp-action="PotentialOrderDetails" asp-route-orderId="@item.Id" class="list-group-item list-group-item-action flex-column align-items-start">
                 <div class="d-flex w-100 justify-content-between">
                     <h5 class="mb-1">@item.SubjectName, @item.TagName</h5>
-                    <small>@CommonUiRenderer.GetDaysPassed(item.DateTime)</small>
+                    <small>@CommonUiRenderer.GetDaysPassed(item.CreationDateTime)</small>
                 </div>
                 <p class="mb-1">From: @item.StudentName</p>
             </a>

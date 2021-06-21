@@ -17,9 +17,7 @@ namespace Lfm.Web.Mvc.Models.FormModels.UserCabinet.Mentor
         [Required]
         [MaxLength(20)]
         public string  MiddleName { get; set; }
-
-        public int? ProfileImageId { get; set; }
-
+        
         public IFormFile ProfileImageFormFile { get; set; }
 
         [Required]

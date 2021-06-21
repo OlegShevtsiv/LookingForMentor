@@ -10,7 +10,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace LFM.DataAccess.DB.SQLite
 {
-    public static class DiExtensions
+    public static class ModuleExporter
     {
         public static void AddLfmSqliteContext<TClaimFactory>(this IServiceCollection services, string sqliteDbPath)
             where TClaimFactory : UserClaimsPrincipalFactory<LfmUser>

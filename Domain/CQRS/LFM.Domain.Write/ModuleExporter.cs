@@ -15,7 +15,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace LFM.Domain.Write
 {
-    public static class DIExtensions
+    public static class ModuleExporter
     {
         public static void AddCommands(this IServiceCollection services)
         {

@@ -9,7 +9,7 @@
 }
 
 @{
-    var availableSubjects = await MentorProfileProvider.GetAvailableSubjects(User.GetId());
+    var availableSubjects = (await MentorProfileProvider.GetAvailableSubjects(User.GetId())).ToList();
     if (availableSubjects?.Any() == true)
     {
         <div class="dropdown show">

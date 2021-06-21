@@ -20,17 +20,12 @@ namespace Lfm.Domain.ReadModels.Common
         
         public IEnumerator<T> GetEnumerator()
         {
-            foreach(T val in _data)
-            {
-                yield return val;
-            }
+            return _data.GetEnumerator();
         }
 
         IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
         }
-
-        public IEnumerable<T> GetData() => _data;
     }
 }

@@ -50,7 +50,6 @@ namespace Lfm.Web.Mvc.App.Mapper.Configurations
                 .ForMember(x => x.Name, o => o.Ignore())
                 .ForMember(x => x.Surname, o => o.MapFrom(p => p.Surname))
                 .ForMember(x => x.MiddleName, o => o.MapFrom(p => p.MiddleName))
-                .ForMember(x => x.ProfileImageId, o => o.MapFrom(p => p.ProfileImageId))
                 .ForMember(x => x.ProfileImageFormFile, o => o.Ignore())
                 .ForMember(x => x.AboutMe, o => o.MapFrom(p => p.AboutMe))
                 .ForMember(x => x.TownId, o => o.MapFrom(p => p.TownId))

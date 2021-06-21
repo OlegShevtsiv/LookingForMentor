@@ -1,5 +1,5 @@
-using System;
 using System.Collections.Generic;
+using System.Linq;
 using LFM.DataAccess.DB.Core.Types;
 using Lfm.Domain.Common.Extensions;
 using Lfm.Web.Mvc.App.UIRenderers.Models;
@@ -11,21 +11,45 @@ namespace Lfm.Web.Mvc.App.UIRenderers
     {
         public static List<LinkItem> GetCabinetNavigationItems(HttpContext context)
         {
-            if (context.User.GetRole() == LfmIdentityRolesEnum.Mentor)
+            if (context.User.Identity.IsAuthenticated)
             {
-                return MentorNavItems;
+                if (context.User.GetRole() == LfmIdentityRolesEnum.Mentor)
+                {
+                    return MentorNavItems;
+                }
+                if (context.User.GetRole() == LfmIdentityRolesEnum.Student)
+                {
+                    return StudentNavItems;
+                }
             }
-            if (context.User.GetRole() == LfmIdentityRolesEnum.Student)
-            {
-                return StudentNavItems;
-            }
-
             return new List<LinkItem>();
+        }
+
+        public static LinkItem GetCabinetIndex(HttpContext context)
+        {
+            if (context.User.Identity.IsAuthenticated)
+            {
+                if (context.User.GetRole() == LfmIdentityRolesEnum.Mentor)
+                {
+                    return MentorNavItems.FirstOrDefault();
+                }
+                if (context.User.GetRole() == LfmIdentityRolesEnum.Student)
+                {
+                    return StudentNavItems.FirstOrDefault();
+                }
+            }
+            return default;
         }
 
         private static List<LinkItem> MentorNavItems =>
             new List<LinkItem>
             {
+                new LinkItem
+                {
+                    Name = "My approved orders",
+                    ControllerName = "MentorUserCabinet",
+                    ActionName = "ApprovedOrders"
+                },
                 new LinkItem
                 {
                     Name = "General Info",
@@ -46,12 +70,6 @@ namespace Lfm.Web.Mvc.App.UIRenderers
                 },
                 new LinkItem
                 {
-                    Name = "My approved orders",
-                    ControllerName = "MentorUserCabinet",
-                    ActionName = "ApprovedOrders"
-                },
-                new LinkItem
-                {
                     Name = "Potentials orders",
                     ControllerName = "MentorUserCabinet",
                     ActionName = "PotentialOrders"
@@ -63,6 +81,12 @@ namespace Lfm.Web.Mvc.App.UIRenderers
             {
                 new LinkItem
                 {
+                    Name = "My approved orders",
+                    ControllerName = "StudentUserCabinet",
+                    ActionName = "ApprovedOrders"
+                },
+                new LinkItem
+                {
                     Name = "Find Mentors requests",
                     ControllerName = "StudentUserCabinet",
                     ActionName = "LfmRequests"
@@ -72,12 +96,6 @@ namespace Lfm.Web.Mvc.App.UIRenderers
                     Name = "Personal requests to mentors",
                     ControllerName = "StudentUserCabinet",
                     ActionName = "PersonalRequestsToMentors"
-                },
-                new LinkItem
-                {
-                    Name = "My approved orders",
-                    ControllerName = "StudentUserCabinet",
-                    ActionName = "ApprovedOrders"
                 }
             };
     }

@@ -30,7 +30,7 @@ namespace Lfm.Web.Mvc.App.UIRenderers
             };
         }
         
-        public static List<CheckBox<LessonDuration>> LessonDurationCheckboxes(LessonDuration? currentDuration)
+        public static List<CheckBox<LessonDuration>> LessonDurationCheckboxes(LessonDuration? currentDuration = null)
         {
             string checkedAttr = "checked";
             List<CheckBox<LessonDuration>> checkboxInfo = new List<CheckBox<LessonDuration>>
@@ -76,7 +76,7 @@ namespace Lfm.Web.Mvc.App.UIRenderers
             };
         }
         
-        public static List<CheckBox<StudyingPlaces>> StudyingPlacesCheckboxes(StudyingPlaces? currentPlace)
+        public static List<CheckBox<StudyingPlaces>> StudyingPlacesCheckboxes(StudyingPlaces? currentPlace = null)
         {
             string checkedAttr = "checked";
             List<CheckBox<StudyingPlaces>> checkboxInfo = new List<CheckBox<StudyingPlaces>>
@@ -104,7 +104,7 @@ namespace Lfm.Web.Mvc.App.UIRenderers
             return checkboxInfo;
         }
         
-        public static List<SelectItem<StudyingPlaces>> StudyingPlacesSelectItems(StudyingPlaces? currentPlace)
+        public static List<SelectItem<StudyingPlaces>> StudyingPlacesSelectItems(StudyingPlaces? currentPlace = null)
         {
             string selectedAttr = "selected";
             List<SelectItem<StudyingPlaces>> checkboxInfo = new List<SelectItem<StudyingPlaces>>

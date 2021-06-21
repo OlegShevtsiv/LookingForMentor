@@ -7,6 +7,7 @@ namespace Lfm.Web.Mvc.App.StaticServices
     public static class CommonStaticService
     {
         private const string LastSearchMentorsRequest = "LastSearchMentorsRequest";
+        
         public static void PushLastSearchMentorsRequest(HttpContext context, MentorsSearchModel searchModel)
         {
             context.Session.SetObject(LastSearchMentorsRequest, searchModel);

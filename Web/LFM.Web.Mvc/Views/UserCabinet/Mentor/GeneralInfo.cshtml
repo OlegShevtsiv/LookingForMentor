@@ -1,6 +1,5 @@
 @using Lfm.Domain.Common.Extensions
 @using Lfm.Web.Mvc.App.UIRenderers
-@using LFM.Core.Common.Extensions
 @model Lfm.Domain.ReadModels.ReviewModels.MentorProfile.MentorProfilePreviewModel
 @{
     ViewData["Title"] = "General info";
@@ -10,7 +9,7 @@
 <div class="col-md-8">
     
     <div class="list-group-item flex-column align-items-start border-dark">
-        <img src="@(Url.Action("GetMentorAvatar", "UserCabinet"))" class="profile-pic" alt="">
+        <img src="@Url.Action("GetMentorAvatar", "Images", new { mentorId = Context.User.GetId() })" class="profile-pic" alt="">
     </div>
     
     <div class="list-group-item flex-column align-items-start border-dark">

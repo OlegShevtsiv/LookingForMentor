@@ -49,7 +49,6 @@ namespace Lfm.Domain.Common.Extensions
             {
                 return claimsPrincipal.FindFirst(claimType).Value;
             }
-
             string errorMessage = string.Format(Messages.UserClaimNotFound, claimType);
             throw new LfmException(errorMessage);
         }

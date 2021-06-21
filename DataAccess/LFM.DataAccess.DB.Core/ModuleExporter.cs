@@ -4,7 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace LFM.DataAccess.DB.Core
 {
-    public static class DiExtensions
+    public static class ModuleExporter
     {
         public static void AddRepository(this IServiceCollection services)
         {

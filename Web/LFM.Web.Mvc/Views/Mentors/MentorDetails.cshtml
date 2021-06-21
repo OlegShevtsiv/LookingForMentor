@@ -3,13 +3,13 @@
 @model Lfm.Domain.ReadModels.ReviewModels.Mentor.MentorDetailedPreviewModel
 
 @{
-    ViewData["Title"] = Model.Name;
+    ViewData["Title"] = "Mentor " + Model.Name;
 }
 
 <div class="col-md-8">
     
     <div class="list-group-item flex-column align-items-start border-dark">
-        <img src="@(Url.Action("GetMentorAvatar", "UserCabinet", new { mentorId = Model.MentorId }))" class="profile-pic" alt="">
+        <img src="@Url.Action("GetMentorAvatar", "Images", new { mentorId = Model.MentorId })" class="profile-pic" alt="">
     </div>
     
     <div class="list-group-item flex-column align-items-start border-dark">
@@ -63,8 +63,8 @@
     @if (Model.SubjectsList.Any())
     {
         <div class="dropdown show">
-            <button class="btn btn-sm btn-success dropdown-toggle" type="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Contact
+            <button class="btn btn-success dropdown-toggle btn-lg btn-block" type="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Contact with @Model.Name 
             </button>
             <div class="dropdown-menu scrollable-menu" aria-labelledby="dropdownMenuLink">
                 @foreach (var s in Model.SubjectsList)

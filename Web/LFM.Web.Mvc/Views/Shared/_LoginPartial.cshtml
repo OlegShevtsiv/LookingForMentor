@@ -1,6 +1,7 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @using LFM.DataAccess.DB.Core.Entities
 @using Lfm.Domain.Common.Extensions
+@using Lfm.Web.Mvc.App.UIRenderers
 
 @inject SignInManager<LfmUser> SignInManager
 
@@ -8,7 +9,10 @@
     @if (SignInManager.IsSignedIn(User))
     {
         <li class="nav-item">
-            <a class="nav-link text-dark" asp-controller="UserCabinet" asp-action="Index" title="Manage">Hello @User.GetName()!</a>
+            @{
+                var userCabinetLink = UserCabinetUiRenderer.GetCabinetIndex(Context);
+            }
+            <a class="nav-link text-dark" asp-controller="@(userCabinetLink.ControllerName)" asp-action="@(userCabinetLink.ActionName)" title="Manage">Hello @User.GetName()!</a>
         </li>
         <li class="nav-item">
             <form class="form-inline" asp-controller="Auth" asp-action="Logout">
@@ -18,9 +22,17 @@
     }
     else
     {
-        <li class="nav-item">
-            <a class="nav-link text-dark" asp-controller="Auth" asp-action="Register">Registration</a>
+        <li class="nav-item dropdown show">
+            <button class="nav-link btn btn-sm btn-primary dropdown-toggle" type="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Register
+            </button>
+            <div class="dropdown-menu scrollable-menu" aria-labelledby="dropdownMenuLink">
+                <a class="dropdown-item" asp-controller="Auth" asp-action="RegisterMentor">as Mentor</a>
+                <a class="dropdown-item" asp-controller="Auth" asp-action="RegisterStudent">as Student</a>
+            </div>
         </li>
+        
+        
         <li class="nav-item">
             <a class="nav-link text-dark" asp-controller="Auth" asp-action="Login" asp-route-returnUrl="@Context.Request.Path">Login</a>
         </li>

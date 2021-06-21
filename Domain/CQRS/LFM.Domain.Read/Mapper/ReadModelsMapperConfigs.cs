@@ -22,86 +22,53 @@ namespace LFM.Domain.Read.Mapper
 
         private void CreateMentorProfileMaps()
         {
-            CreateMap<MentorsSubjectInfo, MentorProfilePreviewModel.SubjectInfo>()
-                .ForMember(x => x.CostPerHour, o => o.MapFrom(p => p.CostPerHour))
-                .ForMember(x => x.SubjectName, o => o.MapFrom(p => p.Subject.Name))
-                .ForMember(x => x.Tags, o => o.MapFrom(p => p.Subject.Tags));
-            
             CreateMap<MentorsSubjectTag, CommonReviewModel>()
                 .ForMember(x => x.Id, o => o.MapFrom(p => p.TagId))
                 .ForMember(x => x.Name, o => o.MapFrom(p => p.Tag.Name));
 
             CreateMap<MentorsProfile, MentorProfilePreviewModel>()
-                .ForMember(x => x.Surname, o => o.MapFrom(p => p.Surname))
-                .ForMember(x => x.MiddleName, o => o.MapFrom(p => p.MiddleName))
-                .ForMember(x => x.ProfileImageId, o => o.MapFrom(p => p.ProfileImageId))
-                .ForMember(x => x.AboutMe, o => o.MapFrom(p => p.AboutMe))
-                .ForMember(x => x.SubjectsInfos, o => o.MapFrom(p => p.SubjectsInfo))
-                .ForMember(x => x.TownName, o => o.MapFrom(p => p.Town.Name))
-                .ForMember(x => x.StudyingPlace, o => o.MapFrom(p => p.StudyingPlace))
-                .ForMember(x => x.Education, o => o.MapFrom(p => p.Education));
+                .ForMember(x => x.TownName, o => o.MapFrom(p => p.Town.Name));
             
             CreateMap<MentorsSubjectInfo, MentorSubjectReviewModel>()
-                .ForMember(x => x.CostPerHour, o => o.MapFrom(p => p.CostPerHour))
-                .ForMember(x => x.Description, o => o.MapFrom(p => p.Description))
-                .ForMember(x => x.SubjectId, o => o.MapFrom(p => p.SubjectId))
                 .ForMember(x => x.SubjectName, o => o.MapFrom(p => p.Subject.Name))
                 .ForMember(x => x.SelectedTags, o => o.MapFrom(p => p.Tags));
 
             CreateMap<MentorsProfile, MentorPreviewModel>()
-                .ForMember(x => x.MentorId, o => o.MapFrom(p => p.MentorId))
                 .ForMember(x => x.Name, o => o.MapFrom(p => p.Mentor.Name))
                 .ForMember(x => x.SubjectsList, o => o.MapFrom(p => p.SubjectsInfo))
-                .ForMember(x => x.TownName, o => o.MapFrom(p => p.Town.Name))
-                .ForMember(x => x.TownId, o => o.MapFrom(p => p.TownId))
-                .ForMember(x => x.StudyingPlace, o => o.MapFrom(p => p.StudyingPlace));
-
+                .ForMember(x => x.TownName, o => o.MapFrom(p => p.Town.Name));
+            
             CreateMap<MentorsSubjectInfo, MentorPreviewModel.Subject>()
                 .ForMember(x => x.Id, o => o.MapFrom(p => p.SubjectId))
                 .ForMember(x => x.Name, o => o.MapFrom(p => p.Subject.Name));
             
             CreateMap<MentorsProfile, MentorDetailedPreviewModel>()
-                .ForMember(x => x.MentorId, o => o.MapFrom(p => p.MentorId))
                 .ForMember(x => x.Name, o => o.MapFrom(p => p.Mentor.Name))
                 .ForMember(x => x.TownName, o => o.MapFrom(p => p.Town.Name))
-                .ForMember(x => x.StudyingPlace, o => o.MapFrom(p => p.StudyingPlace))
                 .ForMember(x => x.EducationInfo, o => o.MapFrom(p => p.Education))
                 .ForMember(x => x.AboutInfo, o => o.MapFrom(p => p.AboutMe))
                 .ForMember(x => x.SubjectsList, o => o.MapFrom(p => p.SubjectsInfo));
             
             CreateMap<MentorsSubjectInfo, MentorDetailedPreviewModel.SubjectInfo>()
-                .ForMember(x => x.SubjectId, o => o.MapFrom(p => p.SubjectId))
                 .ForMember(x => x.SubjectName, o => o.MapFrom(p => p.Subject.Name))
-                .ForMember(x => x.CostPerHour, o => o.MapFrom(p => p.CostPerHour))
                 .ForMember(x => x.Tags, o => o.MapFrom(p => p.Tags.Select(t => t.Tag.Name)));
 
             CreateMap<MentorsProfile, ContactMentorInfo>()
-                .ForMember(x => x.MentorId, o => o.MapFrom(p => p.MentorId))
                 .ForMember(x => x.Name, o => o.MapFrom(p => p.Mentor.Name))
-                .ForMember(x => x.StudyingPlace, o => o.MapFrom(p => p.StudyingPlace))
                 .ForMember(x => x.Subject, o => o.Ignore());
 
             CreateMap<MentorsSubjectInfo, ContactMentorInfo.SubjectInfo>()
-                .ForMember(x => x.SubjectId, o => o.MapFrom(p => p.SubjectId))
-                .ForMember(x => x.SubjectName, o => o.MapFrom(p => p.Subject.Name))
-                .ForMember(x => x.CostPerHour, o => o.MapFrom(p => p.CostPerHour))
-                .ForMember(x => x.Tags, o => o.MapFrom(p => p.Tags));
-
-            CreateMap<OrderRequest, MentorPersonalOrderDetailedReviewModel>()
-                .ForMember(x => x.SubjectName, o => o.MapFrom(p => p.Subject.Name))
-                .ForMember(x => x.TagName, o => o.MapFrom(p => p.SubjectsTag.Name));
-            
-            CreateMap<OrderRequest, MentorsApprovedOrderMinReviewModel>()
-                .ForMember(x => x.SubjectName, o => o.MapFrom(p => p.Subject.Name))
-                .ForMember(x => x.TagName, o => o.MapFrom(p => p.SubjectsTag.Name))
-                .ForMember(x => x.ApprovedDateTime, o => o.MapFrom(p => p.CreationDateTime));
+                .ForMember(x => x.SubjectName, o => o.MapFrom(p => p.Subject.Name));
 
             CreateMap<ApprovedOrder, MentorsApprovedOrderMinReviewModel>()
                 .ForMember(x => x.SubjectName, o => o.MapFrom(p => p.Subject.Name))
-                .ForMember(x => x.TagName, o => o.MapFrom(p => p.SubjectsTag.Name))
-                .ForMember(x => x.ApprovedDateTime, o => o.MapFrom(p => p.ApprovedDateTime));
+                .ForMember(x => x.TagName, o => o.MapFrom(p => p.SubjectsTag.Name));
             
             CreateMap<ApprovedOrder, MentorsApprovedOrderDetailedReviewModel>()
+                .ForMember(x => x.SubjectName, o => o.MapFrom(p => p.Subject.Name))
+                .ForMember(x => x.TagName, o => o.MapFrom(p => p.SubjectsTag.Name));
+
+            CreateMap<OrderRequest, MentorPotentialOrderReviewModel>()
                 .ForMember(x => x.SubjectName, o => o.MapFrom(p => p.Subject.Name))
                 .ForMember(x => x.TagName, o => o.MapFrom(p => p.SubjectsTag.Name));
             
@@ -113,12 +80,11 @@ namespace LFM.Domain.Read.Mapper
             CreateMap<OrderRequest, MentorPersonalOrderReviewModel>()
                 .ForMember(x => x.SubjectName, o => o.MapFrom(p => p.Subject.Name))
                 .ForMember(x => x.TagName, o => o.MapFrom(p => p.SubjectsTag.Name))
-                .ForMember(x => x.DateTime, o => o.MapFrom(p => p.CreationDateTime));
+                .ForMember(x => x.CreationDateTime, o => o.MapFrom(p => p.CreationDateTime));
             
-            CreateMap<OrderRequest, MentorPotentialOrderReviewModel>()
+            CreateMap<OrderRequest, MentorPersonalOrderDetailedReviewModel>()
                 .ForMember(x => x.SubjectName, o => o.MapFrom(p => p.Subject.Name))
-                .ForMember(x => x.TagName, o => o.MapFrom(p => p.SubjectsTag.Name))
-                .ForMember(x => x.DateTime, o => o.MapFrom(p => p.CreationDateTime));
+                .ForMember(x => x.TagName, o => o.MapFrom(p => p.SubjectsTag.Name));
         }
 
         private void CreateStudentProfileMaps()
