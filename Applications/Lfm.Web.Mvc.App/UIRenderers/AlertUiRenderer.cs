@@ -15,5 +15,17 @@ namespace Lfm.Web.Mvc.App.UIRenderers
                 _ => string.Empty
             };
         }
+        
+        public static string RetrieveAlertName(AlertDataModel alert)
+        {
+            return alert.Type switch
+            {
+                AlertTypes.Success => "Успіх",
+                AlertTypes.Error => "Помилка",
+                AlertTypes.Warning => "Попередження",
+                AlertTypes.Info => "Інформація",
+                _ => string.Empty
+            };
+        }
     }
 }

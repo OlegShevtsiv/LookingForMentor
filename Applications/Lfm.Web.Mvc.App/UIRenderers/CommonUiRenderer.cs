@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using LFM.DataAccess.DB.Core.Types;
+using Lfm.Domain.ReadModels.Common;
 using Lfm.Web.Mvc.App.UIRenderers.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
@@ -23,42 +25,32 @@ namespace Lfm.Web.Mvc.App.UIRenderers
         {
             return duration switch
             {
-                LessonDuration.ONE_HOUR => "1 hour",
-                LessonDuration.ONE_HALF_HOUR => "1.5 hour",
-                LessonDuration.TWO_HOURS => "2 hours",
-                _ => "More than 2 hours"
+                LessonDuration.ONE_HOUR => "1 година",
+                LessonDuration.ONE_HALF_HOUR => "1.5 години",
+                LessonDuration.TWO_HOURS => "2 години",
+                _ => "Більше ніж 2 години"
             };
         }
         
         public static List<CheckBox<LessonDuration>> LessonDurationCheckboxes(LessonDuration? currentDuration = null)
         {
-            string checkedAttr = "checked";
             List<CheckBox<LessonDuration>> checkboxInfo = new List<CheckBox<LessonDuration>>
             {
-                new CheckBox<LessonDuration>
+                new CheckBox<LessonDuration>(LessonDuration.ONE_HOUR, c => c == currentDuration)
                 {
                     Name = LessonDurationToString(LessonDuration.ONE_HOUR),
-                    Value = LessonDuration.ONE_HOUR,
-                    Checked = currentDuration == LessonDuration.ONE_HOUR ? checkedAttr : string.Empty
                 },
-                new CheckBox<LessonDuration>
+                new CheckBox<LessonDuration>(LessonDuration.ONE_HALF_HOUR, c => c == currentDuration)
                 {
                     Name = LessonDurationToString(LessonDuration.ONE_HALF_HOUR),
-                    Value = LessonDuration.ONE_HALF_HOUR,
-                    Checked = currentDuration == LessonDuration.ONE_HALF_HOUR ? checkedAttr : string.Empty
                 },
-                new CheckBox<LessonDuration>
+                new CheckBox<LessonDuration>(LessonDuration.TWO_HOURS, c => c == currentDuration)
                 {
                     Name = LessonDurationToString(LessonDuration.TWO_HOURS),
-                    Value = LessonDuration.TWO_HOURS,
-                    Checked = currentDuration == LessonDuration.TWO_HOURS ? checkedAttr : string.Empty
-                }
-                ,
-                new CheckBox<LessonDuration>
+                },
+                new CheckBox<LessonDuration>(LessonDuration.MORE, c => c == currentDuration)
                 {
                     Name = LessonDurationToString(LessonDuration.MORE),
-                    Value = LessonDuration.MORE,
-                    Checked = currentDuration == LessonDuration.MORE ? checkedAttr : string.Empty
                 }
             };
 
@@ -69,35 +61,28 @@ namespace Lfm.Web.Mvc.App.UIRenderers
         {
             return place switch
             {
-                StudyingPlaces.ONLINE_ONLY => "Only online",
-                StudyingPlaces.OFFLINE_ONLY => "Only offline",
-                StudyingPlaces.ONLINE_AND_OFFLINE => "Online or offline",
+                StudyingPlaces.ONLINE_ONLY => "Тільки онлайн",
+                StudyingPlaces.OFFLINE_ONLY => "Тільки офлайн",
+                StudyingPlaces.ONLINE_AND_OFFLINE => "Онлайн або офлайн",
                 _ => string.Empty
             };
         }
         
         public static List<CheckBox<StudyingPlaces>> StudyingPlacesCheckboxes(StudyingPlaces? currentPlace = null)
         {
-            string checkedAttr = "checked";
             List<CheckBox<StudyingPlaces>> checkboxInfo = new List<CheckBox<StudyingPlaces>>
             {
-                new CheckBox<StudyingPlaces>
+                new CheckBox<StudyingPlaces>(StudyingPlaces.ONLINE_ONLY, c => c == currentPlace)
                 {
                     Name = StudyingPlaceToString(StudyingPlaces.ONLINE_ONLY),
-                    Value = StudyingPlaces.ONLINE_ONLY,
-                    Checked = currentPlace == StudyingPlaces.ONLINE_ONLY ? checkedAttr : string.Empty
                 },
-                new CheckBox<StudyingPlaces>
+                new CheckBox<StudyingPlaces>(StudyingPlaces.OFFLINE_ONLY, c => c == currentPlace)
                 {
                     Name = StudyingPlaceToString(StudyingPlaces.OFFLINE_ONLY),
-                    Value = StudyingPlaces.OFFLINE_ONLY,
-                    Checked = currentPlace == StudyingPlaces.OFFLINE_ONLY ? checkedAttr : string.Empty
                 },
-                new CheckBox<StudyingPlaces>
+                new CheckBox<StudyingPlaces>(StudyingPlaces.ONLINE_AND_OFFLINE, c => c == currentPlace)
                 {
                     Name = StudyingPlaceToString(StudyingPlaces.ONLINE_AND_OFFLINE),
-                    Value = StudyingPlaces.ONLINE_AND_OFFLINE,
-                    Checked = currentPlace == StudyingPlaces.ONLINE_AND_OFFLINE ? checkedAttr : string.Empty
                 }
             };
 
@@ -139,14 +124,19 @@ namespace Lfm.Web.Mvc.App.UIRenderers
 
             TimeSpan subtractedDate = DateTime.UtcNow.Subtract(dateTime);
             if (subtractedDate.Days >= 1)
-                return $"{subtractedDate.Days} days ago.";
+                return $"{subtractedDate.Days} днів тому.";
 
             if (subtractedDate.Hours >= 1)
             {
-                return $"{subtractedDate.Hours} hours ago.";
+                return $"{subtractedDate.Hours} годин тому.";
             }
 
-            return $"Less than hour ago.";
+            return $"Менше години тому.";
+        }
+
+        public static IEnumerable<CheckBox<int>> GetCheckboxList(IEnumerable<CommonReviewModel> source, IEnumerable<int> checkedItems)
+        {
+            return source.Select(s => new CheckBox<int>(s.Id, checkedItems.Contains){Name = s.Name});
         }
     }
 }

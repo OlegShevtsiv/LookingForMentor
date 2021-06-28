@@ -93,7 +93,7 @@ namespace LFM.Domain.Read.Providers.Implementations
                 .Where(m => m.MentorId == mentorId);
 
             if ((await query.CountAsync()) != 1)
-                throw new LfmException(Messages.DataNotFound, "User");
+                throw new LfmException(Messages.DataNotFound, "Користувача");
 
             return !await query.AnyAsync(m => m.SubjectsInfo.Any(s => s.SubjectId == subjectId));
         }
@@ -154,7 +154,7 @@ namespace LFM.Domain.Read.Providers.Implementations
                 .FirstOrDefaultAsync();
 
             if (order == null)
-                throw new LfmException(Messages.DataNotFound);
+                throw new LfmException(Messages.DataNotFound, "Заявки");
 
             return order;
         }
@@ -205,7 +205,7 @@ namespace LFM.Domain.Read.Providers.Implementations
                 .FirstOrDefaultAsync(o => o.Id == orderId);
 
             if (entity == null)
-                throw new LfmException(Messages.DataNotFound, "Potential Order");
+                throw new LfmException(Messages.DataNotFound, "Потенційної заявки");
             
             var mentorInfo = await _mentorsProfileRepo.GetQueryable()
                 .Where(m => m.MentorId == mentorId)
@@ -234,7 +234,7 @@ namespace LFM.Domain.Read.Providers.Implementations
                 return order;
             }
 
-            throw new LfmException(Messages.DataNotFound, "Potential Order");
+            throw new LfmException(Messages.DataNotFound, "Потенційної заявки");
         }
     }
 }

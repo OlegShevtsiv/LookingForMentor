@@ -41,7 +41,7 @@ namespace LFM.Web.Mvc.Controllers
 
             if (mentors.TotalCount == 0)
             {
-                this.AlertWarning(Messages.DataNotFound);
+                this.AlertWarning(Messages.DataNotFound, "Викладачів");
             }
             
             CommonStaticService.PushLastSearchMentorsRequest(HttpContext, searchModel);

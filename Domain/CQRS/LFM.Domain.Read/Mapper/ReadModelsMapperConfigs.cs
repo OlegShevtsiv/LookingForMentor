@@ -130,18 +130,12 @@ namespace LFM.Domain.Read.Mapper
 
         private void CreateSubjectMaps()
         {
-            CreateMap<SubjectsTag, CommonReviewModel>()
-                .ForMember(x => x.Id, o => o.MapFrom(p => p.Id))
-                .ForMember(x => x.Name, o => o.MapFrom(p => p.Name));
+            CreateMap<SubjectsTag, CommonReviewModel>();
             
             CreateMap<Subject, SubjectReviewModel>()
-                .ForMember(x => x.Id, o => o.MapFrom(p => p.Id))
-                .ForMember(x => x.Name, o => o.MapFrom(p => p.Name))
                 .ForMember(x => x.Tags, o => o.MapFrom(p => p.Tags));
 
-            CreateMap<SubjectReviewModel, CommonReviewModel>()
-                .ForMember(x => x.Id, o => o.MapFrom(p => p.Id))
-                .ForMember(x => x.Name, o => o.MapFrom(p => p.Name));
+            CreateMap<SubjectReviewModel, CommonReviewModel>();
         }
     }
 }

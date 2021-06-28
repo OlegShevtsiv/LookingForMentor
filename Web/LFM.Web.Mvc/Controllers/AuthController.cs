@@ -99,7 +99,7 @@ namespace LFM.Web.Mvc.Controllers
                 
                     if (loginResult.IsSuccess)
                     {
-                        this.AlertSuccess(Messages.RegistrationSuccessful, "Fill your profile to finish registration process.");
+                        this.AlertSuccess(Messages.RegistrationSuccessful, "Заповніть інформацію профілю та додайте ваші предмети щоб почати роботу.");
                         return RedirectToAction("EditGeneralInfo", "MentorUserCabinet");
                     }
                     this.AlertError(Messages.RegistrationFailed);

@@ -33,7 +33,7 @@ namespace LFM.Domain.Write.CommandHandlers.StudentProfile
                     o.InterestedMentors.Any(i => i.MentorId == command.MentorId));
 
             if (orderRequest == null)
-                throw new LfmException(Messages.DataNotFound, "Order");
+                throw new LfmException(Messages.DataNotFound, "Заявку");
             
             ApprovedOrder approvedOrder = _mapper.Map<OrderRequest, ApprovedOrder>(orderRequest);
 
@@ -57,6 +57,7 @@ namespace LFM.Domain.Write.CommandHandlers.StudentProfile
             
             return new ApproveMentorProposeResult(true)
             {
+                Id = approvedOrder.Id,
                 MentorName = mentorName
             };
         }

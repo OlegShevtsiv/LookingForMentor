@@ -95,6 +95,19 @@ namespace LFM.DataAccess.DB.Core.Context
             #endregion
 
             #region Orders 
+            
+            builder.Entity<InterestedMentorsOrdersRelation>(e =>
+            {
+                e.HasOne(p => p.Mentor)
+                    .WithMany()
+                    .HasForeignKey(p => p.MentorId);
+                
+                e.HasOne(p => p.OrderRequest)
+                    .WithMany(p => p.InterestedMentors)
+                    .HasForeignKey(p => p.OrderRequestId);
+
+                e.HasKey(p => new { p.MentorId, p.OrderRequestId });
+            });
 
             builder.Entity<OrderRequest>(e =>
             {
@@ -109,10 +122,6 @@ namespace LFM.DataAccess.DB.Core.Context
                 e.HasOne(p => p.SubjectsTag)
                     .WithMany()
                     .HasForeignKey(p => p.TagId);
-
-                e.HasMany(p => p.InterestedMentors)
-                    .WithOne()
-                    .HasForeignKey(p => p.OrderId);
             });
             
             builder.Entity<ApprovedOrder>(e =>
@@ -147,15 +156,6 @@ namespace LFM.DataAccess.DB.Core.Context
                 e.HasOne(p => p.SubjectsTag)
                     .WithMany()
                     .HasForeignKey(p => p.TagId);
-            });
-
-            builder.Entity<InterestedMentorsOrdersRelation>(e =>
-            {
-                e.HasOne(p => p.Mentor)
-                    .WithMany()
-                    .HasForeignKey(p => p.MentorId);
-
-                e.HasKey(p => new { p.MentorId, p.OrderId });
             });
 
             #endregion

@@ -98,7 +98,7 @@ namespace LFM.Web.Mvc.Controllers
                         return RedirectToAction("Index", "Home");
                     }
 
-                    this.AlertSuccess(Messages.PersonalOrderFailed);
+                    this.AlertError(Messages.PersonalOrderFailed);
                 }
                 catch (LfmException exc)
                 {

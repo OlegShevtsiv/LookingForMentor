@@ -4,24 +4,26 @@
 @model Lfm.Web.Mvc.Models.FormModels.UserCabinet.Student.CreateLookingForMentorRequestFormModel
 @inject ISubjectsProvider SubjectsProvider;
 @{
-    ViewData["Title"] = "Create order";
+    ViewData["Title"] = "Створення замовлення";
     Layout = "../_UserCabinetLayout.cshtml";
     
     var subject = await SubjectsProvider.GetSubject(Model.SubjectId);
 }
 
 <form asp-controller="StudentUserCabinet" asp-action="CreateOrderRequest" method="post">
-    <h4>Fill the form to find the mentor</h4>
+    <h4>Заповніть форму, щоб створити заявку та знайти підходящого вам викладача.</h4>
     <hr/>
 
     <div class="form-group">
         <div class="form-group">
-            <label>Lesson info</label>
+            <h5>Інформація про предмет</h5>
         </div>
                 
         <div class="form-group">
             <input asp-for="SubjectId" hidden/>
 
+            <label>Оберіть рівень підготовки</label>
+            
             <select asp-for="TagId" class="form-control" style="max-height: 250px;" size="@subject.Tags.Count">
                 <option selected value="@(subject.Tags.FirstOrDefault()?.Id)">@(subject.Tags.FirstOrDefault()?.Name)</option>
                 @foreach (var t in subject.Tags.Skip(1))
@@ -35,6 +37,8 @@
                 
         <div class="form-group">
                     
+            <label>Місце проведення занять</label>
+            
             @{
                 int i = 1;
                 foreach (var box in CommonUiRenderer.StudyingPlacesCheckboxes(StudyingPlaces.ONLINE_ONLY))
@@ -52,13 +56,14 @@
         </div>
                 
         <div class="form-group">
-            <input type="number" min="1" max="7" class="form-control" asp-for="AmountOfLessonsPerWeek" placeholder="Amount of lessons per week">
+            <label>Кількість занять на тиждень</label>
+            <input type="number" min="1" max="7" class="form-control" asp-for="AmountOfLessonsPerWeek" placeholder="Кількість занять в тиждень">
             <span asp-validation-for="AmountOfLessonsPerWeek" class="text-danger"></span>
         </div>
                 
                 
         <div class="form-group">
-                    
+            <label>Тривалість занять</label>
             @{
                 int j = 1;
                 foreach (var box in CommonUiRenderer.LessonDurationCheckboxes(LessonDuration.ONE_HOUR))
@@ -77,12 +82,14 @@
         </div>
                 
         <div class="form-group">
-            <input type="number" min="50" max="500" class="form-control" asp-for="CostFrom" placeholder="Minimum cost">
+            <label>Мінімальна ціна</label>
+            <input type="number" min="50" max="500" class="form-control" asp-for="CostFrom" placeholder="Мінімальна ціна">
             <span asp-validation-for="CostFrom" class="text-danger"></span>
         </div>
                 
         <div class="form-group">
-            <input type="number" min="50" max="500" class="form-control" asp-for="CostTo" placeholder="Maximum cost">
+            <label>Максимальна ціна</label>
+            <input type="number" min="50" max="500" class="form-control" asp-for="CostTo" placeholder="Максимальна ціна">
             <span asp-validation-for="CostTo" class="text-danger"></span>
         </div>
                 
@@ -92,28 +99,31 @@
 
     <div class="form-group">
         <div class="form-group">
-            <label>Additional Info</label>
+            <h5>Додаткова інформація</h5>
         </div>
                 
         <div class="form-group">
-            <textarea type="text" class="form-control" asp-for="WhenToPractice" placeholder="What is convenient time of lessons for you?"></textarea>
+            <label>Зручний час для проведення занять.</label>
+            <textarea type="text" class="form-control" asp-for="WhenToPractice" placeholder="Зручний час для проведення занять"></textarea>
             <span asp-validation-for="WhenToPractice" class="text-danger"></span>
         </div>
 
         <div class="form-group">
-            <textarea type="text" class="form-control" asp-for="WhichHelp" placeholder="What help do you need?"></textarea>
+            <label>З чим потрібна допомога?</label>
+            <textarea type="text" class="form-control" asp-for="WhichHelp" placeholder="З чим потрібна вам допомога?"></textarea>
             <span asp-validation-for="WhichHelp" class="text-danger"></span>
         </div>
 
         <div class="form-group">
-            <textarea type="text" class="form-control" asp-for="AdditionalWishes" placeholder="Additional wishes?"></textarea>
+            <label>Додаткові побажання?</label>
+            <textarea type="text" class="form-control" asp-for="AdditionalWishes" placeholder="Додаткові побажання"></textarea>
             <span asp-validation-for="AdditionalWishes" class="text-danger"></span>
         </div>
     </div>
     <hr/>
 
     <div class="form-group">
-        <button class="btn btn-success" type="submit">Submit</button>
+        <button class="btn btn-success" type="submit">Створити</button>
     </div>
 </form>
 

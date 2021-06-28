@@ -34,5 +34,7 @@ namespace Lfm.Web.Mvc.Models.FormModels.UserCabinet.Mentor
         [Required]
         [MaxLength(250)]
         public string Education { get; set; }
+        
+        public bool WantReceivePersonalOrders { get; set; }
     }
 }

@@ -33,7 +33,7 @@ namespace LFM.Domain.Write.CommandHandlers.MentorProfile
             InterestedMentorsOrdersRelation interest = new InterestedMentorsOrdersRelation
             {
                 MentorId = command.MentorId,
-                OrderId = command.OrderId
+                OrderRequestId = command.OrderId
             };
 
             _context.InterestedMentorsOrdersRelations.Add(interest);

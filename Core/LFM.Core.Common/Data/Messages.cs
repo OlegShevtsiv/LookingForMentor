@@ -4,11 +4,11 @@ namespace LFM.Core.Common.Data
     {
         #region CommonOperationMessage
         
-        public const string SystemError = "Opps, something goes wrong. \nSystem error.";
+        public const string SystemError = "Ой, сталась якась халепа.... \nSystem error.";
         public const string Unauthorized = "You are unauthorized for this action.";
-        public const string DataNotFound = "{0} not found.";
+        public const string DataNotFound = "{0} не знайдено.";
         public const string InvalidRequest = "Invalid request.";
-        public const string RequiredField = "'{0}' is required field.";
+        public const string RequiredField = "'{0}' обов'язкове поле.";
         public const string AccessDenied = "Access denied.";
         public const string ActionNotAllowed = "Action not allowed.";
 
@@ -16,14 +16,14 @@ namespace LFM.Core.Common.Data
 
         #region Auth
 
-        public const string LoginSuccessful = "Login successful.";
-        public const string LoginFailed = "Invalid login attempt.";
+        public const string LoginSuccessful = "Вхід успішний.";
+        public const string LoginFailed = "Невдала спроба входу.";
 
-        public const string LogoutSuccessful = "Logout successful.";
-        public const string LogoutFailed = "Invalid logout attempt.";
+        public const string LogoutSuccessful = "Ви успішно вийшли із системи.";
+        public const string LogoutFailed = "Помилка при виході із системи.";
 
-        public const string RegistrationSuccessful = "Registration successful. {0}";
-        public const string RegistrationFailed = "Invalid registration attempt.";
+        public const string RegistrationSuccessful = "Реєстрація успішна. {0}";
+        public const string RegistrationFailed = "Невдала спроба реєстрації.";
         
         #endregion
 
@@ -39,15 +39,15 @@ namespace LFM.Core.Common.Data
 
         #region Order
 
-        public const string PersonalOrderSuccessful = "You contact request was sent, wait for {0} response.";
+        public const string PersonalOrderSuccessful = "Ваша заявка відправлена, очікуйте відповіді від {0}.";
         public const string PersonalOrderFailed = "You contact request failed, please contact to administration.";
         
-        public const string OrderRequestSuccessful = "You looking for Mentor request was created.";
+        public const string OrderRequestSuccessful = "Ваша заявка створена успішно.";
         public const string OrderRequestFailed = "You looking for Mentor request was failed, please contact to administration.";
-        public const string OrderRequestAlreadyExist = "You already created request on subject {0}.";
+        public const string OrderRequestAlreadyExist = "Ви уже створили заявку по предмету {0}.";
 
         #endregion
         
-        public const string MentorNotAbleToGetPotentialOrders = "You are not able to get potential orders.";
+        public const string MentorNotAbleToGetPotentialOrders = "Ви не можете переглядати потенційні заявки.";
     }
 }

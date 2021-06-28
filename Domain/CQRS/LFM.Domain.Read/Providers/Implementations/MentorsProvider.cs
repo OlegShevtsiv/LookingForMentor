@@ -37,7 +37,7 @@ namespace LFM.Domain.Read.Providers.Implementations
         public async Task<PageList<MentorPreviewModel>> LookingForMentors(MentorsSearchModel searchModel, int? pageNumber)
         {
             var mentorsQuery = _mentorProfilesRepo.GetQueryable()
-                .Where(m => m.IsVerified && m.SubjectsInfo.Any())
+                .Where(m => m.IsVerified && m.WantReceivePersonalOrders && m.SubjectsInfo.Any())
                 .ProjectTo<MentorPreviewModel>(_mapper.ConfigurationProvider);
 
             if (searchModel != null)
@@ -83,7 +83,7 @@ namespace LFM.Domain.Read.Providers.Implementations
         public async Task<ContactMentorInfo> GetContactMentorInfo(int mentorId, int subjectId)
         {
             ContactMentorInfo mentorContactInfo = await _mentorProfilesRepo.GetQueryable()
-                .Where(m => m.IsVerified && m.MentorId == mentorId) 
+                .Where(m => m.IsVerified && m.WantReceivePersonalOrders && m.MentorId == mentorId) 
                 .ProjectTo<ContactMentorInfo>(_mapper.ConfigurationProvider)
                 .SingleOrDefaultAsync();
             

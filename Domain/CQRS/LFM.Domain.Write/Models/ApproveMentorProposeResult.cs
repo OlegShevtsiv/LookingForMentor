@@ -1,6 +1,6 @@
 namespace LFM.Domain.Write.Models
 {
-    public class ApproveMentorProposeResult : CommandResult
+    public class ApproveMentorProposeResult : IdCommandResult
     {
         public ApproveMentorProposeResult(bool isSuccess) : base(isSuccess)
         {

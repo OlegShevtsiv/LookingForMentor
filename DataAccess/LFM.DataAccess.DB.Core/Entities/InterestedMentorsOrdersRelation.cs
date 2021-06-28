@@ -6,7 +6,7 @@ namespace LFM.DataAccess.DB.Core.Entities
 
     public class InterestedMentorsOrdersRelation
     {
-        public int OrderId { get; set; }
+        public int OrderRequestId { get; set; }
         
         public virtual OrderRequest OrderRequest { get; set; }
         

@@ -13,7 +13,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace LFM.Domain.Write.CommandHandlers.MentorProfile
 {
-    internal class ApprovePersonalOrderCommandHandler : ICommandHandler<ApprovePersonalOrderCommand, CommandResult>
+    internal class ApprovePersonalOrderCommandHandler : ICommandHandler<ApprovePersonalOrderCommand, IdCommandResult>
     {
         private readonly LfmDbContext _context;
         private readonly IMapper _mapper;
@@ -26,14 +26,14 @@ namespace LFM.Domain.Write.CommandHandlers.MentorProfile
             _mapper = mapper;
         }
 
-        public async Task<CommandResult> ExecuteAsync(ApprovePersonalOrderCommand command)
+        public async Task<IdCommandResult> ExecuteAsync(ApprovePersonalOrderCommand command)
         {
             OrderRequest orderRequest = await _context.OrdersRequests
                 .Where(o => o.MentorId == command.MentorId && o.Id == command.OrderRequestId)
                 .FirstOrDefaultAsync();
 
             if (orderRequest == null)
-                throw new LfmException(Messages.DataNotFound, "Order");
+                throw new LfmException(Messages.DataNotFound, "Заявки");
             
             ApprovedOrder mentorsOrder = _mapper.Map<OrderRequest, ApprovedOrder>(orderRequest);
 
@@ -51,7 +51,7 @@ namespace LFM.Domain.Write.CommandHandlers.MentorProfile
 
             await _context.SaveChangesAsync();
 
-            return new CommandResult(true);
+            return new IdCommandResult(true) { Id = mentorsOrder.Id };
         }
     }
 }

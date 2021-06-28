@@ -38,7 +38,7 @@ namespace LFM.Domain.Write
             services.AddScoped<ICommandHandler<DeleteMentorSubjectCommand, CommandResult>, DeleteMentorSubjectCommandHandler>();
             services.AddScoped<ICommandHandler<EditMentorSubjectCommand, CommandResult>, EditMentorSubjectCommandHandler>();
             services.AddScoped<ICommandHandler<CreatePersonalOrderToMentorCommand, CreatePersonalOrderResult>, CreatePersonalOrderToMentorCommandHandler>();
-            services.AddScoped<ICommandHandler<ApprovePersonalOrderCommand, CommandResult>, ApprovePersonalOrderCommandHandler>();
+            services.AddScoped<ICommandHandler<ApprovePersonalOrderCommand, IdCommandResult>, ApprovePersonalOrderCommandHandler>();
             services.AddScoped<ICommandHandler<RejectPersonalOrderCommand, CommandResult>, RejectPersonalOrderCommandHandler>();
             services.AddScoped<ICommandHandler<CreateLookingForMentorRequestCommand, CommandResult>, CreateLookingForMentorRequestCommandHandler>();
             services.AddScoped<ICommandHandler<DeleteLookingForMentorRequestCommand, CommandResult>, DeleteLookingForMentorRequestCommandHandler>();

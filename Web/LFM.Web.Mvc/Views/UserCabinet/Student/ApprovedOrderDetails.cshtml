@@ -2,7 +2,7 @@
 @model Lfm.Domain.ReadModels.ReviewModels.StudentProfile.ApprovedRequestDetailsReviewModel
 
 @{
-	ViewData["Title"] = "Approved request details";
+	ViewData["Title"] = "Підтверджена заявка";
 	Layout = "../_UserCabinetLayout.cshtml";
 }
 
@@ -12,48 +12,43 @@
 			<h3 class="title mb-3">@Model.SubjectName, @Model.TagName</h3>
 
 			<dl class="param param-feature">
-				<dt>Mentor name</dt>
+				<dt>Ім'я викладача</dt>
 				<dd>@Model.MentorName</dd>
-				<dd><a class="btn btn-sm btn-outline-primary" 
+				<dd><a class="btn btn-sm btn-outline-primary" target="_blank"
 				       asp-controller="Mentors" 
 				       asp-action="MentorDetails" 
-				       asp-route-mentorId="@Model.MentorId">View Profile</a></dd>
+				       asp-route-mentorId="@Model.MentorId">Переглянути профіль</a></dd>
 			</dl>
 			
 			<dl class="param param-feature">
-				<dt>Mentor email</dt>
+				<dt>Електронна пошта викладача</dt>
 				<dd>@Model.MentorEmail</dd>
 			</dl>
 			
 			<dl class="param param-feature">
-				<dt>Mentor phone number</dt>
+				<dt>Номер телефону викладача</dt>
 				<dd>@Model.MentorPhoneNumber</dd>
 			</dl>
-
-			<dl class="param param-feature">
-				<dt>Cost per hour</dt>
-				<dd>@Model.CostPerHour</dd>
-			</dl>
-
+			
 			<hr>
 
 			<dl class="param param-feature">
-				<dt>Studying place</dt>
+				<dt>Місце проведення занять</dt>
 				<dd>@CommonUiRenderer.StudyingPlaceToString(Model.StudyingPlace)</dd>
 			</dl>  
 			
 			<dl class="param param-feature">
-				<dt>Amount of lessons per week</dt>
+				<dt>Кількість занять в тиждень</dt>
 				<dd>@Model.AmountOfLessonsPerWeek</dd>
 			</dl> 
 			
 			<dl class="param param-feature">
-				<dt>Lesson duration</dt>
+				<dt>Тривалість занять</dt>
 				<dd>@CommonUiRenderer.LessonDurationToString(Model.LessonDuration)</dd>
 			</dl>
 			
 			<dl class="param param-feature">
-				<dt>Cost per hour</dt>
+				<dt>Ціна за годину</dt>
 				<dd>@Model.CostPerHour UAH</dd>
 			</dl>
 			
@@ -67,7 +62,7 @@
             	if (!string.IsNullOrWhiteSpace(Model.WhenToPractice))
             	{
             		<dl class="item-property">
-            			<dt>Convenient time of lessons for student.</dt>
+            			<dt>Зручний час для проведення занять.</dt>
             			<dd><p>@Model.WhenToPractice</p></dd>
             		</dl>
             	}
@@ -75,7 +70,7 @@
             	if (!string.IsNullOrWhiteSpace(Model.WhichHelp))
             	{
             		<dl class="item-property">
-            			<dt>Which help student needs.</dt>
+            			<dt>З чим потрібна вам допомога.</dt>
             			<dd><p>@Model.WhichHelp</p></dd>
             		</dl>	
             	}
@@ -83,7 +78,7 @@
             	if (!string.IsNullOrWhiteSpace(Model.AdditionalWishes))
             	{
             		<dl class="item-property">
-            			<dt>Additional wishes</dt>
+            			<dt>Ваші додаткові побажання</dt>
             			<dd><p>@Model.AdditionalWishes</p></dd>
             		</dl>	
             	}
@@ -92,7 +87,7 @@
             }
 			
 			<dl class="item-property">
-				<dt>Created</dt>
+				<dt>Дата підтвердження</dt>
 				<dd><p>@Model.ApprovedDateTime.ToString("dd/MM/yyyy")</p></dd>
 			</dl>
 			

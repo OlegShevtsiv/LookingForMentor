@@ -10,9 +10,9 @@
 @inject IMasterDataProvider MasterDataProvider;
 
 
-<form asp-controller="Home" asp-action="LookingForMentors" class="row gy-2 gx-3 align-items-center" method="get">
+<form asp-controller="Home" asp-action="LookingForMentors" class="row gy-2 gx-3" method="get">
     <div class="col-auto">
-        <label>Subject</label>
+        <label>Предмет</label>
         @{
             var subjects = await MasterDataProvider.GetSubjectsList();
               <select asp-for="SubjectId" class="form-control" style="max-height: 250px;">
@@ -32,7 +32,7 @@
         }
     </div>
     <div class="col-auto">
-        <label>Studying places</label>
+        <label>Місце занять</label>
         <select asp-for="StudyingPlace" class="form-control">
             <option value="">---</option>
             @foreach (var item in CommonUiRenderer.StudyingPlacesSelectItems(lastSearchRequest.StudyingPlace))
@@ -49,7 +49,7 @@
         </select>
     </div>
     <div class="col-auto">
-        <label>Town</label>
+        <label>Місто</label>
         @{
             var towns = await MasterDataProvider.GetTownsList();
             var firstFive = towns.Take(5).ToList();
@@ -70,7 +70,7 @@
           </select>
         }
     </div>
-    <div class="col-auto">
-        <button type="submit" class="btn btn-primary">Find</button>
+    <div class="col-auto d-flex align-items-end">
+        <button type="submit" class="btn btn-primary mt-4">Знайти</button>
     </div>
 </form>

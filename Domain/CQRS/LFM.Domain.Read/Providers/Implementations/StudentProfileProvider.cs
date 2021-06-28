@@ -36,7 +36,7 @@ namespace LFM.Domain.Read.Providers.Implementations
         public async Task<IEnumerable<LfmRequestReviewModel>> GetLfmRequests(int studentId)
         {
             var data = await _orderReqRepo.GetQueryable()
-                .Where(m => m.StudentId == studentId)
+                .Where(m => m.StudentId == studentId && !m.MentorId.HasValue)
                 .ProjectTo<LfmRequestReviewModel>(_mapper.ConfigurationProvider)
                 .ToListAsync();
             
@@ -46,12 +46,12 @@ namespace LFM.Domain.Read.Providers.Implementations
         public async Task<LfmRequestDetailsReviewModel> GetLfmRequestDetails(int studentId, int orderId)
         {
             var order = await _orderReqRepo.GetQueryable()
-                .Where(m => m.StudentId == studentId && m.Id == orderId)
+                .Where(m => m.StudentId == studentId && !m.MentorId.HasValue && m.Id == orderId)
                 .ProjectTo<LfmRequestDetailsReviewModel>(_mapper.ConfigurationProvider)
                 .FirstOrDefaultAsync();
 
             if (order == null)
-                throw new LfmException(Messages.DataNotFound, "Find Mentor Request");
+                throw new LfmException(Messages.DataNotFound, "Активної заявки");
 
             return order;
         }
@@ -109,7 +109,7 @@ namespace LFM.Domain.Read.Providers.Implementations
                 .FirstOrDefaultAsync();
 
             if (order == null)
-                throw new LfmException(Messages.DataNotFound);
+                throw new LfmException(Messages.DataNotFound, "Підтвердженої заявки");
 
             return order;
         }

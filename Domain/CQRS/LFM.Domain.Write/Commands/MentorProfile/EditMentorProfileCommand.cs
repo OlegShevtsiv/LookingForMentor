@@ -23,5 +23,7 @@ namespace LFM.Domain.Write.Commands.MentorProfile
         public StudyingPlaces? StudyingPlace { get; set; }
         
         public string Education { get; set; }
+        
+        public bool WantReceivePersonalOrders { get; set; }
     }
 }

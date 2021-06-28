@@ -18,6 +18,8 @@ namespace Lfm.Domain.ReadModels.ReviewModels.Mentor
         public string EducationInfo { get; set; }
 
         public string AboutInfo { get; set; }
+
+        public bool WantReceivePersonalOrders { get; set; }
         
         //TODO: Add rating
         //TODO: Add reviews amount

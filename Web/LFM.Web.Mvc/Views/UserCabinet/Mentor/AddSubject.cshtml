@@ -1,28 +1,31 @@
 @using LFM.Domain.Read.Providers
+@using Lfm.Web.Mvc.App.UIRenderers
 @model Lfm.Web.Mvc.Models.FormModels.UserCabinet.Mentor.AddMentorsSubjectFormModel
 @inject ISubjectsProvider SubjectsProvider;
 @{
-    ViewData["Title"] = "Add subject";
+    ViewData["Title"] = "Додати предмет";
     Layout = "../_UserCabinetLayout.cshtml";
     var subject = await SubjectsProvider.GetSubject(Model.SubjectId);
 }
 
-<h4>Adding new Subject</h4>
+<h4>Додавання нового предмету</h4>
+
 <div class="col-md-8">
     <h5>@subject.Name</h5>
-    <form asp-controller="MentorUserCabinet" asp-action="AddMentorSubject" id="profile-form" method="post">
+    <form asp-controller="MentorUserCabinet" asp-action="AddingSubject" id="profile-form" method="post">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <input asp-for="SubjectId" hidden/>
 
         <div class="form-group">
-            <label>Cost per hour (UAH)</label>
+            <label>Ціна за годину (UAH)</label>
             <input asp-for="CostPerHour" class="form-control"/>
             <span asp-validation-for="CostPerHour" class="text-danger"></span>
         </div>
 
 
         <div class="form-group">
-            <label>Select tags</label>
+            <label>Виберіть рівні підготовки</label>
+            
             @Html.ListBoxFor(
                 model => model.TagIds,
                 new MultiSelectList(subject.Tags, "Id", "Name"),
@@ -31,11 +34,11 @@
         </div>
 
         <div class="form-group">
-            <label>Describe your experience in teaching @subject.Name</label>
+            <label>Опишіть ваш досвід у викаданні @subject.Name</label>
             <textarea asp-for="Description" class="form-control" rows="5"></textarea>
             <span asp-validation-for="Description" class="text-danger"></span>
         </div>
 
-        <button id="update-profile-button" type="submit" class="btn btn-primary">Add</button>
+        <button id="update-profile-button" type="submit" class="btn btn-primary">Додати</button>
     </form>
 </div>

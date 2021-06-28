@@ -72,10 +72,10 @@ namespace LFM.Web.Mvc.Controllers
 
                     if (result.IsSuccess)
                     {
-                        this.AlertSuccess("Profile info updated successfully.");
+                        this.AlertSuccess("Інформація профілю оновлена.");
                         return RedirectToAction("GeneralInfo");
                     }
-                    this.AlertError("Updating Profile info failed.");
+                    this.AlertError("Помилка при оновленні інформації профілю.");
                 }
                 catch (LfmException exc)
                 {
@@ -102,7 +102,7 @@ namespace LFM.Web.Mvc.Controllers
         {
             if (!await _mentorProfileProvider.CanAddSubject(User.GetId(), subjectId))
             {
-                this.AlertError("Unable to add subject.");
+                this.AlertError("Неможливо додати предмет.");
                 return RedirectToAction("SubjectsInfo");
             }
 
@@ -112,13 +112,13 @@ namespace LFM.Web.Mvc.Controllers
         [HttpPost("add-subject")]
         //[AlertModelStateErrors]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AddMentorSubject(AddMentorsSubjectFormModel model)
+        public async Task<IActionResult> AddingSubject(AddMentorsSubjectFormModel model)
         {
             if (ModelState.IsValid)
             {
                 if (!await _subjectsProvider.IsExists(model.SubjectId))
                 {
-                    this.AlertError(Messages.DataNotFound, "Subject");
+                    this.AlertError(Messages.DataNotFound, "Предмет");
                     return RedirectToAction("SubjectsInfo");
                 }
                 
@@ -130,10 +130,10 @@ namespace LFM.Web.Mvc.Controllers
 
                     if (result.IsSuccess)
                     {
-                        this.AlertSuccess("Subject added successfully");
+                        this.AlertSuccess("Предмет додано");
                         return RedirectToAction("SubjectsInfo");
                     }
-                    this.AlertError("Addition subject failed.");
+                    this.AlertError("Помилка при додаванні предмету.");
                 }
                 catch (LfmException exc)
                 {
@@ -154,7 +154,7 @@ namespace LFM.Web.Mvc.Controllers
             var subject = await _mentorProfileProvider.GetSubject(User.GetId(), subjectId);
             if (subject == null)
             {
-                this.AlertError("Subject not found.");
+                this.AlertError(Messages.DataNotFound, "Предмет");
                 return RedirectToAction("SubjectsInfo");
             }
 
@@ -165,7 +165,7 @@ namespace LFM.Web.Mvc.Controllers
         [HttpPost("edit-subject")]
         //[AlertModelStateErrors]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> EditSubject(EditMentorsSubjectFormModel model)
+        public async Task<IActionResult> EditingSubject(EditMentorsSubjectFormModel model)
         {
             if (ModelState.IsValid)
             {
@@ -177,10 +177,10 @@ namespace LFM.Web.Mvc.Controllers
 
                     if (result.IsSuccess)
                     {
-                        this.AlertSuccess("Subject edited successfully");
+                        this.AlertSuccess("Предмет оновлено.");
                         return RedirectToAction("SubjectsInfo");
                     }
-                    this.AlertError("Editing subject failed.");
+                    this.AlertError("Помилка при оновленні предмету.");
                 }
                 catch (LfmException exc)
                 {
@@ -211,10 +211,10 @@ namespace LFM.Web.Mvc.Controllers
 
                 if (result.IsSuccess)
                 {
-                    this.AlertSuccess("Subject deleted successfully");
+                    this.AlertSuccess("Предмет видалено.");
                     return RedirectToAction("SubjectsInfo");
                 }
-                this.AlertError("Delete subject failed.");
+                this.AlertError("Помилка при видаленні предмету.");
             }
             catch (LfmException exc)
             {
@@ -254,14 +254,14 @@ namespace LFM.Web.Mvc.Controllers
                     OrderRequestId = orderId
                 };
                 
-                CommandResult commandResult = await _commandBus.ExecuteCommand<ApprovePersonalOrderCommand, CommandResult>(command);
+                IdCommandResult commandResult = await _commandBus.ExecuteCommand<ApprovePersonalOrderCommand, IdCommandResult>(command);
 
                 if (commandResult.IsSuccess)
                 {
-                    this.AlertSuccess("Approve personal order successful.");
-                    return RedirectToAction("ApprovedOrderDetails", new { orderId });
+                    this.AlertSuccess("Персональна заявка підтверджена.");
+                    return RedirectToAction("ApprovedOrderDetails", new { orderId = commandResult.Id });
                 }
-                this.AlertError("Approve personal order failed.");
+                this.AlertError("Помилка підтвердження персональної заявки.");
             }
             catch (LfmException exc)
             {
@@ -289,10 +289,10 @@ namespace LFM.Web.Mvc.Controllers
 
                 if (commandResult.IsSuccess)
                 {
-                    this.AlertSuccess("Reject personal order successful.");
+                    this.AlertSuccess("Персональну заявку відхилено.");
                     return RedirectToAction("PersonalOrders");
                 }
-                this.AlertError("Reject personal order failed.");
+                this.AlertError("Помилка видхилення персональної заявки.");
             }
             catch (LfmException exc)
             {
@@ -370,10 +370,10 @@ namespace LFM.Web.Mvc.Controllers
 
                 if (commandResult.IsSuccess)
                 {
-                    this.AlertSuccess("Your interest was send.");
+                    this.AlertSuccess("Ваша кандидатура врахована.");
                     return RedirectToAction("PotentialOrderDetails", new { orderId });
                 }
-                this.AlertError("Yor interest was not taken into account.");
+                this.AlertError("Помилка при висуванні кандидатури.");
             }
             catch (LfmException exc)
             {

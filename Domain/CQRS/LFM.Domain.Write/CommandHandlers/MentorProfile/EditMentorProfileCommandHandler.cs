@@ -79,7 +79,13 @@ namespace LFM.Domain.Write.CommandHandlers.MentorProfile
         private bool HasChangesAndApply(MentorsProfile profile, EditMentorProfileCommand command)
         {
             bool hasChanges = false;
-            
+
+            if (profile.WantReceivePersonalOrders != command.WantReceivePersonalOrders)
+            {
+                profile.WantReceivePersonalOrders = command.WantReceivePersonalOrders;
+                hasChanges = true;
+            }
+
             if (profile.Surname != command.Surname)
             {
                 profile.Surname = command.Surname;

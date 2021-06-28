@@ -4,7 +4,7 @@
 @model Lfm.Web.Mvc.Models.FormModels.UserCabinet.Mentor.EditMentorsProfileFormModel
 @inject IMasterDataProvider MasterDataProvider;
 @{
-    ViewData["Title"] = "Edit general info";
+    ViewData["Title"] = "Редагування інформації профілю";
     Layout = "../_UserCabinetLayout.cshtml";
 }
 
@@ -13,39 +13,47 @@
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         
         <div class="form-group">
-            <div class="edit-personal-data__user-photo">
+            <div class="edit-personal-data__user-photo mb-3">
                 <img src="@Url.Action("GetMentorAvatar", "Images", new { mentorId = Context.User.GetId() })" class="profile-pic" alt="">
                 <input asp-for="ProfileImageFormFile" type="file" class="file-upload">
             </div>
-            <a href="#" class="upload-button">Upload new Avatar</a>
+            <a href="#" class="upload-button btn btn-outline-primary">Загрузити нове фото</a>
+        </div>
+        
+        <div class="form-group">
+            <div class="switch_box">
+                <input class="switch_1" type="checkbox" asp-for="WantReceivePersonalOrders"/>
+            </div>
+            <label asp-for="WantReceivePersonalOrders">Бажаю приймати персональні заявки?</label>
+            <span asp-validation-for="WantReceivePersonalOrders" class="text-danger"></span>
         </div>
 
         <div class="form-group">
-            <label>Name</label>
+            <label>Ім'я</label>
             <input asp-for="Name" class="form-control"/>
             <span asp-validation-for="Name" class="text-danger"></span>
         </div>
 
         <div class="form-group">
-            <label>Surname</label>
+            <label>Прізвище</label>
             <input asp-for="Surname" class="form-control"/>
             <span asp-validation-for="Surname" class="text-danger"></span>
         </div>
 
         <div class="form-group">
-            <label>Middle name</label>
+            <label>По-батькові</label>
             <input asp-for="MiddleName" class="form-control"/>
             <span asp-validation-for="MiddleName" class="text-danger"></span>
         </div>
         
         <div class="form-group">
-            <label>About me</label>
+            <label>Про мене</label>
             <textarea asp-for="AboutMe" rows="5" class="form-control"></textarea>
             <span asp-validation-for="AboutMe" class="text-danger"></span>
         </div>
         
         <div class="form-group">
-            <label>My town</label>
+            <label>Моє місто</label>
             
             @{
                 var towns = await MasterDataProvider.GetTownsList();
@@ -70,7 +78,7 @@
         </div>
         
         <div class="form-group">
-            <label>Where can I conduct lessons?</label>
+            <label>Де я можу проводити заняття</label>
             @{
                 int i = 1;
                 foreach (var box in CommonUiRenderer.StudyingPlacesCheckboxes(Model.StudyingPlace))
@@ -90,11 +98,11 @@
         </div>
          
         <div class="form-group">
-            <label>My education</label>
+            <label>Моя освіта</label>
             <textarea asp-for="Education" rows="2" class="form-control"></textarea>
             <span asp-validation-for="Education" class="text-danger"></span>
         </div>
         
-        <button id="update-profile-button" type="submit" class="btn btn-primary">Save</button>
+        <button id="update-profile-button" type="submit" class="btn btn-primary">Зберегти</button>
     </form>
 </div>

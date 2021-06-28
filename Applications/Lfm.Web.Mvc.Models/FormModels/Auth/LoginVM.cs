@@ -7,14 +7,15 @@ namespace Lfm.Web.Mvc.Models.FormModels.Auth
     {
         [Required]
         [EmailAddress]
-        [Display(Name = "Email")]
+        [Display(Name = "Електронна пошта")]
         public string Email { get; set; }
 
         [Required]
         [DataType(DataType.Password)]
+        [Display(Name = "Пароль")]
         public string Password { get; set; }
 
-        [Display(Name = "Remember me?")]
+        [Display(Name = "Запам'ятати мене?")]
         public bool RememberMe { get; set; } = true;
     }
 }

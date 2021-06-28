@@ -2,9 +2,11 @@
 @model IEnumerable<Lfm.Domain.ReadModels.ReviewModels.MentorProfile.MentorPotentialOrderReviewModel>
 
 @{
-    ViewData["Title"] = "Potential orders";
+    ViewData["Title"] = "Потенційні заявки";
     Layout = "../_UserCabinetLayout.cshtml";
 }
+
+<h4>Потенційні заявки</h4>
 
 <div class="list-group">
     @if (Model.Any())
@@ -16,12 +18,12 @@
                     <h5 class="mb-1">@item.SubjectName, @item.TagName</h5>
                     <small>@CommonUiRenderer.GetDaysPassed(item.CreationDateTime)</small>
                 </div>
-                <p class="mb-1">From: @item.StudentName</p>
+                <p class="mb-1">Від: @item.StudentName</p>
             </a>
         }
     }
     else
     {
-        <div class="text-center">No Data</div>
+        <div class="text-center">Дані відсутні</div>
     }
 </div>

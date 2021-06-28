@@ -1,10 +1,13 @@
 @using Lfm.Web.Mvc.App.UIRenderers
+@using Lfm.Domain.Common.Extensions
+@using LFM.DataAccess.DB.Core.Types
 @{
     Layout = "/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Кабінет користувача";
 }
 
 <div>
-    <h4>My Cabinet</h4>
+    <h4>Кабінет @(User.GetRole() == LfmIdentityRolesEnum.Student ? "учня" : "викладача")</h4>
     <hr />
     <div class="row">
         <div class="col-md-3">

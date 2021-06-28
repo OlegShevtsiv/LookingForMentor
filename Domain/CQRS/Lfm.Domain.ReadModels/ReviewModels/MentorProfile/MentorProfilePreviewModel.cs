@@ -7,6 +7,8 @@ namespace Lfm.Domain.ReadModels.ReviewModels.MentorProfile
 {
     public class MentorProfilePreviewModel
     {
+        public bool WantReceivePersonalOrders { get; set; }
+
         public string  Surname { get; set; }
         
         public string  MiddleName { get; set; }

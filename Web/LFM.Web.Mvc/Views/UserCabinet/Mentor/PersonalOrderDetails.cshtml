@@ -2,7 +2,7 @@
 @model Lfm.Domain.ReadModels.ReviewModels.MentorProfile.MentorPersonalOrderDetailedReviewModel
 
 @{
-    ViewData["Title"] = "Personal order details";
+    ViewData["Title"] = "Персональна заявка";
     Layout = "../_UserCabinetLayout.cshtml";
 }
 
@@ -13,24 +13,24 @@
 			<h3 class="title mb-3">@Model.SubjectName, @Model.TagName</h3>
 
 			<dl class="param param-feature">
-				<dt>Student name</dt>
+				<dt>Ім'я учня</dt>
 				<dd>@Model.StudentName</dd>
 			</dl>
 
 			<hr>
 
 			<dl class="param param-feature">
-				<dt>Studying place</dt>
+				<dt>Місце проведення занять</dt>
 				<dd>@CommonUiRenderer.StudyingPlaceToString(Model.StudyingPlace)</dd>
 			</dl>  
 			
 			<dl class="param param-feature">
-				<dt>Amount of lessons per week</dt>
+				<dt>Кількість занять в тиждень</dt>
 				<dd>@Model.AmountOfLessonsPerWeek</dd>
 			</dl> 
 			
 			<dl class="param param-feature">
-				<dt>LessonDuration</dt>
+				<dt>Тривалість занять</dt>
 				<dd>@CommonUiRenderer.LessonDurationToString(Model.LessonDuration)</dd>
 			</dl>
 
@@ -44,7 +44,7 @@
 				if (!string.IsNullOrWhiteSpace(Model.WhenToPractice))
 				{
 					<dl class="item-property">
-						<dt>Convenient time of lessons for student.</dt>
+						<dt>Зручний час для проведення занять учневі.</dt>
 						<dd><p>@Model.WhenToPractice</p></dd>
 					</dl>
 				}
@@ -52,7 +52,7 @@
 				if (!string.IsNullOrWhiteSpace(Model.WhichHelp))
 				{
 					<dl class="item-property">
-						<dt>Which help student needs.</dt>
+						<dt>З чим потрібна допомога.</dt>
 						<dd><p>@Model.WhichHelp</p></dd>
 					</dl>	
 				}
@@ -60,7 +60,7 @@
 				if (!string.IsNullOrWhiteSpace(Model.AdditionalWishes))
 				{
 					<dl class="item-property">
-						<dt>Additional wishes</dt>
+						<dt>Додаткові побажання</dt>
 						<dd><p>@Model.AdditionalWishes</p></dd>
 					</dl>	
 				}
@@ -69,18 +69,18 @@
 			}
 			
 			<dl class="item-property">
-				<dt>Created</dt>
+				<dt>Створено</dt>
 				<dd><p>@Model.CreationDateTime.ToString("dd/MM/yyyy")</p></dd>
 			</dl>
 			
 			<hr>
 
-			<form asp-controller="MentorUserCabinet" asp-action="ApprovePersonalOrderRequest" asp-route-orderId="@Model.Id" method="post">
-				<button class="btn btn-lg btn-success">Approve</button>
+			<form asp-controller="MentorUserCabinet" asp-action="ApprovePersonalOrderRequest" asp-route-orderId="@Model.Id" method="post" class="m-3">
+				<button class="btn btn-lg btn-success">Підтвердити</button>
 			</form>
 			
-			<form asp-controller="MentorUserCabinet" asp-action="RejectPersonalOrderRequest" asp-route-orderId="@Model.Id" method="post">
-				<button class="btn btn-lg btn-outline-danger">Reject</button>
+			<form asp-controller="MentorUserCabinet" asp-action="RejectPersonalOrderRequest" asp-route-orderId="@Model.Id" method="post" class="m-3">
+				<button class="btn btn-lg btn-outline-danger">Відмовити</button>
 			</form>
 			
 		</article>

@@ -1,13 +1,13 @@
 @model Lfm.Web.Mvc.Models.FormModels.Auth.RegisterStudentFormModel;
 
 @{
-    ViewData["Title"] = "Register Student";
+    ViewData["Title"] = "Реєстрація Учня";
 }
 
 <div class="row">
     <div class="col-md-4">
         <form asp-controller="Auth" asp-action="RegisterStudent" method="post">
-            <h4>Register as Student</h4>
+            <h4>Реєстрація Учня</h4>
             <hr />
             <div asp-validation-summary="All" class="text-danger"></div>
             <div class="form-group">
@@ -39,7 +39,7 @@
                 <input asp-for="ConfirmPassword" class="form-control" />
                 <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
             </div>
-            <button type="submit" class="btn btn-primary">Submit</button>
+            <button type="submit" class="btn btn-primary">Зареєструватись</button>
         </form>
     </div>
 </div>

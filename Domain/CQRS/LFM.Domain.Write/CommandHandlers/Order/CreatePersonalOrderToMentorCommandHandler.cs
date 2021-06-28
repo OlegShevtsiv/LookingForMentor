@@ -33,15 +33,16 @@ namespace LFM.Domain.Write.CommandHandlers.Order
                 .ThenInclude(s => s.Tags)
                 .Where(m => 
                     m.IsVerified && 
+                    m.WantReceivePersonalOrders &&
                     m.SubjectsInfo.Any() && 
                     m.MentorId == command.MentorId)
-                .Select(m => new { m.StudyingPlace, m.SubjectsInfo })
+                .Select(m => new { m.StudyingPlace, Subject = m.SubjectsInfo.FirstOrDefault(s => s.SubjectId == command.SubjectId) })
                 .FirstOrDefaultAsync();
 
             if (mentor == null)
                 return new CreatePersonalOrderResult(false);
 
-            if (command.StudentId.HasValue && !await CanCreate(command, mentor.SubjectsInfo))
+            if (command.StudentId.HasValue && !await CanCreate(command, mentor.Subject))
             {
                 return new CreatePersonalOrderResult(false);
             }
@@ -53,6 +54,8 @@ namespace LFM.Domain.Write.CommandHandlers.Order
             if (mentorStudyingPlace.HasValue && mentorStudyingPlace != StudyingPlaces.ONLINE_AND_OFFLINE)
                 order.StudyingPlace = mentorStudyingPlace.Value;
 
+            order.CostPerHour = mentor.Subject.CostPerHour;
+            
             _context.OrdersRequests.Add(order);
 
             await _context.SaveChangesAsync();
@@ -62,15 +65,14 @@ namespace LFM.Domain.Write.CommandHandlers.Order
             return new CreatePersonalOrderResult(true) { MentorName = mentorName};
         }
 
-        private async Task<bool> CanCreate(CreatePersonalOrderToMentorCommand command, List<MentorsSubjectInfo> subjects)
+        private async Task<bool> CanCreate(CreatePersonalOrderToMentorCommand command, MentorsSubjectInfo subject)
         {
             bool isOrderExists = await _context.OrdersRequests
                 .AnyAsync(p => p.MentorId.HasValue && 
                                p.MentorId.Value == command.MentorId && 
                                p.StudentId == command.StudentId);
 
-            bool isTagAvailable = subjects.FirstOrDefault(s => s.SubjectId == command.SubjectId)?
-                .Tags.FirstOrDefault(t => t.TagId == command.TagId) != null;
+            bool isTagAvailable = subject?.Tags.FirstOrDefault(t => t.TagId == command.TagId) != null;
 
             return !isOrderExists && isTagAvailable;
         }

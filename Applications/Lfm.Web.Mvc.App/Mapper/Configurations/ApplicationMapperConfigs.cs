@@ -26,72 +26,36 @@ namespace Lfm.Web.Mvc.App.Mapper.Configurations
 
         private void CreateAuthModelsMaps()
         {
-            CreateMap<LoginFormModel, LoginUserCommand>()
-                .ForMember(x => x.Email, o => o.MapFrom(p => p.Email))
-                .ForMember(x => x.Password, o => o.MapFrom(p => p.Password))
-                .ForMember(x => x.RememberMe, o => o.MapFrom(p => p.RememberMe));
+            CreateMap<LoginFormModel, LoginUserCommand>();
             
-            CreateMap<RegisterMentorFormModel, RegisterMentorCommand>()
-                .ForMember(x => x.Name, o => o.MapFrom(p => p.Name))
-                .ForMember(x => x.Email, o => o.MapFrom(p => p.Email))
-                .ForMember(x => x.PhoneNumber, o => o.MapFrom(p => p.PhoneNumber))
-                .ForMember(x => x.Password, o => o.MapFrom(p => p.Password));
+            CreateMap<RegisterMentorFormModel, RegisterMentorCommand>();
             
-            CreateMap<RegisterStudentFormModel, RegisterStudentCommand>()
-                .ForMember(x => x.Name, o => o.MapFrom(p => p.Name))
-                .ForMember(x => x.Email, o => o.MapFrom(p => p.Email))
-                .ForMember(x => x.PhoneNumber, o => o.MapFrom(p => p.PhoneNumber))
-                .ForMember(x => x.Password, o => o.MapFrom(p => p.Password));
+            CreateMap<RegisterStudentFormModel, RegisterStudentCommand>();
         }
         
         private void CreateMentorProfileModelsMaps()
         {
             CreateMap<MentorsProfile, EditMentorsProfileFormModel>()
                 .ForMember(x => x.Name, o => o.Ignore())
-                .ForMember(x => x.Surname, o => o.MapFrom(p => p.Surname))
-                .ForMember(x => x.MiddleName, o => o.MapFrom(p => p.MiddleName))
-                .ForMember(x => x.ProfileImageFormFile, o => o.Ignore())
-                .ForMember(x => x.AboutMe, o => o.MapFrom(p => p.AboutMe))
-                .ForMember(x => x.TownId, o => o.MapFrom(p => p.TownId))
-                .ForMember(x => x.StudyingPlace, o => o.MapFrom(p => p.StudyingPlace))
-                .ForMember(x => x.Education, o => o.MapFrom(p => p.Education));
+                .ForMember(x => x.ProfileImageFormFile, o => o.Ignore());
             
             CreateMap<EditMentorsProfileFormModel, EditMentorProfileCommand>()
                 .ForMember(x => x.MentorId, o => o.Ignore())
-                .ForMember(x => x.Name, o => o.MapFrom(p => p.Name))
-                .ForMember(x => x.Surname, o => o.MapFrom(p => p.Surname))
-                .ForMember(x => x.MiddleName, o => o.MapFrom(p => p.MiddleName))
-                .ForMember(x => x.ProfileImageBytes, o => o.MapFrom(p => p.ProfileImageFormFile.GetBytes()))
-                .ForMember(x => x.AboutMe, o => o.MapFrom(p => p.AboutMe))
-                .ForMember(x => x.TownId, o => o.MapFrom(p => p.TownId))
-                .ForMember(x => x.StudyingPlace, o => o.MapFrom(p => p.StudyingPlace))
-                .ForMember(x => x.Education, o => o.MapFrom(p => p.Education));
+                .ForMember(x => x.ProfileImageBytes, o => o.MapFrom(p => p.ProfileImageFormFile.GetBytes()));
 
             CreateMap<AddMentorsSubjectFormModel, AddMentorSubjectCommand>()
-                .ForMember(x => x.MentorId, o => o.Ignore())
-                .ForMember(x => x.SubjectId, o => o.MapFrom(p => p.SubjectId))
-                .ForMember(x => x.CostPerHour, o => o.MapFrom(p => p.CostPerHour))
-                .ForMember(x => x.Description, o => o.MapFrom(p => p.Description))
-                .ForMember(x => x.TagIds, o => o.MapFrom(p => p.TagIds));
+                .ForMember(x => x.MentorId, o => o.Ignore());
             
             CreateMap<EditMentorsSubjectFormModel, EditMentorSubjectCommand>()
-                .ForMember(x => x.MentorId, o => o.Ignore())
-                .ForMember(x => x.SubjectId, o => o.MapFrom(p => p.SubjectId))
-                .ForMember(x => x.CostPerHour, o => o.MapFrom(p => p.CostPerHour))
-                .ForMember(x => x.Description, o => o.MapFrom(p => p.Description))
-                .ForMember(x => x.TagIds, o => o.MapFrom(p => p.TagIds));
+                .ForMember(x => x.MentorId, o => o.Ignore());
             
             CreateMap<MentorSubjectReviewModel, EditMentorsSubjectFormModel>()
-                .ForMember(x => x.SubjectId, o => o.MapFrom(p => p.SubjectId))
-                .ForMember(x => x.CostPerHour, o => o.MapFrom(p => p.CostPerHour))
-                .ForMember(x => x.Description, o => o.MapFrom(p => p.Description))
                 .ForMember(x => x.TagIds, o => o.MapFrom(p => p.SelectedTags.Select(t => t.Id).ToList()));
         }
 
         private void CreateOrdersModelsMaps()
         {
             CreateMap<ContactMentorFormModel, CreatePersonalOrderToMentorCommand>()
-                .ForMember(x => x.MentorId, o => o.MapFrom(p => p.MentorId))
                 .ForMember(x => x.StudentId, o => o.Ignore())
                 .ForMember(x => x.SubjectId, o => o.MapFrom(p => p.Lesson.SubjectId))
                 .ForMember(x => x.TagId, o => o.MapFrom(p => p.Lesson.TagId))

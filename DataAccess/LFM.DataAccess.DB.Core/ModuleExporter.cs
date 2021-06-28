@@ -1,4 +1,3 @@
-using LFM.DataAccess.DB.Core.MasterDataProviders;
 using LFM.DataAccess.DB.Core.Repository;
 using Microsoft.Extensions.DependencyInjection;
 

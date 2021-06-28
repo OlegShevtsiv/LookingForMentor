@@ -2,11 +2,11 @@
 @model IEnumerable<Lfm.Domain.ReadModels.ReviewModels.StudentProfile.PersonalRequestsToMentorsReviewModel>
 
 @{
-    ViewData["Title"] = "Personal requests";
+    ViewData["Title"] = "Персональні заявки викладачам";
     Layout = "../_UserCabinetLayout.cshtml";
 }
 
-<h4>Personal requests to mentors</h4>
+<h4>Персональні заявки викладачам</h4>
 
 <div class="list-group">
     @if (Model.Any())
@@ -18,13 +18,13 @@
                     <h5 class="mb-1">@item.SubjectName, @item.TagName</h5>
                     <small>@CommonUiRenderer.GetDaysPassed(item.CreationDateTime)</small>
                 </div>
-                <p class="mb-1">Mentor name: @item.MentorName</p>
-                <p class="mb-1">Cost per hour: @item.CostPerHour</p>
+                <p class="mb-1">Ім'я викладача: @item.MentorName</p>
+                <p class="mb-1">Ціна за годину: @item.CostPerHour UAH</p>
             </a>
         }
     }
     else
     {
-        <div class="text-center">No Data</div>
+        <div class="text-center">Дані відсутні</div>
     }
 </div>

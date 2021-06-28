@@ -2,11 +2,11 @@
 @model IEnumerable<Lfm.Domain.ReadModels.ReviewModels.MentorProfile.MentorsApprovedOrderMinReviewModel>
 
 @{
-    ViewData["Title"] = "Approved orders";
+    ViewData["Title"] = "Підтвердженні заявки";
     Layout = "../_UserCabinetLayout.cshtml";
 }
 
-<h4>My approved orders</h4>
+<h4>Підтвердженні заявки</h4>
 
 <div class="list-group">
     @if (Model.Any())
@@ -18,14 +18,14 @@
                     <h5 class="mb-1">@item.SubjectName, @item.TagName</h5>
                     <small>@CommonUiRenderer.GetDaysPassed(item.ApprovedDateTime)</small>
                 </div>
-                <p class="mb-1">From: @item.StudentName</p>
-                <p class="mb-1">Email: @item.StudentEmail</p>
-                <p class="mb-1">Phone: @item.StudentPhoneNumber</p>
+                <p class="mb-1">Від: @item.StudentName</p>
+                <p class="mb-1">Електронна пошта: @item.StudentEmail</p>
+                <p class="mb-1">Номер телефону: @item.StudentPhoneNumber</p>
             </a>
         }
     }
     else
     {
-        <div class="text-center">No Data</div>
+        <div class="text-center">Дані відсутні</div>
     }
 </div>

@@ -41,5 +41,7 @@ namespace LFM.DataAccess.DB.Core.Entities.MentorEntities
         [Required]
         [MaxLength(250)]
         public string Education { get; set; }
+        
+        public bool WantReceivePersonalOrders { get; set; } = true;
     }
 }

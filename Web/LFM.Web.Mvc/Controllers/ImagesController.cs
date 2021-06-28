@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace LFM.Web.Mvc.Controllers
 {
-    [Route("user-cabinet")]
+    [Route("image")]
     public class ImagesController : Controller
     {
         private readonly IMentorProfileProvider _mentorProfileProvider;

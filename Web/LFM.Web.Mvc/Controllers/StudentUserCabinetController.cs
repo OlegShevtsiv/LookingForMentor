@@ -59,7 +59,7 @@ namespace LFM.Web.Mvc.Controllers
         {
             if (!await _subjectsProvider.IsExists(subjectId))
             {
-                this.AlertError(Messages.DataNotFound, "Subject");
+                this.AlertError(Messages.DataNotFound, "Предмет");
                 return RedirectToAction("LfmRequests");
             }
 
@@ -80,7 +80,7 @@ namespace LFM.Web.Mvc.Controllers
                 {
                     if (!await _subjectsProvider.IsExists(model.SubjectId))
                     {
-                        this.AlertError(Messages.DataNotFound, "Subject");
+                        this.AlertError(Messages.DataNotFound, "Предмет");
                         return RedirectToAction("LfmRequests");
                     }
                     
@@ -126,10 +126,10 @@ namespace LFM.Web.Mvc.Controllers
 
                 if (result.IsSuccess)
                 {
-                    this.AlertSuccess("Order deleted successfully");
+                    this.AlertSuccess("Заявка видалена.");
                     return RedirectToAction("LfmRequests");
                 }
-                this.AlertError("Delete order failed.");
+                this.AlertError("Помилка при видалянні заявки.");
             }
             catch (LfmException exc)
             {
@@ -159,10 +159,10 @@ namespace LFM.Web.Mvc.Controllers
 
                 if (result.IsSuccess)
                 {
-                    this.AlertSuccess($"Success. {result.MentorName} is you Mentor.");
-                    return RedirectToAction("ApprovedOrderDetails", new { model.OrderId });
+                    this.AlertSuccess($"Підтверджено. Тепер ви можете зв'язатись з {result.MentorName}.");
+                    return RedirectToAction("ApprovedOrderDetails", new { orderId = result.Id });
                 }
-                this.AlertError("Approving failed.");
+                this.AlertError("Помилка підтвердження кандидатури.");
             }
             catch (LfmException exc)
             {

@@ -5,18 +5,18 @@
 @inject IStudentProfileProvider StudentProfileProvider;
 
 @{
-    ViewData["Title"] = "Looking for Mentors requests";
+    ViewData["Title"] = "Мої активні заявки";
     Layout = "../_UserCabinetLayout.cshtml";
 }
 
-<h4>Looking for Mentors requests</h4>
+<h4>Мої активні заявки</h4>
 
 @{
     var subjects = (await StudentProfileProvider.GetAvailableSubjectsToOrders(User.GetId())).ToList();
 
     <div class="dropdown show">
-        <button class="btn btn-sm btn-success dropdown-toggle" type="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            Create Request
+        <button class="btn btn-lg btn-success dropdown-toggle mb-3" type="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Створити заявку
         </button>
         <div class="dropdown-menu scrollable-menu" aria-labelledby="dropdownMenuLink">
             @foreach (var s in subjects)
@@ -37,13 +37,13 @@
                     <h5 class="mb-1">@item.SubjectName, @item.TagName</h5>
                     <small>@CommonUiRenderer.GetDaysPassed(item.CreationDateTime)</small>
                 </div>
-                <p class="mb-1">Min cost: @item.CostFrom</p>
-                <p class="mb-1">Max cost: @item.CostTo</p>
+                <p class="mb-1">Мінімальна ціна: @item.CostFrom</p>
+                <p class="mb-1">Максимальна ціна: @item.CostTo</p>
             </a>
         }
     }
     else
     {
-        <div class="text-center">No Data</div>
+        <div class="text-center">Дані відсутні</div>
     }
 </div>

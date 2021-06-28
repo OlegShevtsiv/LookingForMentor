@@ -46,31 +46,31 @@ namespace Lfm.Web.Mvc.App.UIRenderers
             {
                 new LinkItem
                 {
-                    Name = "My approved orders",
+                    Name = "Підтвердженні заявки",
                     ControllerName = "MentorUserCabinet",
                     ActionName = "ApprovedOrders"
                 },
                 new LinkItem
                 {
-                    Name = "General Info",
+                    Name = "Загальна інформація профілю",
                     ControllerName = "MentorUserCabinet",
                     ActionName = "GeneralInfo"
                 },
                 new LinkItem
                 {
-                    Name = "My subjects",
+                    Name = "Мої предмети",
                     ControllerName = "MentorUserCabinet",
                     ActionName = "SubjectsInfo"
                 },
                 new LinkItem
                 {
-                    Name = "My personal orders requests",
+                    Name = "Мої персональні заявки",
                     ControllerName = "MentorUserCabinet",
                     ActionName = "PersonalOrders"
                 },
                 new LinkItem
                 {
-                    Name = "Potentials orders",
+                    Name = "Потенційні заявки",
                     ControllerName = "MentorUserCabinet",
                     ActionName = "PotentialOrders"
                 }
@@ -81,19 +81,19 @@ namespace Lfm.Web.Mvc.App.UIRenderers
             {
                 new LinkItem
                 {
-                    Name = "My approved orders",
+                    Name = "Підтвердженні заявки",
                     ControllerName = "StudentUserCabinet",
                     ActionName = "ApprovedOrders"
                 },
                 new LinkItem
                 {
-                    Name = "Find Mentors requests",
+                    Name = "Мої активні заявки",
                     ControllerName = "StudentUserCabinet",
                     ActionName = "LfmRequests"
                 },
                 new LinkItem
                 {
-                    Name = "Personal requests to mentors",
+                    Name = "Персональні заявки до викладачів",
                     ControllerName = "StudentUserCabinet",
                     ActionName = "PersonalRequestsToMentors"
                 }

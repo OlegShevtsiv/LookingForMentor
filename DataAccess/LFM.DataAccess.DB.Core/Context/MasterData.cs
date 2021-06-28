@@ -17,37 +17,37 @@ namespace LFM.DataAccess.DB.Core.Context
                 new SubjectsTag
                 {
                     Id = 1,
-                    Name = "Base level"
+                    Name = "Базовий рівень"
                 },
                 new SubjectsTag
                 {
                     Id = 2,
-                    Name = "Elementary School"
+                    Name = "Початкова школа"
                 },
                 new SubjectsTag
                 {
                     Id = 3,
-                    Name = "Secondary School"
+                    Name = "Середня школа"
                 },
                 new SubjectsTag
                 {
                     Id = 4,
-                    Name = "High School"
+                    Name = "Старша школа"
                 },
                 new SubjectsTag
                 {
                     Id = 5,
-                    Name = "For beginners"
+                    Name = "Для початківців"
                 },
                 new SubjectsTag
                 {
                     Id = 6,
-                    Name = "For professionals"
+                    Name = "Для професіоналів"
                 },
                 new SubjectsTag
                 {
                     Id = 7,
-                    Name = "University courses"
+                    Name = "Університетські курси"
                 }
             };
             
@@ -58,17 +58,17 @@ namespace LFM.DataAccess.DB.Core.Context
                 new Subject
                 {
                     Id = 1,
-                    Name = "Math"
+                    Name = "Математика"
                 },
                 new Subject
                 {
                     Id = 2,
-                    Name = "Programing C#"
+                    Name = "Програмування C#"
                 },
                 new Subject
                 {
                     Id = 3,
-                    Name = "English"
+                    Name = "Англійська мова"
                 }
             });
             
