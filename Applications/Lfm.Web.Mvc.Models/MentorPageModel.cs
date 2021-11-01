@@ -4,7 +4,7 @@ using Lfm.Domain.ReadModels.Common;
 using Lfm.Domain.ReadModels.ReviewModels.Mentor;
 using Lfm.Domain.ReadModels.SearchModels;
 
-namespace Lfm.Web.Mvc.Models.FormModels.Mentor
+namespace Lfm.Web.Mvc.Models
 {
     public class MentorPageModel
     {

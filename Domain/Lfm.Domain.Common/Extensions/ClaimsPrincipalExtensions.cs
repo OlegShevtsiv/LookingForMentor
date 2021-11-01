@@ -43,6 +43,16 @@ namespace Lfm.Domain.Common.Extensions
             return role;
         }
 
+        public static bool IsStudent(this ClaimsPrincipal claimsPrincipal)
+        {
+            return claimsPrincipal.GetRole() == LfmIdentityRolesEnum.Student;
+        }
+        
+        public static bool IsMentor(this ClaimsPrincipal claimsPrincipal)
+        {
+            return claimsPrincipal.GetRole() == LfmIdentityRolesEnum.Mentor;
+        }
+
         private static string GetClaimValue(ClaimsPrincipal claimsPrincipal, string claimType)
         {
             if (claimsPrincipal.HasClaim(c => c.Type == claimType))

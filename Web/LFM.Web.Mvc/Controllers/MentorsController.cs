@@ -1,7 +1,6 @@
 using System.Threading.Tasks;
 using AutoMapper;
 using LFM.Core.Common.Data;
-using LFM.Core.Common.Exceptions;
 using LFM.DataAccess.DB.Core.Entities;
 using LFM.DataAccess.DB.Core.Types;
 using Lfm.Domain.Common.Extensions;
@@ -10,6 +9,7 @@ using Lfm.Domain.ReadModels.ReviewModels.Mentor;
 using LFM.Domain.Write.Commands.Order;
 using LFM.Domain.Write.Mediator;
 using LFM.Domain.Write.Models;
+using Lfm.Web.Mvc.App.Extensions;
 using Lfm.Web.Mvc.App.SessionAlerts;
 using Lfm.Web.Mvc.Models.FormModels.Mentor;
 using Microsoft.AspNetCore.Identity;
@@ -76,14 +76,15 @@ namespace LFM.Web.Mvc.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> ContactWithMentor(ContactMentorFormModel model)
         {
-            if (ModelState.IsValid)
-            {
-                try
+            var defaultReturnResult = RedirectToAction("ContactWithMentor",
+                new {mentorId = model.MentorId, subjectId = model.Lesson.SubjectId});
+            
+            return await this.HandleAction(async () =>
                 {
                     var command = _mapper.Map<ContactMentorFormModel, CreatePersonalOrderToMentorCommand>(model);
 
                     if (_signInManager.IsSignedIn(HttpContext.User) &&
-                        HttpContext.User.GetRole() == LfmIdentityRolesEnum.Student)
+                        HttpContext.User.IsStudent())
                     {
                         command.StudentId = HttpContext.User.GetId();
                     }
@@ -99,17 +100,9 @@ namespace LFM.Web.Mvc.Controllers
                     }
 
                     this.AlertError(Messages.PersonalOrderFailed);
-                }
-                catch (LfmException exc)
-                {
-                    this.AlertError(exc.Message);
-                }
-                catch
-                {
-                    this.AlertError(Messages.SystemError);
-                }
-            }
-            return RedirectToAction("ContactWithMentor", new {mentorId = model.MentorId, subjectId = model.Lesson.SubjectId});
+                    return defaultReturnResult;
+                },
+                defaultReturnResult);
         }
     }
 }

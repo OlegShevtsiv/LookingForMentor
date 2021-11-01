@@ -13,11 +13,11 @@ namespace Lfm.Web.Mvc.App.UIRenderers
         {
             if (context.User.Identity.IsAuthenticated)
             {
-                if (context.User.GetRole() == LfmIdentityRolesEnum.Mentor)
+                if (context.User.IsMentor())
                 {
                     return MentorNavItems;
                 }
-                if (context.User.GetRole() == LfmIdentityRolesEnum.Student)
+                if (context.User.IsStudent())
                 {
                     return StudentNavItems;
                 }
@@ -29,11 +29,11 @@ namespace Lfm.Web.Mvc.App.UIRenderers
         {
             if (context.User.Identity.IsAuthenticated)
             {
-                if (context.User.GetRole() == LfmIdentityRolesEnum.Mentor)
+                if (context.User.IsMentor())
                 {
                     return MentorNavItems.FirstOrDefault();
                 }
-                if (context.User.GetRole() == LfmIdentityRolesEnum.Student)
+                if (context.User.IsStudent())
                 {
                     return StudentNavItems.FirstOrDefault();
                 }

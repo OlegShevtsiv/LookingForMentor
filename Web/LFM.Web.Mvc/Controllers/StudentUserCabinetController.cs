@@ -2,14 +2,13 @@ using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using AutoMapper;
 using LFM.Core.Common.Data;
-using LFM.Core.Common.Exceptions;
 using LFM.DataAccess.DB.Core.Types;
 using Lfm.Domain.Common.Extensions;
 using LFM.Domain.Read.Providers;
-using LFM.Domain.Write.Commands.Order;
 using LFM.Domain.Write.Commands.StudentProfile;
 using LFM.Domain.Write.Mediator;
 using LFM.Domain.Write.Models;
+using Lfm.Web.Mvc.App.Extensions;
 using Lfm.Web.Mvc.App.SessionAlerts;
 using Lfm.Web.Mvc.Models.FormModels.UserCabinet.Student;
 using Microsoft.AspNetCore.Authorization;
@@ -74,10 +73,9 @@ namespace LFM.Web.Mvc.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreateOrderRequest(CreateLookingForMentorRequestFormModel model)
         {
-            if (ModelState.IsValid)
-            {
-                try
-                {
+            var defaultResult = RedirectToAction("LfmRequests");
+            return await this.HandleAction(async () => 
+                { 
                     if (!await _subjectsProvider.IsExists(model.SubjectId))
                     {
                         this.AlertError(Messages.DataNotFound, "Предмет");
@@ -94,85 +92,66 @@ namespace LFM.Web.Mvc.Controllers
                         await _commandBus.ExecuteCommand<CreateLookingForMentorRequestCommand, CommandResult>(command);
 
                     if (commandResult.IsSuccess)
-                    {
                         this.AlertSuccess(Messages.OrderRequestSuccessful);
-                    }
-                }
-                catch (LfmException exc)
-                {
-                    this.AlertError(exc.Message);
-                }
-                catch
-                {
-                    this.AlertError(Messages.OrderRequestFailed);
-                }
-            }
-            return RedirectToAction("LfmRequests");
+                    else 
+                        this.AlertError(Messages.OrderRequestFailed);
+
+                    return defaultResult;
+                },
+                defaultResult);
         }
 
         [HttpPost("delete-lfm-request")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteOrderRequest([Range(1, int.MaxValue)]int orderId)
         {
-            try
-            {
-                DeleteLookingForMentorRequestCommand command = new DeleteLookingForMentorRequestCommand
-                {
-                    StudentId = User.GetId(),
-                    OrderId = orderId
-                };
+            var defaultResult = RedirectToAction("LfmRequests");
+            return await this.HandleAction(async () => 
+                { 
+                    DeleteLookingForMentorRequestCommand command = new DeleteLookingForMentorRequestCommand
+                    {
+                        StudentId = User.GetId(),
+                        OrderId = orderId
+                    };
 
-                var result = await _commandBus.ExecuteCommand<DeleteLookingForMentorRequestCommand, CommandResult>(command);
+                    var result = await _commandBus.ExecuteCommand<DeleteLookingForMentorRequestCommand, CommandResult>(command);
 
-                if (result.IsSuccess)
-                {
-                    this.AlertSuccess("Заявка видалена.");
-                    return RedirectToAction("LfmRequests");
-                }
-                this.AlertError("Помилка при видалянні заявки.");
-            }
-            catch (LfmException exc)
-            {
-                this.AlertError(exc.Message);
-            }
-            catch
-            {
-                this.AlertError(Messages.SystemError);
-            }
-            return RedirectToAction("LfmRequests");
+                    if (result.IsSuccess)
+                    {
+                        this.AlertSuccess("Заявка видалена.");
+                        return RedirectToAction("LfmRequests");
+                    }
+                    this.AlertError("Помилка при видалянні заявки.");
+                    return defaultResult;
+                },
+                defaultResult);
         }
 
         [HttpPost("approve-mentor-propose")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> ApproveMentorPropose(ApproveMentorProposeFormModel model)
         {
-            try
-            {
-                ApproveMentorProposeCommand command = new ApproveMentorProposeCommand
-                {
-                    StudentId = User.GetId(),
-                    OrderId = model.OrderId,
-                    MentorId = model.MentorId
-                };
+            var defaultResult = RedirectToAction("LfmRequests");
+            return await this.HandleAction(async () => 
+                { 
+                    ApproveMentorProposeCommand command = new ApproveMentorProposeCommand
+                    {
+                        StudentId = User.GetId(),
+                        OrderId = model.OrderId,
+                        MentorId = model.MentorId
+                    };
 
-                var result = await _commandBus.ExecuteCommand<ApproveMentorProposeCommand, ApproveMentorProposeResult>(command);
+                    var result = await _commandBus.ExecuteCommand<ApproveMentorProposeCommand, ApproveMentorProposeResult>(command);
 
-                if (result.IsSuccess)
-                {
-                    this.AlertSuccess($"Підтверджено. Тепер ви можете зв'язатись з {result.MentorName}.");
-                    return RedirectToAction("ApprovedOrderDetails", new { orderId = result.Id });
-                }
-                this.AlertError("Помилка підтвердження кандидатури.");
-            }
-            catch (LfmException exc)
-            {
-                this.AlertError(exc.Message);
-            }
-            catch
-            {
-                this.AlertError(Messages.SystemError);
-            }
-            return RedirectToAction("LfmRequests");
+                    if (result.IsSuccess)
+                    {
+                        this.AlertSuccess($"Підтверджено. Тепер ви можете зв'язатись з {result.MentorName}.");
+                        return RedirectToAction("ApprovedOrderDetails", new { orderId = result.Id });
+                    }
+                    this.AlertError("Помилка підтвердження кандидатури.");
+                    return defaultResult;
+                },
+                defaultResult);
         }
         
         [HttpGet("personal-requests-to-mentors")]

@@ -11,6 +11,7 @@ using Lfm.Domain.ReadModels.ReviewModels.MentorProfile;
 using LFM.Domain.Write.Commands.MentorProfile;
 using LFM.Domain.Write.Mediator;
 using LFM.Domain.Write.Models;
+using Lfm.Web.Mvc.App.Extensions;
 using Lfm.Web.Mvc.App.SessionAlerts;
 using Lfm.Web.Mvc.Models.FormModels.UserCabinet.Mentor;
 using Microsoft.AspNetCore.Authorization;
@@ -61,32 +62,21 @@ namespace LFM.Web.Mvc.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> EditGeneralInfo(EditMentorsProfileFormModel model)
         {
-            if (ModelState.IsValid)
-            {
-                var command = _mapper.Map<EditMentorProfileCommand>(model);
-                command.MentorId = User.GetId();
-
-                try
-                {
+            var defaultResult = View("../UserCabinet/Mentor/EditGeneralInfo", model);
+            return await this.HandleAction(async () => 
+                { 
+                    var command = _mapper.Map<EditMentorProfileCommand>(model);
+                    command.MentorId = User.GetId();
                     var result = await _commandBus.ExecuteCommand<EditMentorProfileCommand, CommandResult>(command);
-
                     if (result.IsSuccess)
                     {
                         this.AlertSuccess("Інформація профілю оновлена.");
                         return RedirectToAction("GeneralInfo");
                     }
                     this.AlertError("Помилка при оновленні інформації профілю.");
-                }
-                catch (LfmException exc)
-                {
-                    this.AlertError(exc.Message);
-                }
-                catch
-                {
-                    this.AlertError(Messages.SystemError);
-                }
-            }
-            return View("../UserCabinet/Mentor/EditGeneralInfo", model);
+                    return defaultResult;
+                },
+                defaultResult);
         }
 
         [HttpGet("subjects-info")]
@@ -114,18 +104,19 @@ namespace LFM.Web.Mvc.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddingSubject(AddMentorsSubjectFormModel model)
         {
-            if (ModelState.IsValid)
-            {
-                if (!await _subjectsProvider.IsExists(model.SubjectId))
-                {
-                    this.AlertError(Messages.DataNotFound, "Предмет");
-                    return RedirectToAction("SubjectsInfo");
-                }
+            var defaultResult = View("../UserCabinet/Mentor/AddSubject", model);
+            
+            return await this.HandleAction(async () => 
+                { 
+                    if (!await _subjectsProvider.IsExists(model.SubjectId))
+                    {
+                        this.AlertError(Messages.DataNotFound, "Предмет");
+                        return RedirectToAction("SubjectsInfo");
+                    }
                 
-                var command = _mapper.Map<AddMentorSubjectCommand>(model);
-                command.MentorId = User.GetId();
-                try
-                {
+                    var command = _mapper.Map<AddMentorSubjectCommand>(model);
+                    command.MentorId = User.GetId();
+                    
                     var result = await _commandBus.ExecuteCommand<AddMentorSubjectCommand, CommandResult>(command);
 
                     if (result.IsSuccess)
@@ -134,18 +125,9 @@ namespace LFM.Web.Mvc.Controllers
                         return RedirectToAction("SubjectsInfo");
                     }
                     this.AlertError("Помилка при додаванні предмету.");
-                }
-                catch (LfmException exc)
-                {
-                    this.AlertError(exc.Message);
-                }
-                catch
-                {
-                    this.AlertError(Messages.SystemError);
-                }
-            }
-
-            return View("../UserCabinet/Mentor/AddSubject", model);
+                    return defaultResult;
+                },
+                defaultResult);
         }
 
         [HttpGet("editing-subject/{subjectId:int}")]
@@ -167,12 +149,12 @@ namespace LFM.Web.Mvc.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> EditingSubject(EditMentorsSubjectFormModel model)
         {
-            if (ModelState.IsValid)
-            {
-                var command = _mapper.Map<EditMentorSubjectCommand>(model);
-                command.MentorId = User.GetId();
-                try
-                {
+            var defaultResult = View("../UserCabinet/Mentor/EditSubject", model);
+            return await this.HandleAction(async () => 
+                { 
+                    var command = _mapper.Map<EditMentorSubjectCommand>(model);
+                    command.MentorId = User.GetId();
+                    
                     var result = await _commandBus.ExecuteCommand<EditMentorSubjectCommand, CommandResult>(command);
 
                     if (result.IsSuccess)
@@ -181,17 +163,9 @@ namespace LFM.Web.Mvc.Controllers
                         return RedirectToAction("SubjectsInfo");
                     }
                     this.AlertError("Помилка при оновленні предмету.");
-                }
-                catch (LfmException exc)
-                {
-                    this.AlertError(exc.Message);
-                }
-                catch
-                {
-                    this.AlertError(Messages.SystemError);
-                }
-            }
-            return View("../UserCabinet/Mentor/EditSubject", model);
+                    return defaultResult;
+                },
+                defaultResult);
         }
 
         [HttpPost("delete-subject")]
@@ -199,32 +173,26 @@ namespace LFM.Web.Mvc.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteSubject([Required] int subjectId)
         {
-            try
-            {
-                DeleteMentorSubjectCommand command = new DeleteMentorSubjectCommand
-                {
-                    MentorId = User.GetId(),
-                    SubjectId = subjectId
-                };
+            var defaultResult = RedirectToAction("SubjectsInfo");
+            return await this.HandleAction(async () => 
+                { 
+                    DeleteMentorSubjectCommand command = new DeleteMentorSubjectCommand
+                    {
+                        MentorId = User.GetId(),
+                        SubjectId = subjectId
+                    };
 
-                var result = await _commandBus.ExecuteCommand<DeleteMentorSubjectCommand, CommandResult>(command);
+                    var result = await _commandBus.ExecuteCommand<DeleteMentorSubjectCommand, CommandResult>(command);
 
-                if (result.IsSuccess)
-                {
-                    this.AlertSuccess("Предмет видалено.");
-                    return RedirectToAction("SubjectsInfo");
-                }
-                this.AlertError("Помилка при видаленні предмету.");
-            }
-            catch (LfmException exc)
-            {
-                this.AlertError(exc.Message);
-            }
-            catch
-            {
-                this.AlertError(Messages.SystemError);
-            }
-            return RedirectToAction("SubjectsInfo");
+                    if (result.IsSuccess)
+                    {
+                        this.AlertSuccess("Предмет видалено.");
+                        return RedirectToAction("SubjectsInfo");
+                    }
+                    this.AlertError("Помилка при видаленні предмету.");
+                    return defaultResult;
+                },
+                defaultResult);
         }
 
         [HttpGet("personal-orders")]
@@ -246,63 +214,52 @@ namespace LFM.Web.Mvc.Controllers
         [HttpPost("approve-personal-order")]
         public async Task<IActionResult> ApprovePersonalOrderRequest(int orderId)
         {
-            try
-            {
-                ApprovePersonalOrderCommand command = new ApprovePersonalOrderCommand
-                {
-                    MentorId = User.GetId(),
-                    OrderRequestId = orderId
-                };
+            var defaultResult = RedirectToAction("PersonalOrderDetails", new {orderId });
+            
+            return await this.HandleAction(async () => 
+                { 
+                    ApprovePersonalOrderCommand command = new ApprovePersonalOrderCommand
+                    {
+                        MentorId = User.GetId(),
+                        OrderRequestId = orderId
+                    };
                 
-                IdCommandResult commandResult = await _commandBus.ExecuteCommand<ApprovePersonalOrderCommand, IdCommandResult>(command);
+                    IdCommandResult commandResult = await _commandBus.ExecuteCommand<ApprovePersonalOrderCommand, IdCommandResult>(command);
 
-                if (commandResult.IsSuccess)
-                {
-                    this.AlertSuccess("Персональна заявка підтверджена.");
-                    return RedirectToAction("ApprovedOrderDetails", new { orderId = commandResult.Id });
-                }
-                this.AlertError("Помилка підтвердження персональної заявки.");
-            }
-            catch (LfmException exc)
-            {
-                this.AlertError(exc.Message);
-            }
-            catch
-            {
-                this.AlertError(Messages.SystemError);
-            }
-            return RedirectToAction("PersonalOrderDetails", new {orderId });
+                    if (commandResult.IsSuccess)
+                    {
+                        this.AlertSuccess("Персональна заявка підтверджена.");
+                        return RedirectToAction("ApprovedOrderDetails", new { orderId = commandResult.Id });
+                    }
+                    this.AlertError("Помилка підтвердження персональної заявки.");
+                    return defaultResult;
+                },
+                defaultResult);
         }
         
         [HttpPost("reject-personal-order")]
         public async Task<IActionResult> RejectPersonalOrderRequest(int orderId)
         {
-            try
-            {
-                RejectPersonalOrderCommand command = new RejectPersonalOrderCommand
-                {
-                    MentorId = User.GetId(),
-                    OrderRequestId = orderId
-                };
+            var defaultResult = RedirectToAction("PersonalOrderDetails", new {orderId });
+            return await this.HandleAction(async () => 
+                { 
+                    RejectPersonalOrderCommand command = new RejectPersonalOrderCommand
+                    {
+                        MentorId = User.GetId(),
+                        OrderRequestId = orderId
+                    };
                 
-                CommandResult commandResult = await _commandBus.ExecuteCommand<RejectPersonalOrderCommand, CommandResult>(command);
+                    CommandResult commandResult = await _commandBus.ExecuteCommand<RejectPersonalOrderCommand, CommandResult>(command);
 
-                if (commandResult.IsSuccess)
-                {
-                    this.AlertSuccess("Персональну заявку відхилено.");
-                    return RedirectToAction("PersonalOrders");
-                }
-                this.AlertError("Помилка видхилення персональної заявки.");
-            }
-            catch (LfmException exc)
-            {
-                this.AlertError(exc.Message);
-            }
-            catch
-            {
-                this.AlertError(Messages.SystemError);
-            }
-            return RedirectToAction("PersonalOrderDetails", new {orderId });
+                    if (commandResult.IsSuccess)
+                    {
+                        this.AlertSuccess("Персональну заявку відхилено.");
+                        return RedirectToAction("PersonalOrders");
+                    }
+                    this.AlertError("Помилка видхилення персональної заявки.");
+                    return defaultResult;
+                },
+                defaultResult);
         }
         
         [HttpGet("approved-orders")]
@@ -358,32 +315,26 @@ namespace LFM.Web.Mvc.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> PotentialOrderPropose(int orderId)
         {
-            try
-            {
-                InterestOrderCommand command = new InterestOrderCommand
-                {
-                    MentorId = User.GetId(),
-                    OrderId = orderId
-                };
+            var defaultResult = RedirectToAction("PotentialOrders", new {orderId });
+            return await this.HandleAction(async () => 
+                { 
+                    InterestOrderCommand command = new InterestOrderCommand
+                    {
+                        MentorId = User.GetId(),
+                        OrderId = orderId
+                    };
                 
-                CommandResult commandResult = await _commandBus.ExecuteCommand<InterestOrderCommand, CommandResult>(command);
+                    CommandResult commandResult = await _commandBus.ExecuteCommand<InterestOrderCommand, CommandResult>(command);
 
-                if (commandResult.IsSuccess)
-                {
-                    this.AlertSuccess("Ваша кандидатура врахована.");
-                    return RedirectToAction("PotentialOrderDetails", new { orderId });
-                }
-                this.AlertError("Помилка при висуванні кандидатури.");
-            }
-            catch (LfmException exc)
-            {
-                this.AlertError(exc.Message);
-            }
-            catch
-            {
-                this.AlertError(Messages.SystemError);
-            }
-            return RedirectToAction("PotentialOrders", new {orderId });
+                    if (commandResult.IsSuccess)
+                    {
+                        this.AlertSuccess("Ваша кандидатура врахована.");
+                        return RedirectToAction("PotentialOrderDetails", new { orderId });
+                    }
+                    this.AlertError("Помилка при висуванні кандидатури.");
+                    return defaultResult;
+                },
+                defaultResult);
         }
     }
 }

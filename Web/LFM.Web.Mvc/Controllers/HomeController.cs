@@ -5,7 +5,7 @@ using LFM.Domain.Read.Providers;
 using Lfm.Domain.ReadModels.SearchModels;
 using Lfm.Web.Mvc.App.SessionAlerts;
 using Lfm.Web.Mvc.App.StaticServices;
-using Lfm.Web.Mvc.Models.FormModels.Mentor;
+using Lfm.Web.Mvc.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
