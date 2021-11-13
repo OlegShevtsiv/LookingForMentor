@@ -8,7 +8,7 @@ using LFM.DataAccess.DB.Core.Entities;
 using LFM.DataAccess.DB.Core.Entities.MentorEntities;
 using LFM.Domain.Write.Commands.MentorProfile;
 using LFM.Domain.Write.Declarations;
-using LFM.Domain.Write.Models;
+using LFM.Domain.Write.ResultModels;
 using Microsoft.EntityFrameworkCore;
 
 namespace LFM.Domain.Write.CommandHandlers.MentorProfile

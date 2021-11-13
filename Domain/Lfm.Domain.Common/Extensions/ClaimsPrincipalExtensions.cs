@@ -8,24 +8,18 @@ namespace Lfm.Domain.Common.Extensions
 {
     public static class LfmUserClaimsPrincipalExtensions
     {
-        public static string GetName(this ClaimsPrincipal claimsPrincipal)
-        {
-            return GetClaimValue(claimsPrincipal, ClaimTypes.GivenName);
-        }
+        public static string GetName(this ClaimsPrincipal claimsPrincipal) 
+            => GetClaimValue(claimsPrincipal, ClaimTypes.GivenName);
         
-        public static string GetEmail(this ClaimsPrincipal claimsPrincipal)
-        {
-            return GetClaimValue(claimsPrincipal, ClaimTypes.Email);
-        }
+        public static string GetPhoneNumber(this ClaimsPrincipal claimsPrincipal) 
+            => GetClaimValue(claimsPrincipal, ClaimTypes.MobilePhone);
         
-        public static string GetPhoneNumber(this ClaimsPrincipal claimsPrincipal)
-        {
-            return GetClaimValue(claimsPrincipal, ClaimTypes.MobilePhone);
-        }
-        
+        public static string GetEmail(this ClaimsPrincipal claimsPrincipal) 
+            => GetRequiredClaimValue(claimsPrincipal, ClaimTypes.Email);
+
         public static int GetId(this ClaimsPrincipal claimsPrincipal)
         {
-            string claimValue = GetClaimValue(claimsPrincipal, ClaimTypes.NameIdentifier);
+            string claimValue = GetRequiredClaimValue(claimsPrincipal, ClaimTypes.NameIdentifier);
             if (!int.TryParse(claimValue, out int id))
             {
                 throw new LfmException(Messages.InvalidUserClaim);
@@ -35,7 +29,7 @@ namespace Lfm.Domain.Common.Extensions
         
         public static LfmIdentityRolesEnum GetRole(this ClaimsPrincipal claimsPrincipal)
         {
-            string claimValue = GetClaimValue(claimsPrincipal, ClaimTypes.Role);
+            string claimValue = GetRequiredClaimValue(claimsPrincipal, ClaimTypes.Role);
             if (!Enum.TryParse(claimValue, ignoreCase: true, out LfmIdentityRolesEnum role))
             {
                 throw new LfmException(Messages.InvalidUserClaim);
@@ -43,24 +37,26 @@ namespace Lfm.Domain.Common.Extensions
             return role;
         }
 
-        public static bool IsStudent(this ClaimsPrincipal claimsPrincipal)
-        {
-            return claimsPrincipal.GetRole() == LfmIdentityRolesEnum.Student;
-        }
+        public static bool IsStudent(this ClaimsPrincipal claimsPrincipal) 
+            => IsInRole(claimsPrincipal, LfmIdentityRolesEnum.Student);
         
-        public static bool IsMentor(this ClaimsPrincipal claimsPrincipal)
-        {
-            return claimsPrincipal.GetRole() == LfmIdentityRolesEnum.Mentor;
-        }
+        public static bool IsMentor(this ClaimsPrincipal claimsPrincipal) 
+            => IsInRole(claimsPrincipal, LfmIdentityRolesEnum.Mentor);
+        
+        public static bool IsAdmin(this ClaimsPrincipal claimsPrincipal) 
+            => IsInRole(claimsPrincipal, LfmIdentityRolesEnum.Admin);
+        
+        public static bool IsManager(this ClaimsPrincipal claimsPrincipal) 
+            => IsInRole(claimsPrincipal, LfmIdentityRolesEnum.Manager);
+        
+        private static bool IsInRole(ClaimsPrincipal claimsPrincipal, LfmIdentityRolesEnum role)
+            => claimsPrincipal.GetRole() == role;
 
-        private static string GetClaimValue(ClaimsPrincipal claimsPrincipal, string claimType)
-        {
-            if (claimsPrincipal.HasClaim(c => c.Type == claimType))
-            {
-                return claimsPrincipal.FindFirst(claimType).Value;
-            }
-            string errorMessage = string.Format(Messages.UserClaimNotFound, claimType);
-            throw new LfmException(errorMessage);
-        }
+        private static string GetClaimValue(ClaimsPrincipal claimsPrincipal, string claimType) 
+            => claimsPrincipal.FindFirstValue(claimType);
+
+        private static string GetRequiredClaimValue(ClaimsPrincipal claimsPrincipal, string claimType)
+            => GetClaimValue(claimsPrincipal, claimType) 
+               ?? throw new LfmException(Messages.UserClaimNotFound, claimType);
     }
 }

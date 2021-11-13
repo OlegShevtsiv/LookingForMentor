@@ -4,7 +4,7 @@ using LFM.DataAccess.DB.Core.Types;
 using LFM.Domain.Write.Commands.Auth;
 using LFM.Domain.Write.CommandServices.Auth;
 using LFM.Domain.Write.Declarations;
-using LFM.Domain.Write.Models;
+using LFM.Domain.Write.ResultModels;
 
 namespace LFM.Domain.Write.CommandHandlers.Auth
 {

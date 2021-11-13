@@ -5,7 +5,7 @@ using Lfm.Core.Common.Web.Data;
 using Lfm.Core.Common.Web.Extensions;
 using LFM.Domain.Write.Commands.Auth;
 using LFM.Domain.Write.Mediator;
-using LFM.Domain.Write.Models;
+using LFM.Domain.Write.ResultModels;
 using Lfm.Web.Mvc.App.Extensions;
 using Lfm.Web.Mvc.App.SessionAlerts;
 using Lfm.Web.Mvc.Models.FormModels.Auth;
@@ -19,11 +19,11 @@ namespace LFM.Web.Mvc.Controllers
     [Route("auth")]
     public class AuthController : Controller
     {
-        private readonly ICommandBus _commandBus;
+        private readonly IMediator _commandBus;
         private readonly IMapper _mapper;
 
         public AuthController(
-            ICommandBus commandBus, 
+            IMediator commandBus, 
             IMapper mapper)
         {
             _commandBus = commandBus;

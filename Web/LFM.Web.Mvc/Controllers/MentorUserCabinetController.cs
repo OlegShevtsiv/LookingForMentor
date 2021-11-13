@@ -10,7 +10,7 @@ using LFM.Domain.Read.Providers;
 using Lfm.Domain.ReadModels.ReviewModels.MentorProfile;
 using LFM.Domain.Write.Commands.MentorProfile;
 using LFM.Domain.Write.Mediator;
-using LFM.Domain.Write.Models;
+using LFM.Domain.Write.ResultModels;
 using Lfm.Web.Mvc.App.Extensions;
 using Lfm.Web.Mvc.App.SessionAlerts;
 using Lfm.Web.Mvc.Models.FormModels.UserCabinet.Mentor;
@@ -25,14 +25,14 @@ namespace LFM.Web.Mvc.Controllers
     {
         private readonly IMapper _mapper;
         private readonly IMentorProfileProvider _mentorProfileProvider;
-        private readonly ICommandBus _commandBus;
+        private readonly IMediator _commandBus;
         private readonly ISubjectsProvider _subjectsProvider;
 
         
         public MentorUserCabinetController(
             IMapper mapper,
             IMentorProfileProvider mentorProfileProvider,
-            ICommandBus commandBus, 
+            IMediator commandBus, 
             ISubjectsProvider subjectsProvider)
         {
             _mapper = mapper;
@@ -67,14 +67,10 @@ namespace LFM.Web.Mvc.Controllers
                 { 
                     var command = _mapper.Map<EditMentorProfileCommand>(model);
                     command.MentorId = User.GetId();
-                    var result = await _commandBus.ExecuteCommand<EditMentorProfileCommand, CommandResult>(command);
-                    if (result.IsSuccess)
-                    {
-                        this.AlertSuccess("Інформація профілю оновлена.");
-                        return RedirectToAction("GeneralInfo");
-                    }
-                    this.AlertError("Помилка при оновленні інформації профілю.");
-                    return defaultResult;
+
+                    await _commandBus.CreateToDo(command);
+                    this.AlertInfo(Messages.ToDoCreated);
+                    return RedirectToAction("GeneralInfo");
                 },
                 defaultResult);
         }
@@ -117,15 +113,9 @@ namespace LFM.Web.Mvc.Controllers
                     var command = _mapper.Map<AddMentorSubjectCommand>(model);
                     command.MentorId = User.GetId();
                     
-                    var result = await _commandBus.ExecuteCommand<AddMentorSubjectCommand, CommandResult>(command);
-
-                    if (result.IsSuccess)
-                    {
-                        this.AlertSuccess("Предмет додано");
-                        return RedirectToAction("SubjectsInfo");
-                    }
-                    this.AlertError("Помилка при додаванні предмету.");
-                    return defaultResult;
+                    await _commandBus.CreateToDo(command);
+                    this.AlertInfo(Messages.ToDoCreated);
+                    return RedirectToAction("SubjectsInfo");
                 },
                 defaultResult);
         }
@@ -155,15 +145,9 @@ namespace LFM.Web.Mvc.Controllers
                     var command = _mapper.Map<EditMentorSubjectCommand>(model);
                     command.MentorId = User.GetId();
                     
-                    var result = await _commandBus.ExecuteCommand<EditMentorSubjectCommand, CommandResult>(command);
-
-                    if (result.IsSuccess)
-                    {
-                        this.AlertSuccess("Предмет оновлено.");
-                        return RedirectToAction("SubjectsInfo");
-                    }
-                    this.AlertError("Помилка при оновленні предмету.");
-                    return defaultResult;
+                    await _commandBus.CreateToDo(command);
+                    this.AlertInfo(Messages.ToDoCreated);
+                    return RedirectToAction("SubjectsInfo");
                 },
                 defaultResult);
         }

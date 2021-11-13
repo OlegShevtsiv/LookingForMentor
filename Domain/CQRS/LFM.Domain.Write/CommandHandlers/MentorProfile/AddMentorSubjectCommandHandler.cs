@@ -6,13 +6,14 @@ using LFM.DataAccess.DB.Core.Context;
 using LFM.DataAccess.DB.Core.Entities.MentorEntities;
 using LFM.DataAccess.DB.Core.Entities.SubjectEntities;
 using LFM.Domain.Write.Commands.MentorProfile;
-using LFM.Domain.Write.Declarations;
-using LFM.Domain.Write.Models;
+using LFM.Domain.Write.ResultModels;
+using LFM.Domain.Write.ToDo;
 using Microsoft.EntityFrameworkCore;
 
 namespace LFM.Domain.Write.CommandHandlers.MentorProfile
 {
-    internal class AddMentorSubjectCommandHandler : ICommandHandler<AddMentorSubjectCommand, CommandResult>
+    internal class AddMentorSubjectCommandHandler :
+        BaseNeedsApproveCommandHandler<AddMentorSubjectCommand, CommandResult>
     {
         private readonly LfmDbContext _context;
 
@@ -21,7 +22,9 @@ namespace LFM.Domain.Write.CommandHandlers.MentorProfile
             _context = context;
         }
 
-        public async Task<CommandResult> ExecuteAsync(AddMentorSubjectCommand command)
+        public override ToDoOperationsEnum Operation => ToDoOperationsEnum.AddMentorSubject;
+
+        public override async Task<CommandResult> ExecuteAsync(AddMentorSubjectCommand command)
         {
             if (command.TagIds?.Any() != true)
                 throw new LfmException("No tags selected");

@@ -6,6 +6,5 @@ namespace LFM.DataAccess.DB.Core.Types
         public const string Mentor = "Mentor";
         public const string Manager = "Manager";
         public const string Admin = "Admin";
-
     }
 }

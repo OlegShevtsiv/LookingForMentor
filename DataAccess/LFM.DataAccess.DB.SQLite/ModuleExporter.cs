@@ -2,6 +2,7 @@ using LFM.DataAccess.DB.Core;
 using LFM.DataAccess.DB.Core.Context;
 using LFM.DataAccess.DB.Core.Entities;
 using LFM.DataAccess.DB.Core.Repository;
+using LFM.DataAccess.DB.SQLite.Claims;
 using LFM.DataAccess.DB.SQLite.Context;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Data.Sqlite;
@@ -12,8 +13,7 @@ namespace LFM.DataAccess.DB.SQLite
 {
     public static class ModuleExporter
     {
-        public static void AddLfmSqliteContext<TClaimFactory>(this IServiceCollection services, string sqliteDbPath)
-            where TClaimFactory : UserClaimsPrincipalFactory<LfmUser>
+        public static void AddLfmSqliteContext(this IServiceCollection services, string sqliteDbPath)
         {
             services.AddDbContext<LfmDbContext, LfmSqliteDbContext>(options =>
             {
@@ -34,7 +34,7 @@ namespace LFM.DataAccess.DB.SQLite
                     options.User.RequireUniqueEmail = true;
                 })
                 .AddEntityFrameworkStores<LfmDbContext>()
-                .AddClaimsPrincipalFactory<TClaimFactory>();
+                .AddClaimsPrincipalFactory<LfmUserClaimsPrincipalFactory>();
 
             services.AddRepository();
         }

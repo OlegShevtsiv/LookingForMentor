@@ -10,33 +10,39 @@ using LFM.DataAccess.DB.Core.Entities.MentorEntities;
 using LFM.DataAccess.DB.Core.Types;
 using Lfm.Domain.Common.Caching.User;
 using LFM.Domain.Write.Commands.MentorProfile;
-using LFM.Domain.Write.Declarations;
-using LFM.Domain.Write.Models;
+using LFM.Domain.Write.ResultModels;
+using LFM.Domain.Write.ToDo;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace LFM.Domain.Write.CommandHandlers.MentorProfile
 {
-    internal class EditMentorProfileCommandHandler : ICommandHandler<EditMentorProfileCommand, CommandResult>
+    internal class EditMentorProfileCommandHandler :
+        BaseNeedsApproveCommandHandler<EditMentorProfileCommand, CommandResult>
     {
         private readonly LfmDbContext _context;
-        private readonly SignInManager<LfmUser> _signInManager;
         private readonly IUserCachingService _userCachingService;
+        private readonly UserManager<LfmUser> _userManager;
 
         public EditMentorProfileCommandHandler(
             LfmDbContext context, 
-            SignInManager<LfmUser> signInManager, 
-            IUserCachingService userCachingService)
+            IUserCachingService userCachingService, 
+            UserManager<LfmUser> userManager)
         {
             _context = context;
-            _signInManager = signInManager;
             _userCachingService = userCachingService;
+            _userManager = userManager;
         }
-
-        public async Task<CommandResult> ExecuteAsync(EditMentorProfileCommand command)
+        
+        public override ToDoOperationsEnum Operation => ToDoOperationsEnum.EditMentorProfile;
+        
+        public override async Task<CommandResult> ExecuteAsync(EditMentorProfileCommand command)
         {
-            var mentor = await _signInManager.UserManager
-                .FindByIdAsync(command.MentorId.ToString());
+            var mentor = await _context.LfmUsers
+                .Join(_context.UserRoles, u => u.Id, ur => ur.UserId, (user, userRole) => new { user, userRole.RoleId })
+                .Where(u => u.RoleId == (int)LfmIdentityRolesEnum.Mentor)
+                .Select(u => u.user)
+                .FirstOrDefaultAsync(u => u.Id == command.MentorId);
 
             if (mentor == null)
                 throw new LfmException(Messages.DataNotFound, "User");
@@ -57,14 +63,13 @@ namespace LFM.Domain.Write.CommandHandlers.MentorProfile
             if (!mentor.Name.Equals(command.Name, StringComparison.InvariantCulture))
             {
                 mentor.Name = command.Name;
-                var updateResult = await _signInManager.UserManager.UpdateAsync(mentor);
+                var updateResult = await _userManager.UpdateAsync(mentor);
                 if (!updateResult.Succeeded)
                 {
                     throw new LfmException(updateResult.Errors.FirstOrDefault()?.Description ?? Messages.SystemError);
                 }
                 await _userCachingService.RemoveUserFromCache();
                 await _userCachingService.TryCacheUser((mentor, LfmIdentityRolesEnum.Mentor));
-                await _signInManager.RefreshSignInAsync(mentor);
             }
             
             if (HasChangesAndApply(profile, command))

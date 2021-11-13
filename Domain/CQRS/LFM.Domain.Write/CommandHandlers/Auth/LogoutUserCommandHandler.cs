@@ -3,7 +3,7 @@ using LFM.DataAccess.DB.Core.Entities;
 using Lfm.Domain.Common.Caching.User;
 using LFM.Domain.Write.Commands.Auth;
 using LFM.Domain.Write.Declarations;
-using LFM.Domain.Write.Models;
+using LFM.Domain.Write.ResultModels;
 using Microsoft.AspNetCore.Identity;
 
 namespace LFM.Domain.Write.CommandHandlers.Auth

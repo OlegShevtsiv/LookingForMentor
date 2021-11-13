@@ -1,12 +1,13 @@
 using LFM.DataAccess.DB.Core.Entities;
 using LFM.DataAccess.DB.Core.Entities.MentorEntities;
 using LFM.DataAccess.DB.Core.Entities.SubjectEntities;
+using LFM.DataAccess.DB.Core.Entities.ToDoEntities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace LFM.DataAccess.DB.Core.Context
 {
-    public static class ModelsConfiguration
+    internal static class ModelsConfiguration
     {
         public static void ConfigureRelations(ModelBuilder builder)
         {
@@ -179,6 +180,31 @@ namespace LFM.DataAccess.DB.Core.Context
                         {
                             j.HasKey(t => new { t.SubjectId, t.TagId });
                         });
+            });
+
+            #endregion
+
+            #region ToDo
+
+            builder.Entity<ToDoEntity>(e =>
+            {
+                e.HasKey(t => t.Id);
+
+                e.HasOne(t => t.Status)
+                    .WithMany(t => t.ToDos)
+                    .HasForeignKey(t => t.StatusId);
+
+                e.HasOne(t => t.Checker)
+                    .WithMany()
+                    .HasForeignKey(t => t.CheckerId);
+                
+                e.HasOne(t => t.CreatedByUser)
+                    .WithMany()
+                    .HasForeignKey(t => t.CreatedByUserId);
+                
+                e.HasOne(t => t.OperationCode)
+                    .WithMany(t => t.ToDos)
+                    .HasForeignKey(t => t.OperationCodeId);
             });
 
             #endregion

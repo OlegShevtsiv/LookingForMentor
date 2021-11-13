@@ -7,7 +7,7 @@ using Lfm.Domain.Common.Extensions;
 using LFM.Domain.Read.Providers;
 using LFM.Domain.Write.Commands.StudentProfile;
 using LFM.Domain.Write.Mediator;
-using LFM.Domain.Write.Models;
+using LFM.Domain.Write.ResultModels;
 using Lfm.Web.Mvc.App.Extensions;
 using Lfm.Web.Mvc.App.SessionAlerts;
 using Lfm.Web.Mvc.Models.FormModels.UserCabinet.Student;
@@ -23,12 +23,12 @@ namespace LFM.Web.Mvc.Controllers
         private readonly IMapper _mapper;
         private readonly IStudentProfileProvider _studentProfileProvider;
         private readonly ISubjectsProvider _subjectsProvider;
-        private readonly ICommandBus _commandBus;
+        private readonly IMediator _commandBus;
         
         public StudentUserCabinetController(
             IMapper mapper,
             IStudentProfileProvider studentProfileProvider,
-            ICommandBus commandBus, 
+            IMediator commandBus, 
             ISubjectsProvider subjectsProvider)
         {
             _mapper = mapper;
@@ -82,20 +82,14 @@ namespace LFM.Web.Mvc.Controllers
                         return RedirectToAction("LfmRequests");
                     }
                     
-                    var command = _mapper.Map<CreateLookingForMentorRequestFormModel, CreateLookingForMentorRequestCommand>(model);
+                    var command = _mapper.Map<CreateLookingForMentorRequestCommand>(model);
                     command.StudentId = User.GetId();
                     command.StudentName = User.GetName();
                     command.StudentEmail = User.GetEmail();
                     command.StudentPhoneNumber = User.GetPhoneNumber();
 
-                    var commandResult =
-                        await _commandBus.ExecuteCommand<CreateLookingForMentorRequestCommand, CommandResult>(command);
-
-                    if (commandResult.IsSuccess)
-                        this.AlertSuccess(Messages.OrderRequestSuccessful);
-                    else 
-                        this.AlertError(Messages.OrderRequestFailed);
-
+                    await _commandBus.CreateToDo(command);
+                    this.AlertInfo(Messages.ToDoCreated);
                     return defaultResult;
                 },
                 defaultResult);

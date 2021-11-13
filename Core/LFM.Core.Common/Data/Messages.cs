@@ -4,7 +4,7 @@ namespace LFM.Core.Common.Data
     {
         #region CommonOperationMessage
         
-        public const string SystemError = "Ой, сталась якась халепа.... \nSystem error.";
+        public const string SystemError = "Ой, сталась якась халепа...";
         public const string Unauthorized = "You are unauthorized for this action.";
         public const string DataNotFound = "{0} не знайдено.";
         public const string InvalidRequest = "Invalid request.";
@@ -49,5 +49,7 @@ namespace LFM.Core.Common.Data
         #endregion
         
         public const string MentorNotAbleToGetPotentialOrders = "Ви не можете переглядати потенційні заявки.";
+        
+        public const string ToDoCreated = "Очікуйте на підтвердження Менеджера.";
     }
 }

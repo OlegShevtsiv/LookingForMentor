@@ -31,7 +31,7 @@ namespace Lfm.Web.Mvc.App.Startup
             app.UseAuthentication();
             app.UseAuthorization();
             
-            app.UseMiddleware<UserCacheMiddleware>();
+            app.UseMiddleware<LfmUserCacheMiddleware>();
 
             
             app.UseEndpoints(endpoints =>

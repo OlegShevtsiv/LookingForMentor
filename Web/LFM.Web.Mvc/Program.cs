@@ -1,3 +1,7 @@
+using System.Linq;
+using System.Reflection;
+using LFM.DataAccess.DB.Core.Entities.ToDoEntities;
+using LFM.Domain.Write.ToDo;
 using Lfm.Web.Mvc.App.DataInitializers;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
@@ -10,7 +14,7 @@ namespace LFM.Web.Mvc
         {
             var host = CreateHostBuilder(args).Build();
             
-            SqliteIdentityInitializer.Init(host.Services);
+            InitialDbSeed.Init(host.Services);
             
             host.Run();
         }

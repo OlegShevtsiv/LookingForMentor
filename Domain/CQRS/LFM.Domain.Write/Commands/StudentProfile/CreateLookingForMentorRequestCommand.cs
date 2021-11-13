@@ -1,9 +1,9 @@
 using LFM.DataAccess.DB.Core.Types;
-using LFM.Domain.Write.Declarations;
+using LFM.Domain.Write.ToDo;
 
 namespace LFM.Domain.Write.Commands.StudentProfile
 {
-    public class CreateLookingForMentorRequestCommand : ICommand
+    public class CreateLookingForMentorRequestCommand : NeedsApproveCommand
     {
         public int StudentId { get; set; }
         
@@ -32,5 +32,7 @@ namespace LFM.Domain.Write.Commands.StudentProfile
         public string WhichHelp { get; set; }
 
         public string AdditionalWishes { get; set; }
+        
+        public override ToDoOperationsEnum Operation => ToDoOperationsEnum.CreateLfmRequest;
     }
 }

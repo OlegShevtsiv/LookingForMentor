@@ -1,8 +1,6 @@
-using LFM.Domain.Write.Declarations;
-
 namespace LFM.Domain.Write.Commands.StudentProfile
 {
-    public class ApproveMentorProposeCommand : ICommand
+    public class ApproveMentorProposeCommand : BaseCommand
     {
         public int OrderId { get; set; }
 

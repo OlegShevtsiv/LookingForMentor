@@ -10,7 +10,10 @@ using LFM.Domain.Write.CommandServices.Auth;
 using LFM.Domain.Write.Declarations;
 using LFM.Domain.Write.Mapper;
 using LFM.Domain.Write.Mediator;
-using LFM.Domain.Write.Models;
+using LFM.Domain.Write.ResultModels;
+using LFM.Domain.Write.ToDo;
+using LFM.Domain.Write.ToDo.CreateService;
+using LFM.Domain.Write.ToDo.Handler;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace LFM.Domain.Write
@@ -20,11 +23,25 @@ namespace LFM.Domain.Write
         public static void AddCommands(this IServiceCollection services)
         {
             services.AddAutoMapper(typeof(CommandToEntityMapperConfig));
-            services.AddTransient<ICommandBus, CommandBus>();
+            
+            services.AddScoped<IMediator, Mediator.Mediator>();
 
             AddInternalServices(services);
 
             AddCommandHandlers(services);
+            AddToDoHandlers(services);
+        }
+
+        private static void AddToDoHandlers(IServiceCollection services)
+        {
+            services.AddScoped<INeedsApproveCommandHandler, EditMentorProfileCommandHandler>();
+            services.AddScoped<INeedsApproveCommandHandler, AddMentorSubjectCommandHandler>();
+            services.AddScoped<INeedsApproveCommandHandler, EditMentorSubjectCommandHandler>();
+            services.AddScoped<INeedsApproveCommandHandler, CreateLookingForMentorRequestCommandHandler>();
+            
+            services.AddTransient<ICreateToDoService, CreateToDoService>();
+
+            services.AddSingleton<IToDoHandler, ToDoHandler>();
         }
 
         private static void AddCommandHandlers(IServiceCollection services)

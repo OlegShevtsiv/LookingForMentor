@@ -2,8 +2,8 @@ using System;
 using Lfm.Core.Common.Web.Configurations;
 using Lfm.Core.Common.Web.Extensions;
 using LFM.DataAccess.DB.SQLite;
+using LFM.DataAccess.DB.SQLite.Claims;
 using Lfm.Domain.Common;
-using Lfm.Domain.Common.Identity.Claims;
 using LFM.Domain.Read;
 using LFM.Domain.Write;
 using Lfm.Web.Mvc.App.Attributes.Action;
@@ -19,13 +19,11 @@ namespace Lfm.Web.Mvc.App.Startup
     {
         public static void Configure(IServiceCollection services, IConfiguration configuration)
         {
-            var appConfiguration = configuration.GetAppConfigurations();
-
-            services.Configure<AppConfigurations>(configuration.GetSection("AppConfigurations"));
+            var appConfiguration = services.ConfigureAppConfigurations(configuration);
             
             string sqliteDbPath = configuration.GetConnectionString("SqliteDbConnectionPath");
             
-            services.AddLfmSqliteContext<LfmUserClaimsPrincipalFactory>(sqliteDbPath);
+            services.AddLfmSqliteContext(sqliteDbPath);
             
             services.ConfigureApplicationCookie(options => options.LoginPath = $"/auth/login");
 

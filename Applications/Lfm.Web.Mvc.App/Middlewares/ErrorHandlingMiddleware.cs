@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Http;
 
 namespace Lfm.Web.Mvc.App.Middlewares
 {
-    public class ErrorHandlingMiddleware
+    internal class ErrorHandlingMiddleware
     {
         private readonly RequestDelegate _next;
 

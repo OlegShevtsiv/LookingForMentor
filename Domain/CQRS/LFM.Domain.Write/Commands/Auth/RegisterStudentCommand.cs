@@ -1,8 +1,6 @@
-using LFM.Domain.Write.Declarations;
-
 namespace LFM.Domain.Write.Commands.Auth
 {
-    public class RegisterStudentCommand : ICommand
+    public class RegisterStudentCommand : BaseCommand
     {
         public string Name { get; set; }
         

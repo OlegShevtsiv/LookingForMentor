@@ -1,11 +1,8 @@
-using System;
-using System.Linq;
 using System.Threading.Tasks;
 using LFM.Core.Common.Data;
 using LFM.Core.Common.Exceptions;
 using LFM.DataAccess.DB.Core.Entities;
 using LFM.DataAccess.DB.Core.Types;
-using Lfm.Domain.Common.Identity.Claims;
 using Lfm.Domain.Common.Services.Role;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;

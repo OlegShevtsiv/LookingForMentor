@@ -1,9 +1,10 @@
 using LFM.DataAccess.DB.Core.Types;
 using LFM.Domain.Write.Declarations;
+using LFM.Domain.Write.ToDo;
 
 namespace LFM.Domain.Write.Commands.MentorProfile
 {
-    public class EditMentorProfileCommand : ICommand
+    public class EditMentorProfileCommand : NeedsApproveCommand
     {
         public int MentorId { get; set; }
         
@@ -25,5 +26,7 @@ namespace LFM.Domain.Write.Commands.MentorProfile
         public string Education { get; set; }
         
         public bool WantReceivePersonalOrders { get; set; }
+        
+        public override ToDoOperationsEnum Operation => ToDoOperationsEnum.EditMentorProfile;
     }
 }

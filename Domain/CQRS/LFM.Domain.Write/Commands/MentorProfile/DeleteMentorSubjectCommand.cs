@@ -1,8 +1,6 @@
-using LFM.Domain.Write.Declarations;
-
 namespace LFM.Domain.Write.Commands.MentorProfile
 {
-    public class DeleteMentorSubjectCommand : ICommand
+    public class DeleteMentorSubjectCommand : BaseCommand
     {
         public int MentorId { get; set; }
         

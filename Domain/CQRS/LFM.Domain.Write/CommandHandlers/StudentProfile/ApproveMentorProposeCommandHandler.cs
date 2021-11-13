@@ -7,7 +7,7 @@ using LFM.DataAccess.DB.Core.Context;
 using LFM.DataAccess.DB.Core.Entities;
 using LFM.Domain.Write.Commands.StudentProfile;
 using LFM.Domain.Write.Declarations;
-using LFM.Domain.Write.Models;
+using LFM.Domain.Write.ResultModels;
 using Microsoft.EntityFrameworkCore;
 
 namespace LFM.Domain.Write.CommandHandlers.StudentProfile

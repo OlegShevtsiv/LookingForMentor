@@ -6,13 +6,14 @@ using LFM.Core.Common.Exceptions;
 using LFM.DataAccess.DB.Core.Context;
 using LFM.DataAccess.DB.Core.Entities;
 using LFM.Domain.Write.Commands.StudentProfile;
-using LFM.Domain.Write.Declarations;
-using LFM.Domain.Write.Models;
+using LFM.Domain.Write.ResultModels;
+using LFM.Domain.Write.ToDo;
 using Microsoft.EntityFrameworkCore;
 
 namespace LFM.Domain.Write.CommandHandlers.StudentProfile
 {
-    internal class CreateLookingForMentorRequestCommandHandler : ICommandHandler<CreateLookingForMentorRequestCommand, CommandResult>
+    internal class CreateLookingForMentorRequestCommandHandler :
+        BaseNeedsApproveCommandHandler<CreateLookingForMentorRequestCommand, CommandResult>
     {
         private readonly LfmDbContext _context;
         private readonly IMapper _mapper;
@@ -24,8 +25,10 @@ namespace LFM.Domain.Write.CommandHandlers.StudentProfile
             _context = context;
             _mapper = mapper;
         }
+        
+        public override ToDoOperationsEnum Operation => ToDoOperationsEnum.CreateLfmRequest;
 
-        public async Task<CommandResult> ExecuteAsync(CreateLookingForMentorRequestCommand command)
+        public override async Task<CommandResult> ExecuteAsync(CreateLookingForMentorRequestCommand command)
         {
             if (!await CanCreate(command))
             {
@@ -48,7 +51,7 @@ namespace LFM.Domain.Write.CommandHandlers.StudentProfile
                 .Where(o => o.StudentId == command.StudentId);
             
             if (await query.CountAsync() >= 10)
-                return false;
+                throw new LfmException(Messages.OrderRequestFailed);
 
             return !await query.AnyAsync(o => o.SubjectId == command.SubjectId);
         }

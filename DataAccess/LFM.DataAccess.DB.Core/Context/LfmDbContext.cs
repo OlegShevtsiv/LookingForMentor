@@ -1,6 +1,7 @@
 ﻿using LFM.DataAccess.DB.Core.Entities;
 using LFM.DataAccess.DB.Core.Entities.MentorEntities;
 using LFM.DataAccess.DB.Core.Entities.SubjectEntities;
+using LFM.DataAccess.DB.Core.Entities.ToDoEntities;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -34,7 +35,13 @@ namespace LFM.DataAccess.DB.Core.Context
         public DbSet<RejectedOrder> RejectedOrders { get; set; }
         
         public DbSet<InterestedMentorsOrdersRelation> InterestedMentorsOrdersRelations { get; set; }
+        
+        public DbSet<ToDoEntity> ToDos { get; set; }
 
+        public DbSet<ToDoOperationCode> ToDoOperationCodes { get; set; }
+
+        public DbSet<ToDoStatus> ToDoStatuses { get; set; }
+        
 
         public LfmDbContext()
         {

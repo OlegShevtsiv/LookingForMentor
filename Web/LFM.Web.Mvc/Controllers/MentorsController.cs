@@ -8,7 +8,7 @@ using LFM.Domain.Read.Providers;
 using Lfm.Domain.ReadModels.ReviewModels.Mentor;
 using LFM.Domain.Write.Commands.Order;
 using LFM.Domain.Write.Mediator;
-using LFM.Domain.Write.Models;
+using LFM.Domain.Write.ResultModels;
 using Lfm.Web.Mvc.App.Extensions;
 using Lfm.Web.Mvc.App.SessionAlerts;
 using Lfm.Web.Mvc.Models.FormModels.Mentor;
@@ -22,13 +22,13 @@ namespace LFM.Web.Mvc.Controllers
         private readonly IMentorsProvider _mentorsProvider;
         private readonly SignInManager<LfmUser> _signInManager;
         private readonly IMapper _mapper;
-        private readonly ICommandBus _commandBus;
+        private readonly IMediator _commandBus;
 
         public MentorsController(
             IMentorsProvider mentorsProvider, 
             SignInManager<LfmUser> signInManager, 
             IMapper mapper, 
-            ICommandBus commandBus)
+            IMediator commandBus)
         {
             _mentorsProvider = mentorsProvider;
             _signInManager = signInManager;

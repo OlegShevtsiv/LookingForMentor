@@ -1,8 +1,6 @@
-using LFM.Domain.Write.Declarations;
-
 namespace LFM.Domain.Write.Commands.MentorProfile
 {
-    public class InterestOrderCommand : ICommand
+    public class InterestOrderCommand : BaseCommand
     {
         public int OrderId { get; set; }
 

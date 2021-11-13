@@ -1,8 +1,6 @@
-using LFM.Domain.Write.Declarations;
-
 namespace LFM.Domain.Write.Commands.MentorProfile
 {
-    public class RejectPersonalOrderCommand : ICommand
+    public class RejectPersonalOrderCommand : BaseCommand
     {
         public int MentorId { get; set; }
 

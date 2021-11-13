@@ -3,7 +3,7 @@ using LFM.Domain.Write.Declarations;
 
 namespace LFM.Domain.Write.Commands.Order
 {
-    public class CreatePersonalOrderToMentorCommand : ICommand
+    public class CreatePersonalOrderToMentorCommand : BaseCommand
     {
         public int MentorId { get; set; }
         
