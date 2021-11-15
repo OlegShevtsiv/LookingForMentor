@@ -74,26 +74,26 @@ namespace Lfm.Core.Common.Web.Models
 
         private void InitNumbersPrevBeforePages()
         {
-            int i = PageNumber;
-            int j = PageNumber;
+            int leftPages = PageNumber;
+            int rightPages = PageNumber;
 
-            while (i - j < _pagesDimension)
+            while (leftPages - rightPages < _pagesDimension)
             {
-                if (j == 1 && i == TotalPages)
+                if (rightPages == 1 && leftPages == TotalPages)
                 {
                     break;
                 }
                 
-                if (j > 1)
+                if (rightPages > 1)
                 {
-                    j--;
-                    _numbersAllPreviousPages.Insert(0, j);
+                    rightPages--;
+                    _numbersAllPreviousPages.Insert(0, rightPages);
                 }
 
-                if (i < TotalPages)
+                if (leftPages < TotalPages)
                 {
-                    i++;
-                    _numbersAllNextPages.Add(i);
+                    leftPages++;
+                    _numbersAllNextPages.Add(leftPages);
                 }
             }
         }

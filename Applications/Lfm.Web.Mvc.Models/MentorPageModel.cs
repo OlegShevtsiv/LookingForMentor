@@ -1,27 +1,18 @@
 using System.Collections.Generic;
 using Lfm.Core.Common.Web.Models;
-using Lfm.Domain.ReadModels.Common;
 using Lfm.Domain.ReadModels.ReviewModels.Mentor;
 using Lfm.Domain.ReadModels.SearchModels;
 
 namespace Lfm.Web.Mvc.Models
 {
-    public class MentorPageModel
+    public class MentorsListPageModel : AbstractListPageModel<MentorPreviewModel, MentorsSearchModel>
     {
-        public PaginationModel Pagination { get; }
-
-        public PageList<MentorPreviewModel> PageList { get; }
-
-        public MentorsSearchModel SearchModel { get; }
-
-        public MentorPageModel(PageList<MentorPreviewModel> items, MentorsSearchModel searchModel, int pageSize)
+        public MentorsListPageModel(PageList<MentorPreviewModel> items, MentorsSearchModel searchModel, int pageSize) 
+            : base(items, searchModel, pageSize)
         {
-            Pagination = new PaginationModel(items.TotalCount, items.PageNumber, pageSize);
-            PageList = items;
-            SearchModel = searchModel;
         }
 
-        public Dictionary<string, string> GetAllRouteData()
+        public override Dictionary<string, string> GetAllRouteData()
         {
             return new Dictionary<string, string>
             {

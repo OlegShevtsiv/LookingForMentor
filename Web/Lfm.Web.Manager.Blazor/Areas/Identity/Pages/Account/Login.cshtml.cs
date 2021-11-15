@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using Lfm.Common.Blazor.App.PageModels;
 using LFM.Core.Common.Data;
@@ -57,7 +58,7 @@ namespace Lfm.Web.Manager.Blazor.Areas.Identity.Pages.Account
             if (ModelState.IsValid)
             {
                 LfmUser user = await _signInManager.UserManager.FindByEmailAsync(Input.Email);
-                
+
                 if (user != null)
                 {
                     var role = await _roleManager.RetrieveUserRole(user.Id);
@@ -67,6 +68,9 @@ namespace Lfm.Web.Manager.Blazor.Areas.Identity.Pages.Account
                         
                         if (result.Succeeded)
                         {
+                            user.LastLoginTime = DateTime.Now;
+                            await _signInManager.UserManager.UpdateAsync(user);
+                            
                             _logger.LogInformation("User logged in.");
                             return LocalRedirect(returnUrl);
                         }

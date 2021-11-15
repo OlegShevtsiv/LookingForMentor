@@ -16,6 +16,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\..\Applications\Lfm.Admin.Blazor.App\Lfm.Admin.Blazor.App.csproj" />
+      <ProjectReference Include="..\..\Domain\Lfm.Domain.Admin.Services\Lfm.Domain.Admin.Services.csproj" />
     </ItemGroup>
 
 </Project>

@@ -16,6 +16,8 @@
     <ItemGroup>
       <ProjectReference Include="..\..\Core\Lfm.Core.Common.Web\Lfm.Core.Common.Web.csproj" />
       <ProjectReference Include="..\..\DataAccess\LFM.DataAccess.DB.SQLite\LFM.DataAccess.DB.SQLite.csproj" />
+      <ProjectReference Include="..\..\Domain\Lfm.Domain.Admin.Models\Lfm.Domain.Admin.Models.csproj" />
+      <ProjectReference Include="..\..\Domain\Lfm.Domain.Admin.Services\Lfm.Domain.Admin.Services.csproj" />
       <ProjectReference Include="..\..\Domain\Lfm.Domain.Common\Lfm.Domain.Common.csproj" />
       <ProjectReference Include="..\Lfm.Common.Blazor.App\Lfm.Common.Blazor.App.csproj" />
     </ItemGroup>

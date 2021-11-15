@@ -4,6 +4,7 @@ using Lfm.Common.Blazor.App.Identity;
 using Lfm.Core.Common.Web.Extensions;
 using LFM.DataAccess.DB.SQLite;
 using Lfm.Domain.Common;
+using Lfm.Domain.Manager.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -22,7 +23,12 @@ namespace Lfm.Manager.Blazor.App.Startup
             
             services.AddLfmSqliteContext(sqliteDbPath);
             
-            services.ConfigureApplicationCookie(options => options.LoginPath = $"/Identity/Account/Login");
+            services.ConfigureApplicationCookie(
+                options =>
+                {
+                    options.LoginPath = "/Identity/Account/Login";
+                    options.Cookie.Name = ".Lfm.Manager";
+                });
             services.Configure<CookiePolicyOptions>(options =>
             {
                 options.MinimumSameSitePolicy = SameSiteMode.None;
@@ -38,7 +44,8 @@ namespace Lfm.Manager.Blazor.App.Startup
             services.AddHttpContextAccessor();
 
             services.AddDomainCommonServices();
-            
+            services.AddManagerServices();
+                
             services.AddControllers();
             
             services.AddRazorPages();

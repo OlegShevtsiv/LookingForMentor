@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-namespace Lfm.Domain.ReadModels.Common
+namespace Lfm.Core.Common.Web.Models
 {
     public class PageList<T> : IEnumerable<T>
     {

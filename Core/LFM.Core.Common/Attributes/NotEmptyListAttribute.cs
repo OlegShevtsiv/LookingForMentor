@@ -7,17 +7,15 @@ namespace LFM.Core.Common.Attributes
     [AttributeUsage(AttributeTargets.Property)]
     public class NotEmptyListAttribute : ValidationAttribute
     {
-        private const string defaultError = "'{0}' must have at least one element.";
+        private const string DefaultError = "'{0}' must have at least one element.";
         public NotEmptyListAttribute ( ) 
-            : base(defaultError) 
+            : base(DefaultError) 
         {
         }
 
         public override bool IsValid (object value)
         {
-            IList list = value as IList;
-            
-            return (list != null && list.Count > 0);
+            return (value is IList list && list.Count > 0);
         }
 
         public override string FormatErrorMessage ( string name )

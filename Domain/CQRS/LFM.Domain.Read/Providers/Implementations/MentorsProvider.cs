@@ -6,13 +6,12 @@ using LFM.Core.Common.Data;
 using LFM.Core.Common.Exceptions;
 using LFM.Core.Common.Extensions;
 using Lfm.Core.Common.Web.Configurations;
+using Lfm.Core.Common.Web.Models;
 using LFM.DataAccess.DB.Core.Entities.MentorEntities;
 using LFM.DataAccess.DB.Core.Repository;
 using LFM.DataAccess.DB.Core.Types;
-using Lfm.Domain.ReadModels.Common;
 using Lfm.Domain.ReadModels.ReviewModels.Mentor;
 using Lfm.Domain.ReadModels.SearchModels;
-using Lfm.Domain.ReadModels.SortModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 

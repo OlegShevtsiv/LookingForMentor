@@ -1,4 +1,5 @@
 ﻿using LFM.DataAccess.DB.Core.Entities;
+using LFM.DataAccess.DB.Core.Entities.Administration;
 using LFM.DataAccess.DB.Core.Entities.MentorEntities;
 using LFM.DataAccess.DB.Core.Entities.SubjectEntities;
 using LFM.DataAccess.DB.Core.Entities.ToDoEntities;
@@ -41,6 +42,8 @@ namespace LFM.DataAccess.DB.Core.Context
         public DbSet<ToDoOperationCode> ToDoOperationCodes { get; set; }
 
         public DbSet<ToDoStatus> ToDoStatuses { get; set; }
+        
+        public DbSet<PendingManagerCreation> PendingManagerCreations { get; set; }
         
 
         public LfmDbContext()

@@ -46,7 +46,7 @@ namespace LFM.Web.Mvc.Controllers
             
             CommonStaticService.PushLastSearchMentorsRequest(HttpContext, searchModel);
 
-            MentorPageModel pageModel = new MentorPageModel(mentors, searchModel, _appConfigs.SearchingMentorsPageSize);
+            MentorsListPageModel pageModel = new MentorsListPageModel(mentors, searchModel, _appConfigs.SearchingMentorsPageSize);
             
             return View("../Mentors/Mentors", pageModel);
         }

@@ -1,4 +1,5 @@
 using LFM.DataAccess.DB.Core.Entities;
+using LFM.DataAccess.DB.Core.Entities.Administration;
 using LFM.DataAccess.DB.Core.Entities.MentorEntities;
 using LFM.DataAccess.DB.Core.Entities.SubjectEntities;
 using LFM.DataAccess.DB.Core.Entities.ToDoEntities;
@@ -16,6 +17,10 @@ namespace LFM.DataAccess.DB.Core.Context
             builder.Entity<LfmUser>(m =>
             {
                 m.ToTable("LfmUsers");
+
+                m.HasMany(u => u.Roles)
+                    .WithOne()
+                    .HasForeignKey(u => u.UserId);
             });
             
             builder.Entity<LfmRole>(m =>
@@ -205,6 +210,15 @@ namespace LFM.DataAccess.DB.Core.Context
                 e.HasOne(t => t.OperationCode)
                     .WithMany(t => t.ToDos)
                     .HasForeignKey(t => t.OperationCodeId);
+            });
+
+            #endregion
+
+            #region Administration
+
+            builder.Entity<PendingManagerCreation>(m =>
+            {
+                m.HasKey(t => t.Id);
             });
 
             #endregion

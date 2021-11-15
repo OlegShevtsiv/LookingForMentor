@@ -26,4 +26,8 @@
       <ProjectReference Include="..\..\Domain\Lfm.Domain.Common\Lfm.Domain.Common.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="StaticServices" />
+    </ItemGroup>
+
 </Project>
