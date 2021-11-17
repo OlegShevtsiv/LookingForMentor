@@ -32,7 +32,8 @@ namespace LFM.Domain.Write.Commands.StudentProfile
         public string WhichHelp { get; set; }
 
         public string AdditionalWishes { get; set; }
-        
+
         public override ToDoOperationsEnum Operation => ToDoOperationsEnum.CreateLfmRequest;
+        public override string OperationUniqueKey => $"{StudentId}_{SubjectId}_{TagId}";
     }
 }

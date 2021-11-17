@@ -51,7 +51,7 @@ namespace Lfm.Web.Mvc.App.DataInitializers
                     !await context.ToDoOperationCodes
                         .AnyAsync(op => op.Id == o.Value.Id && op.Code == o.Value.Code))
                 {
-                    context.ToDoOperationCodes.Add(new ToDoOperationCode
+                    context.ToDoOperationCodes.Add(new ToDoOperation
                     {
                         Id = o.Value.Id,
                         Code = o.Value.Code,

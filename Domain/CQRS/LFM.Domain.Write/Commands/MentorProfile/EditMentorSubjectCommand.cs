@@ -14,7 +14,8 @@ namespace LFM.Domain.Write.Commands.MentorProfile
         public int SubjectId { get; set; }
             
         public List<int> TagIds { get; set; }
-        
+
         public override ToDoOperationsEnum Operation => ToDoOperationsEnum.EditMentorSubject;
+        public override string OperationUniqueKey => SubjectId.ToString();
     }
 }

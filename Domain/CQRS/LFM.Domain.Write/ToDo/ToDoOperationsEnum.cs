@@ -21,7 +21,7 @@ namespace LFM.Domain.Write.ToDo
         public string Code { get; }
         
         public string Description { get; }
-
+        
         public override string ToString()
         {
             return Code;

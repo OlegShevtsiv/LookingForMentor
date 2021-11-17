@@ -1,4 +1,4 @@
-using Lfm.Web.Mvc.App.SessionAlerts;
+using Lfm.Core.Common.Web.SessionAlerts;
 
 namespace Lfm.Web.Mvc.App.UIRenderers
 {

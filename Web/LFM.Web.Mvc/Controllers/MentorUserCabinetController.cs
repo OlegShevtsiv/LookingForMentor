@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using LFM.Core.Common.Data;
 using LFM.Core.Common.Exceptions;
+using Lfm.Core.Common.Web.SessionAlerts;
 using LFM.DataAccess.DB.Core.Types;
 using Lfm.Domain.Common.Extensions;
 using LFM.Domain.Read.Providers;
@@ -12,7 +13,6 @@ using LFM.Domain.Write.Commands.MentorProfile;
 using LFM.Domain.Write.Mediator;
 using LFM.Domain.Write.ResultModels;
 using Lfm.Web.Mvc.App.Extensions;
-using Lfm.Web.Mvc.App.SessionAlerts;
 using Lfm.Web.Mvc.Models.FormModels.UserCabinet.Mentor;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -68,8 +68,7 @@ namespace LFM.Web.Mvc.Controllers
                     var command = _mapper.Map<EditMentorProfileCommand>(model);
                     command.MentorId = User.GetId();
 
-                    await _commandBus.CreateToDo(command);
-                    this.AlertInfo(Messages.ToDoCreated);
+                    await _commandBus.ExecuteCommand(command);
                     return RedirectToAction("GeneralInfo");
                 },
                 defaultResult);
@@ -113,8 +112,7 @@ namespace LFM.Web.Mvc.Controllers
                     var command = _mapper.Map<AddMentorSubjectCommand>(model);
                     command.MentorId = User.GetId();
                     
-                    await _commandBus.CreateToDo(command);
-                    this.AlertInfo(Messages.ToDoCreated);
+                    await _commandBus.ExecuteCommand(command);
                     return RedirectToAction("SubjectsInfo");
                 },
                 defaultResult);
@@ -145,8 +143,7 @@ namespace LFM.Web.Mvc.Controllers
                     var command = _mapper.Map<EditMentorSubjectCommand>(model);
                     command.MentorId = User.GetId();
                     
-                    await _commandBus.CreateToDo(command);
-                    this.AlertInfo(Messages.ToDoCreated);
+                    await _commandBus.ExecuteCommand(command);
                     return RedirectToAction("SubjectsInfo");
                 },
                 defaultResult);
@@ -166,7 +163,7 @@ namespace LFM.Web.Mvc.Controllers
                         SubjectId = subjectId
                     };
 
-                    var result = await _commandBus.ExecuteCommand<DeleteMentorSubjectCommand, CommandResult>(command);
+                    var result = await _commandBus.ExecuteCommand(command);
 
                     if (result.IsSuccess)
                     {
@@ -233,7 +230,7 @@ namespace LFM.Web.Mvc.Controllers
                         OrderRequestId = orderId
                     };
                 
-                    CommandResult commandResult = await _commandBus.ExecuteCommand<RejectPersonalOrderCommand, CommandResult>(command);
+                    CommandResult commandResult = await _commandBus.ExecuteCommand(command);
 
                     if (commandResult.IsSuccess)
                     {
@@ -308,7 +305,7 @@ namespace LFM.Web.Mvc.Controllers
                         OrderId = orderId
                     };
                 
-                    CommandResult commandResult = await _commandBus.ExecuteCommand<InterestOrderCommand, CommandResult>(command);
+                    CommandResult commandResult = await _commandBus.ExecuteCommand(command);
 
                     if (commandResult.IsSuccess)
                     {

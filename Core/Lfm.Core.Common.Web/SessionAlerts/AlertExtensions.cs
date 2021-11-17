@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Razor;
 
-namespace Lfm.Web.Mvc.App.SessionAlerts
+namespace Lfm.Core.Common.Web.SessionAlerts
 {
     public static class AlertExtensions
     {

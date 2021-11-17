@@ -1,4 +1,4 @@
-namespace Lfm.Web.Mvc.App.SessionAlerts
+namespace Lfm.Core.Common.Web.SessionAlerts
 {
     public enum AlertTypes
     {

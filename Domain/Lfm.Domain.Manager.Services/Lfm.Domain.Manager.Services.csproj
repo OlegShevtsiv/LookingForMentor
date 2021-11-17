@@ -6,6 +6,11 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Lfm.Domain.Common\Lfm.Domain.Common.csproj" />
+      <ProjectReference Include="..\Lfm.Domain.Manager.Models\Lfm.Domain.Manager.Models.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="WriteServices" />
     </ItemGroup>
 
 </Project>

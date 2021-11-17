@@ -8,5 +8,9 @@ namespace LFM.Domain.Write.ResultModels
         {
             IsSuccess = isSuccess;
         }
+        
+        public CommandResult() : this(true)
+        {
+        }
     }
 }

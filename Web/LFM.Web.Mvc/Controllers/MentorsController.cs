@@ -1,6 +1,7 @@
 using System.Threading.Tasks;
 using AutoMapper;
 using LFM.Core.Common.Data;
+using Lfm.Core.Common.Web.SessionAlerts;
 using LFM.DataAccess.DB.Core.Entities;
 using LFM.DataAccess.DB.Core.Types;
 using Lfm.Domain.Common.Extensions;
@@ -10,7 +11,6 @@ using LFM.Domain.Write.Commands.Order;
 using LFM.Domain.Write.Mediator;
 using LFM.Domain.Write.ResultModels;
 using Lfm.Web.Mvc.App.Extensions;
-using Lfm.Web.Mvc.App.SessionAlerts;
 using Lfm.Web.Mvc.Models.FormModels.Mentor;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;

@@ -1,7 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using LFM.Core.Common.Data;
-using LFM.Core.Common.Exceptions;
+using Lfm.Core.Common.Web.SessionAlerts;
 using Lfm.Domain.Common.Extensions;
 using LFM.Domain.Write.Declarations;
 using LFM.Domain.Write.ResultModels;
@@ -23,22 +23,26 @@ namespace LFM.Domain.Write.Mediator
 
         public async Task<TCommandResult> ExecuteCommand<TCommand, TCommandResult>(TCommand command) 
             where TCommand : ICommand, new()
-            where TCommandResult : CommandResult
+            where TCommandResult : CommandResult, new()
         {
             if (command is NeedsApproveCommand)
-                throw new LfmException(Messages.SystemError);
-
+            {
+                var createToDoService = _serviceProvider.GetRequiredService<ICreateToDoService>();
+                var context = _serviceProvider.GetRequiredService<IHttpContextAccessor>().HttpContext;
+                
+                var needsApproveCommand = command as NeedsApproveCommand;
+                await createToDoService.CreateToDo(needsApproveCommand, context.User.GetId(), needsApproveCommand.Operation.Id);
+                context.Alert(Messages.ToDoCreated, AlertTypes.Info);
+                return new TCommandResult();
+            }
+            
             ICommandHandler<TCommand, TCommandResult> handler = this.RetrieveCommandHandler<TCommand, TCommandResult>();
             return await handler.ExecuteAsync(command);
         }
 
-        public async Task CreateToDo<TCommand>(TCommand command)
-            where TCommand : NeedsApproveCommand, new()
+        public async Task<CommandResult> ExecuteCommand<TCommand>(TCommand command) where TCommand : ICommand, new()
         {
-            var createToDoService = _serviceProvider.GetRequiredService<ICreateToDoService>();
-            int userId = _serviceProvider.GetRequiredService<IHttpContextAccessor>().HttpContext.User.GetId();
-            
-            await createToDoService.CreateToDo(command, userId, command.Operation.Id);
+            return await ExecuteCommand<TCommand, CommandResult>(command);
         }
 
         private ICommandHandler<TCommand, TCommandResult> RetrieveCommandHandler<TCommand, TCommandResult>()

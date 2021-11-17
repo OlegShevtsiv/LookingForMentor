@@ -1,5 +1,9 @@
 using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
+using Lfm.Core.Common.Web.Models;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 
 namespace Lfm.Core.Common.Web.Extensions
 {
@@ -19,6 +23,20 @@ namespace Lfm.Core.Common.Web.Extensions
             catch
             { }
             return bytes;
+        }
+        
+        
+        public static async Task<PageList<T>> GetPageList<T>(this IQueryable<T> query, int pageNo, int? pageSize = null)
+        {
+            int totalCount = await query.CountAsync();
+
+            var dataList = await (pageSize > 0 
+                ? 
+                query.Skip((pageNo - 1) * pageSize.Value).Take(pageSize.Value).ToListAsync() 
+                :
+                query.ToListAsync());
+            
+            return new PageList<T>(dataList, totalCount, pageNo);
         }
     }
 }

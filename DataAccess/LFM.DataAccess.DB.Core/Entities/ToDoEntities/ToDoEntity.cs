@@ -17,12 +17,16 @@ namespace LFM.DataAccess.DB.Core.Entities.ToDoEntities
         public string JsonCommand { get; set; }
 
         public int OperationCodeId { get; set; }
+        
+        public string OperationUniqueKey { get; set; }
 
         public int CreatedByUserId { get; set; }
-
-        public DateTime CreatedDateTime { get; set; }
         
-        public virtual ToDoOperationCode OperationCode { get; set; }
+        public DateTime CreatedDateTime { get; set; }
+
+        public DateTime ModifiedDateTime { get; set; }
+
+        public virtual ToDoOperation Operation { get; set; }
 
         public virtual ToDoStatus Status { get; set; }
         

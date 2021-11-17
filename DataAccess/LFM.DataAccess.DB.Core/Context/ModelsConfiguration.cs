@@ -207,7 +207,7 @@ namespace LFM.DataAccess.DB.Core.Context
                     .WithMany()
                     .HasForeignKey(t => t.CreatedByUserId);
                 
-                e.HasOne(t => t.OperationCode)
+                e.HasOne(t => t.Operation)
                     .WithMany(t => t.ToDos)
                     .HasForeignKey(t => t.OperationCodeId);
             });

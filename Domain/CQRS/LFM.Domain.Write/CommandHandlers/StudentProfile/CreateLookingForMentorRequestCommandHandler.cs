@@ -36,7 +36,7 @@ namespace LFM.Domain.Write.CommandHandlers.StudentProfile
                 throw new LfmException(Messages.OrderRequestAlreadyExist, subjectName);
             }
             
-            OrderRequest order = _mapper.Map<CreateLookingForMentorRequestCommand, OrderRequest>(command);
+            OrderRequest order = _mapper.Map<OrderRequest>(command);
 
             _context.OrdersRequests.Add(order);
 

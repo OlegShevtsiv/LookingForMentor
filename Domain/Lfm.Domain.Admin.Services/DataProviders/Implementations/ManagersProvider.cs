@@ -2,6 +2,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
+using Lfm.Core.Common.Web.Extensions;
 using Lfm.Core.Common.Web.Models;
 using LFM.DataAccess.DB.Core.Entities.Administration;
 using LFM.DataAccess.DB.Core.Repository;
@@ -42,16 +43,8 @@ namespace Lfm.Domain.Admin.Services.DataProviders.Implementations
             var query = _pendingManagersRepo.GetQueryable()
                 .Where(p => !p.IsActivated)
                 .ProjectTo<ManagerToCreateReviewModel>(_mapper.ConfigurationProvider);
-            
-            int totalCount = await query.CountAsync();
 
-            var managersToCreate = await (pageSize > 0 
-                ? 
-                query.Skip((pageNo - 1) * pageSize.Value).Take(pageSize.Value).ToListAsync() 
-                :
-                query.ToListAsync());
-
-            return new PageList<ManagerToCreateReviewModel>(managersToCreate, totalCount, pageNo);
+            return await query.GetPageList(pageNo, pageSize);
         }
     }
 }

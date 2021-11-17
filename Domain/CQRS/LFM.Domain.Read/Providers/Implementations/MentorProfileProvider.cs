@@ -50,7 +50,7 @@ namespace LFM.Domain.Read.Providers.Implementations
                 .SingleOrDefaultAsync();
             
             if (mentorsProfile == null)
-                throw new LfmException(Messages.DataNotFound);
+                throw new LfmException(Messages.DataNotFound, "Профілю");
 
             return mentorsProfile;
         }

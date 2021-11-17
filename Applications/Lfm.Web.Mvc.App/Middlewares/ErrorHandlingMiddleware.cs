@@ -2,7 +2,7 @@ using System;
 using System.Threading.Tasks;
 using LFM.Core.Common.Data;
 using LFM.Core.Common.Exceptions;
-using Lfm.Web.Mvc.App.SessionAlerts;
+using Lfm.Core.Common.Web.SessionAlerts;
 using Microsoft.AspNetCore.Http;
 
 namespace Lfm.Web.Mvc.App.Middlewares

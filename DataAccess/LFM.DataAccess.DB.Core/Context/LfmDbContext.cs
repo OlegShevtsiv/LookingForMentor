@@ -39,7 +39,7 @@ namespace LFM.DataAccess.DB.Core.Context
         
         public DbSet<ToDoEntity> ToDos { get; set; }
 
-        public DbSet<ToDoOperationCode> ToDoOperationCodes { get; set; }
+        public DbSet<ToDoOperation> ToDoOperationCodes { get; set; }
 
         public DbSet<ToDoStatus> ToDoStatuses { get; set; }
         

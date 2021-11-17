@@ -2,14 +2,14 @@ using System.Collections.Generic;
 
 namespace Lfm.Core.Common.Web.Models
 {
-    public abstract class AbstractListPageModel<TReviewModel, TSearchModel> 
+    public abstract class AbstractSearchingListPageModel<TReviewModel, TSearchModel> 
         : BaseListPageModel<TReviewModel>
         where TReviewModel : class, new() 
         where TSearchModel : class, new()
     {
         public TSearchModel SearchModel { get; }
 
-        public AbstractListPageModel(PageList<TReviewModel> items, TSearchModel searchModel, int pageSize) 
+        public AbstractSearchingListPageModel(PageList<TReviewModel> items, TSearchModel searchModel, int pageSize) 
             : base(items, pageSize)
         {
             SearchModel = searchModel;

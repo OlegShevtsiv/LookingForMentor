@@ -2,6 +2,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using AutoMapper;
 using LFM.Core.Common.Data;
+using Lfm.Core.Common.Web.SessionAlerts;
 using LFM.DataAccess.DB.Core.Types;
 using Lfm.Domain.Common.Extensions;
 using LFM.Domain.Read.Providers;
@@ -9,7 +10,6 @@ using LFM.Domain.Write.Commands.StudentProfile;
 using LFM.Domain.Write.Mediator;
 using LFM.Domain.Write.ResultModels;
 using Lfm.Web.Mvc.App.Extensions;
-using Lfm.Web.Mvc.App.SessionAlerts;
 using Lfm.Web.Mvc.Models.FormModels.UserCabinet.Student;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -88,8 +88,7 @@ namespace LFM.Web.Mvc.Controllers
                     command.StudentEmail = User.GetEmail();
                     command.StudentPhoneNumber = User.GetPhoneNumber();
 
-                    await _commandBus.CreateToDo(command);
-                    this.AlertInfo(Messages.ToDoCreated);
+                    await _commandBus.ExecuteCommand(command);
                     return defaultResult;
                 },
                 defaultResult);
@@ -108,7 +107,7 @@ namespace LFM.Web.Mvc.Controllers
                         OrderId = orderId
                     };
 
-                    var result = await _commandBus.ExecuteCommand<DeleteLookingForMentorRequestCommand, CommandResult>(command);
+                    var result = await _commandBus.ExecuteCommand(command);
 
                     if (result.IsSuccess)
                     {

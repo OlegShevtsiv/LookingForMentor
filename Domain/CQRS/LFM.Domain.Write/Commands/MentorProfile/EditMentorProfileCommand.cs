@@ -26,7 +26,8 @@ namespace LFM.Domain.Write.Commands.MentorProfile
         public string Education { get; set; }
         
         public bool WantReceivePersonalOrders { get; set; }
-        
+
         public override ToDoOperationsEnum Operation => ToDoOperationsEnum.EditMentorProfile;
+        public override string OperationUniqueKey => MentorId.ToString();
     }
 }

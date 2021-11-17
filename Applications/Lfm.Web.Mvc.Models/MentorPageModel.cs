@@ -5,7 +5,7 @@ using Lfm.Domain.ReadModels.SearchModels;
 
 namespace Lfm.Web.Mvc.Models
 {
-    public class MentorsListPageModel : AbstractListPageModel<MentorPreviewModel, MentorsSearchModel>
+    public class MentorsListPageModel : AbstractSearchingListPageModel<MentorPreviewModel, MentorsSearchModel>
     {
         public MentorsListPageModel(PageList<MentorPreviewModel> items, MentorsSearchModel searchModel, int pageSize) 
             : base(items, searchModel, pageSize)

@@ -55,5 +55,7 @@ namespace LFM.Core.Common.Data
         public const string EmailIncorrect = "Електронна адреса '{0}' некоректна.";
         public const string PhoneIncorrect = "Номер телефону '{0}' некоректний.";
         public const string MaxLenght = "Максимальна довжина '{0}' символів.";
+        public const string MinLenght = "Мінімальна довжина '{0}' символів.";
+
     }
 }

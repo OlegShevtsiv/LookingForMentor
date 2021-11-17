@@ -25,6 +25,7 @@ namespace LFM.Domain.Write.ToDo.CreateService
                 .Where(t => t.CreatedByUserId == requestedUserId)
                 .Where(t => t.OperationCodeId == operationId)
                 .Where(t => t.StatusId == (int) ToDoStatusEnum.Pending)
+                .Where(t => t.OperationUniqueKey == command.OperationUniqueKey)
                 .FirstOrDefaultAsync();
 
             var jsonCommand = JsonConvert.SerializeObject(command);
@@ -42,7 +43,8 @@ namespace LFM.Domain.Write.ToDo.CreateService
                 JsonCommand = jsonCommand,
                 OperationCodeId = operationId,
                 CreatedByUserId = requestedUserId,
-                CreatedDateTime = DateTime.Now
+                CreatedDateTime = DateTime.Now,
+                ModifiedDateTime = DateTime.Now
             };
 
             _context.ToDos.Add(toDo);

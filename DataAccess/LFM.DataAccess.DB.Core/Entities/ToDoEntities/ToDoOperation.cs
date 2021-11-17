@@ -3,8 +3,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace LFM.DataAccess.DB.Core.Entities.ToDoEntities
 {
-    [Table("ToDoOperationCodes")]
-    public class ToDoOperationCode
+    [Table("ToDoOperations")]
+    public class ToDoOperation
     {
         public int Id { get; set; }
 
