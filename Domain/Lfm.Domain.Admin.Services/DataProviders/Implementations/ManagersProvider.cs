@@ -17,16 +17,19 @@ namespace Lfm.Domain.Admin.Services.DataProviders.Implementations
     {
         private readonly ICommonUserProvider _userProvider;
         private readonly IRepository<PendingManagerCreation> _pendingManagersRepo;
+        private readonly IRepository<BlockedManager> _blockedManagersRepo;
         private readonly IMapper _mapper;
 
         public ManagersProvider(
             ICommonUserProvider userProvider, 
             IRepository<PendingManagerCreation> pendingManagersRepo, 
-            IMapper mapper)
+            IMapper mapper, 
+            IRepository<BlockedManager> blockedManagersRepo)
         {
             _userProvider = userProvider;
             _pendingManagersRepo = pendingManagersRepo;
             _mapper = mapper;
+            _blockedManagersRepo = blockedManagersRepo;
         }
 
         public async Task<PageList<ManagerReviewModel>> GetManagersList(int pageNo, int? pageSize = null)
@@ -34,7 +37,19 @@ namespace Lfm.Domain.Admin.Services.DataProviders.Implementations
             var managers = await _userProvider.GetUsers<ManagerReviewModel>(
                 LfmIdentityRolesEnum.Manager,
                 (pageNo - 1) * (pageSize ?? 0), pageSize);
+
+            var managersIds = managers.data.Select(m => m.Id);
             
+            var blockedManagers = await _blockedManagersRepo
+                .GetQueryable()
+                .Where(m => managersIds.Contains(m.ManagerId))
+                .ToListAsync();
+            
+            foreach (var man in managers.data)
+            {
+                man.Blocked = blockedManagers.Any(m => m.ManagerId == man.Id);
+            }
+
             return new PageList<ManagerReviewModel>(managers.data, managers.totalCount, pageNo);
         }
         

@@ -3,6 +3,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
+using LFM.Core.Common.Data;
+using LFM.Core.Common.Exceptions;
 using LFM.Core.Common.Extensions;
 using Lfm.Core.Common.Web.Extensions;
 using Lfm.Core.Common.Web.Models;
@@ -28,18 +30,83 @@ namespace Lfm.Domain.Manager.Services.DataProviders.Implementations
             _mapper = mapper;
         }
 
-        public Task<PageList<PendingToDoReviewModel>> SearchPendingToDos(SearchToDosModel searchModel, int pageNo, int? pageSize = null)
+        public Task<PageList<ToDoReviewModel>> SearchPendingToDos(SearchToDosModel searchModel, int pageNo, int? pageSize = null)
         {
             var query = _toDoRepo.GetQueryable()
+                .Where(t => !t.CheckerId.HasValue)
                 .Where(t => t.StatusId == (int) ToDoStatusEnum.Pending)
                 .AddConditionWhen(t => t.OperationCodeId == searchModel.OperationId, searchModel?.OperationId != null)
                 .AddConditionWhen(t => t.CreatedByUserId == searchModel.UserId, searchModel?.UserId != null)
                 .OrderBy(t => t.CreatedDateTime)
-                .ProjectTo<PendingToDoReviewModel>(_mapper.ConfigurationProvider);
+                .ProjectTo<ToDoReviewModel>(_mapper.ConfigurationProvider);
             
             return query.GetPageList(pageNo, pageSize);
         }
 
+        public Task<PageList<RejectedToDoReviewModel>> GetRejectedToDos(int pageNo, int? pageSize = null)
+        {
+            var query = _toDoRepo.GetQueryable()
+                .Where(t => t.StatusId == (int) ToDoStatusEnum.Rejected)
+                .OrderBy(t => t.CreatedDateTime)
+                .ProjectTo<RejectedToDoReviewModel>(_mapper.ConfigurationProvider);
+            
+            return query.GetPageList(pageNo, pageSize);
+        }
+        
+        public Task<PageList<ToDoReviewModel>> GetReviewingToDos(int pageNo, int reviewerId, int? pageSize = null)
+        {
+            var query = _toDoRepo.GetQueryable()
+                .Where(t => t.StatusId == (int) ToDoStatusEnum.OnReview)
+                .Where(t => t.CheckerId == reviewerId)
+                .OrderBy(t => t.CreatedDateTime)
+                .ProjectTo<ToDoReviewModel>(_mapper.ConfigurationProvider);
+            
+            return query.GetPageList(pageNo, pageSize);
+        }
+
+        public Task<PageList<ToDoReviewModel>> GetApprovedToDos(int pageNo, int approverId, int? pageSize = null)
+        {
+            var query = _toDoRepo.GetQueryable()
+                .Where(t => t.StatusId == (int) ToDoStatusEnum.Approved)
+                .Where(t => t.CheckerId == approverId)
+                .OrderBy(t => t.CreatedDateTime)
+                .ProjectTo<ToDoReviewModel>(_mapper.ConfigurationProvider);
+            
+            return query.GetPageList(pageNo, pageSize);
+        }
+
+        public async Task<ToDoDetailedReviewModel> GetDetailedPendingToDo(int toDoId)
+        {
+            var model = await _toDoRepo.GetQueryable()
+                            .Where(t => !t.CheckerId.HasValue)
+                            .Where(t => t.StatusId == (int) ToDoStatusEnum.Pending)
+                            .OrderBy(t => t.CreatedDateTime)
+                            .ProjectTo<ToDoDetailedReviewModel>(_mapper.ConfigurationProvider)
+                            .FirstOrDefaultAsync(t => t.Id == toDoId) 
+                        ?? new ToDoDetailedReviewModel
+                        {
+                            IsSuccess = false,
+                        };
+
+            return model;
+        }
+        
+        public async Task<ToDoDetailedReviewModel> GetDetailedReviewingToDo(int toDoId, int reviewerId)
+        {
+            var model = await _toDoRepo.GetQueryable()
+                            .Where(t => t.StatusId == (int) ToDoStatusEnum.OnReview)
+                            .Where(t => t.CheckerId == reviewerId)
+                            .OrderBy(t => t.CreatedDateTime)
+                            .ProjectTo<ToDoDetailedReviewModel>(_mapper.ConfigurationProvider)
+                            .FirstOrDefaultAsync(t => t.Id == toDoId)
+                        ?? new ToDoDetailedReviewModel
+                        {
+                            IsSuccess = false,
+                        };
+            
+            return model;
+        }
+        
         public async Task<ICollection<OperationReviewModel>> GetPerformingOperations()
         {
             return await _toDoRepo.GetQueryable()
@@ -50,6 +117,8 @@ namespace Lfm.Domain.Manager.Services.DataProviders.Implementations
                     Name = t.Operation.Description
                 })
                 .OrderBy(o => o.Name)
+                .GroupBy(t => t)
+                .Select(t => t.Key)
                 .ToListAsync();
         }
         
@@ -63,7 +132,10 @@ namespace Lfm.Domain.Manager.Services.DataProviders.Implementations
                     Email = t.CreatedByUser.Email
                 })
                 .OrderBy(u => u.Email)
+                .GroupBy(t => t)
+                .Select(t => t.Key)
                 .ToListAsync();
         }
+
     }
 }

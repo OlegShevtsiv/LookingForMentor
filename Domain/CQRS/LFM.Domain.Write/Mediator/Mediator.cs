@@ -25,19 +25,20 @@ namespace LFM.Domain.Write.Mediator
             where TCommand : ICommand, new()
             where TCommandResult : CommandResult, new()
         {
-            if (command is NeedsApproveCommand)
-            {
-                var createToDoService = _serviceProvider.GetRequiredService<ICreateToDoService>();
-                var context = _serviceProvider.GetRequiredService<IHttpContextAccessor>().HttpContext;
-                
-                var needsApproveCommand = command as NeedsApproveCommand;
-                await createToDoService.CreateToDo(needsApproveCommand, context.User.GetId(), needsApproveCommand.Operation.Id);
-                context.Alert(Messages.ToDoCreated, AlertTypes.Info);
-                return new TCommandResult();
-            }
-            
             ICommandHandler<TCommand, TCommandResult> handler = this.RetrieveCommandHandler<TCommand, TCommandResult>();
             return await handler.ExecuteAsync(command);
+        }
+        
+        public async Task<TCommandResult> ExecuteNeedsApproveCommand<TCommand, TCommandResult>(TCommand command) 
+            where TCommand : NeedsApproveCommand, new()
+            where TCommandResult : CommandResult, new()
+        {
+            var createToDoService = _serviceProvider.GetRequiredService<ICreateToDoService>();
+            var context = _serviceProvider.GetRequiredService<IHttpContextAccessor>().HttpContext;
+            
+            await createToDoService.CreateToDo(command, context.User.GetId());
+            context.Alert(Messages.ToDoCreated, AlertTypes.Info);
+            return new TCommandResult();
         }
 
         public async Task<CommandResult> ExecuteCommand<TCommand>(TCommand command) where TCommand : ICommand, new()

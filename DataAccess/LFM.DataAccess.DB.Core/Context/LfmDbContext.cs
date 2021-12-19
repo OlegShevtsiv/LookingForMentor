@@ -45,6 +45,12 @@ namespace LFM.DataAccess.DB.Core.Context
         
         public DbSet<PendingManagerCreation> PendingManagerCreations { get; set; }
         
+        public DbSet<ManagerActivityLogType> ManagerActivityLogTypes { get; set; }
+
+        public DbSet<ManagerActivityLog> ManagerActivityLogs { get; set; }
+
+        public DbSet<BlockedManager> BlockedManagers { get; set; }
+
 
         public LfmDbContext()
         {

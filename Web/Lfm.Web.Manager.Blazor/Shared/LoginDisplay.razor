@@ -6,10 +6,10 @@
             <LoginRedirect/>
         }
         
-        Hello, @context.User.GetName()!
+        Привіт, @context.User.GetName()!
         
         <form method="post" action="Identity/Account/LogOut">
-            <button type="submit" class="nav-link btn btn-link">Log out</button>
+            <button type="submit" class="nav-link btn btn-link">Вихід <span class="oi oi-account-logout" aria-hidden="true"></span></button>
         </form>
         
     </Authorized>

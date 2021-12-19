@@ -7,6 +7,8 @@ namespace LFM.Domain.Write.ToDo
     {
         [JsonIgnore]
         public abstract string OperationUniqueKey { get; }
+        
+        [JsonIgnore]
         public abstract ToDoOperationsEnum Operation { get; }
     }
 }

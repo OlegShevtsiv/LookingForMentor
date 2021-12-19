@@ -7,14 +7,17 @@ using LFM.Domain.Write.Commands.MentorProfile;
 using LFM.Domain.Write.Commands.Order;
 using LFM.Domain.Write.Commands.StudentProfile;
 using LFM.Domain.Write.CommandServices.Auth;
+using LFM.Domain.Write.CommandValidator;
 using LFM.Domain.Write.Declarations;
 using LFM.Domain.Write.Mapper;
 using LFM.Domain.Write.Mediator;
+using LFM.Domain.Write.PrettyCommandConverter;
 using LFM.Domain.Write.ResultModels;
 using LFM.Domain.Write.ToDo;
 using LFM.Domain.Write.ToDo.CreateService;
 using LFM.Domain.Write.ToDo.Handler;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace LFM.Domain.Write
 {
@@ -29,19 +32,38 @@ namespace LFM.Domain.Write
             AddInternalServices(services);
 
             AddCommandHandlers(services);
-            AddToDoHandlers(services);
+            AddCommandValidators(services);
+            AddPrettyCommandConvertors(services);
+            services.AddTransient<ICreateToDoService, CreateToDoService>();
         }
 
-        private static void AddToDoHandlers(IServiceCollection services)
+        public static void AddToDoHandlers(this IServiceCollection services)
         {
             services.AddScoped<INeedsApproveCommandHandler, EditMentorProfileCommandHandler>();
             services.AddScoped<INeedsApproveCommandHandler, AddMentorSubjectCommandHandler>();
             services.AddScoped<INeedsApproveCommandHandler, EditMentorSubjectCommandHandler>();
             services.AddScoped<INeedsApproveCommandHandler, CreateLookingForMentorRequestCommandHandler>();
-            
-            services.AddTransient<ICreateToDoService, CreateToDoService>();
+            services.AddScoped<IToDoHandler, ToDoHandler>();
 
-            services.AddSingleton<IToDoHandler, ToDoHandler>();
+            AddCommandValidators(services);
+        }
+
+        private static void AddCommandValidators(IServiceCollection services)
+        {
+            services.AddTransient<ICommandValidator<EditMentorProfileCommand>, EditMentorProfileCommandHandler>();
+            services.AddTransient<ICommandValidator<AddMentorSubjectCommand>, AddMentorSubjectCommandHandler>();
+            services.AddTransient<ICommandValidator<EditMentorSubjectCommand>, EditMentorSubjectCommandHandler>();
+            services.AddTransient<ICommandValidator<CreateLookingForMentorRequestCommand>, CreateLookingForMentorRequestCommandHandler>();
+            services.AddTransient<IValidateCommandService, ValidateCommandService>();
+        }
+        
+        private static void AddPrettyCommandConvertors(IServiceCollection services)
+        {
+            services.AddTransient<IPrettyCommandConverter<EditMentorProfileCommand>, EditMentorProfileCommandHandler>();
+            services.AddTransient<IPrettyCommandConverter<AddMentorSubjectCommand>, AddMentorSubjectCommandHandler>();
+            services.AddTransient<IPrettyCommandConverter<EditMentorSubjectCommand>, EditMentorSubjectCommandHandler>();
+            services.AddTransient<IPrettyCommandConverter<CreateLookingForMentorRequestCommand>, CreateLookingForMentorRequestCommandHandler>();
+            services.AddTransient<IPrettyCommandService, PrettyCommandService>();
         }
 
         private static void AddCommandHandlers(IServiceCollection services)

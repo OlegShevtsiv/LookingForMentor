@@ -13,5 +13,7 @@ namespace Lfm.Domain.Admin.Models.ReviewModels
         public DateTime? LastLoginTime { get; set; }
         
         public DateTime? LastActivityTime { get; set; }
+        
+        public bool Blocked { get; set; }
     }
 }

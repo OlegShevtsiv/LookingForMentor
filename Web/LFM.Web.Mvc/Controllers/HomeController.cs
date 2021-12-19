@@ -1,12 +1,16 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Linq;
+using System.Threading.Tasks;
 using LFM.Core.Common.Data;
 using Lfm.Core.Common.Web.Configurations;
 using Lfm.Core.Common.Web.SessionAlerts;
+using LFM.DataAccess.DB.Core.Context;
 using LFM.Domain.Read.Providers;
 using Lfm.Domain.ReadModels.SearchModels;
 using Lfm.Web.Mvc.App.StaticServices;
 using Lfm.Web.Mvc.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
@@ -17,14 +21,16 @@ namespace LFM.Web.Mvc.Controllers
         private readonly ILogger<HomeController> _logger;
         private readonly IMentorsProvider _mentorsProvider;
         private readonly AppConfigurations _appConfigs;
-
+        private readonly LfmDbContext _context;
         public HomeController(
             ILogger<HomeController> logger, 
             IMentorsProvider mentorsProvider,
-            IOptions<AppConfigurations> configOptions)
+            IOptions<AppConfigurations> configOptions, 
+            LfmDbContext context)
         {
             _logger = logger;
             _mentorsProvider = mentorsProvider;
+            _context = context;
             _appConfigs = configOptions.Value;
         }
 

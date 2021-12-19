@@ -2,7 +2,7 @@ using System;
 
 namespace Lfm.Domain.Manager.Models.ReviewModels
 {
-    public class PendingToDoReviewModel
+    public class ToDoReviewModel
     {
         public int Id { get; set; }
         

@@ -19,6 +19,7 @@ namespace Lfm.Domain.Admin.Services.Mapper
                 .ForMember(u => u.Email, source => source.MapFrom(s => s.NormalizedEmail))
                 .ForMember(u => u.Name, source => source.MapFrom(s => s.Name))
                 .ForMember(u => u.LastLoginTime, source => source.MapFrom(s => s.LastLoginTime))
+                .ForMember(u => u.LastLoginTime, source => source.Ignore())
                 .ForMember(u => u.LastActivityTime, source => source.Ignore());
 
             CreateMap<PendingManagerCreation, ManagerToCreateReviewModel>()

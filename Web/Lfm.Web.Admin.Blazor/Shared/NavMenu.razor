@@ -1,6 +1,6 @@
 ﻿@using Lfm.Admin.Blazor.App.Routes
 <div class="top-row pl-4 navbar navbar-dark">
-    <a class="navbar-brand" href="">Lfm.Web.Admin.Blazor</a>
+    <a class="navbar-brand" href="">Admin Portal</a>
     <button class="navbar-toggler" @onclick="ToggleNavMenu">
         <span class="navbar-toggler-icon"></span>
     </button>
@@ -8,30 +8,19 @@
 
 <div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
     <ul class="nav flex-column">
-        <li class="nav-item px-3">
-            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                <span class="oi oi-home" aria-hidden="true"></span> Home
-            </NavLink>
-        </li>
         
         <li class="nav-item px-3">
             <NavLink class="nav-link" href="@AdminRoutesMap.Managers">
-                <span class="oi oi-person" aria-hidden="true"></span> Managers
+                <span class="oi oi-people" aria-hidden="true"></span> Менеджери
             </NavLink>
         </li>
-        
+
         <li class="nav-item px-3">
             <NavLink class="nav-link" href="@AdminRoutesMap.ManagersToCreate">
-                <span class="oi oi-plus" aria-hidden="true"></span> Створення менеджера
+                <span class="oi oi-pencil" aria-hidden="true"></span> Створення Менеджера
             </NavLink>
         </li>
-        
-        <li class="nav-item px-3">
-            <NavLink class="nav-link" href="@AdminRoutesMap.ManagersActivity">
-                <span class="oi oi-list-rich" aria-hidden="true"></span> Managers Activity
-            </NavLink>
-        </li>
-        
+
     </ul>
 </div>
 

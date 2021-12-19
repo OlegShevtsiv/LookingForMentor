@@ -15,6 +15,8 @@ namespace LFM.DataAccess.DB.Core.Entities.ToDoEntities
         public string RejectReason { get; set; }
 
         public string JsonCommand { get; set; }
+        
+        public string PrettyCommand { get; set; }
 
         public int OperationCodeId { get; set; }
         

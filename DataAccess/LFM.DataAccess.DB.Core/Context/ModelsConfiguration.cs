@@ -220,6 +220,33 @@ namespace LFM.DataAccess.DB.Core.Context
             {
                 m.HasKey(t => t.Id);
             });
+            
+            builder.Entity<ManagerActivityLogType>(m =>
+            {
+                m.HasKey(t => t.Id);
+            });
+            
+            builder.Entity<BlockedManager>(m =>
+            {
+                m.HasKey(t => t.Id);
+
+                m.HasOne(e => e.Manager)
+                    .WithOne()
+                    .HasForeignKey<BlockedManager>(e => e.ManagerId);
+            });
+            
+            builder.Entity<ManagerActivityLog>(m =>
+            {
+                m.HasKey(t => t.Id);
+
+                m.HasOne(e => e.Manager)
+                    .WithMany()
+                    .HasForeignKey(e => e.ManagerId);
+                
+                m.HasOne(e => e.LogType)
+                    .WithMany(e => e.Logs)
+                    .HasForeignKey(e => e.LogTypeId);
+            });
 
             #endregion
         }

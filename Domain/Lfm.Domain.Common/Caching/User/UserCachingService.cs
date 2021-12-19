@@ -62,13 +62,7 @@ namespace Lfm.Domain.Common.Caching.User
         {
             int userId = GetUserId();
             if (!_userCacheStorage.ContainsKey(userId))
-            {
-                bool isAdded = await TryCacheUser();
-                if (!isAdded)
-                {
-                    throw new LfmException(Messages.SystemError);
-                }
-            }
+                await TryCacheUser();
         }
 
         public Task RemoveUserFromCache()

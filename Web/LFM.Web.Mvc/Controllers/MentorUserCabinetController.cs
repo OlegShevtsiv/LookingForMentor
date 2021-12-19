@@ -5,6 +5,7 @@ using AutoMapper;
 using LFM.Core.Common.Data;
 using LFM.Core.Common.Exceptions;
 using Lfm.Core.Common.Web.SessionAlerts;
+using LFM.DataAccess.DB.Core.Entities;
 using LFM.DataAccess.DB.Core.Types;
 using Lfm.Domain.Common.Extensions;
 using LFM.Domain.Read.Providers;
@@ -15,6 +16,7 @@ using LFM.Domain.Write.ResultModels;
 using Lfm.Web.Mvc.App.Extensions;
 using Lfm.Web.Mvc.Models.FormModels.UserCabinet.Mentor;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LFM.Web.Mvc.Controllers
@@ -27,18 +29,20 @@ namespace LFM.Web.Mvc.Controllers
         private readonly IMentorProfileProvider _mentorProfileProvider;
         private readonly IMediator _commandBus;
         private readonly ISubjectsProvider _subjectsProvider;
-
+        private readonly UserManager<LfmUser> _userManager;
         
         public MentorUserCabinetController(
             IMapper mapper,
             IMentorProfileProvider mentorProfileProvider,
             IMediator commandBus, 
-            ISubjectsProvider subjectsProvider)
+            ISubjectsProvider subjectsProvider, 
+            UserManager<LfmUser> userManager)
         {
             _mapper = mapper;
             _mentorProfileProvider = mentorProfileProvider;
             _commandBus = commandBus;
             _subjectsProvider = subjectsProvider;
+            _userManager = userManager;
         }
         
         
@@ -53,7 +57,7 @@ namespace LFM.Web.Mvc.Controllers
         public async Task<IActionResult> EditGeneralInfo()
         {
             var model = await _mentorProfileProvider.GetGeneralInfo<EditMentorsProfileFormModel>(User.GetId());
-            model.Name = User.GetName();
+            model.Name = await _userManager.GetName(User);
             return View("../UserCabinet/Mentor/EditGeneralInfo", model);
         }
 
@@ -68,7 +72,7 @@ namespace LFM.Web.Mvc.Controllers
                     var command = _mapper.Map<EditMentorProfileCommand>(model);
                     command.MentorId = User.GetId();
 
-                    await _commandBus.ExecuteCommand(command);
+                    await _commandBus.ExecuteNeedsApproveCommand<EditMentorProfileCommand, CommandResult>(command);
                     return RedirectToAction("GeneralInfo");
                 },
                 defaultResult);
@@ -112,7 +116,7 @@ namespace LFM.Web.Mvc.Controllers
                     var command = _mapper.Map<AddMentorSubjectCommand>(model);
                     command.MentorId = User.GetId();
                     
-                    await _commandBus.ExecuteCommand(command);
+                    await _commandBus.ExecuteNeedsApproveCommand<AddMentorSubjectCommand, CommandResult>(command);
                     return RedirectToAction("SubjectsInfo");
                 },
                 defaultResult);
@@ -143,7 +147,7 @@ namespace LFM.Web.Mvc.Controllers
                     var command = _mapper.Map<EditMentorSubjectCommand>(model);
                     command.MentorId = User.GetId();
                     
-                    await _commandBus.ExecuteCommand(command);
+                    await _commandBus.ExecuteNeedsApproveCommand<EditMentorSubjectCommand, CommandResult>(command);
                     return RedirectToAction("SubjectsInfo");
                 },
                 defaultResult);

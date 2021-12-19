@@ -1,6 +1,10 @@
 @using Lfm.Domain.Common.Extensions
 @using Lfm.Web.Mvc.App.UIRenderers
+@using Microsoft.AspNetCore.Identity
+@using LFM.DataAccess.DB.Core.Entities
 @model Lfm.Domain.ReadModels.ReviewModels.MentorProfile.MentorProfilePreviewModel
+
+@inject UserManager<LfmUser> UserManager;
 @{
     ViewData["Title"] = "Мій профіль";
     Layout = "../_UserCabinetLayout.cshtml";
@@ -37,7 +41,7 @@
     <div class="list-group-item flex-column align-items-start border-dark">
         <label>Ініціали</label>
         <hr>
-        <p>@Model.Surname @Context.User.GetName() @Model.MiddleName</p>
+        <p>@Model.Surname @(await UserManager.GetName(User)) @Model.MiddleName</p>
     </div>
     
     <div class="list-group-item flex-column align-items-start border-dark">

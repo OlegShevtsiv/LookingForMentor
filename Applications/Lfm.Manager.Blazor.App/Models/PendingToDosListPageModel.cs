@@ -5,9 +5,9 @@ using Lfm.Domain.Manager.Models.SearchModel;
 
 namespace Lfm.Manager.Blazor.App.Models
 {
-    public class PendingToDosListPageModel : AbstractSearchingListPageModel<PendingToDoReviewModel, SearchToDosModel>
+    public class PendingToDosListPageModel : AbstractSearchingListPageModel<ToDoReviewModel, SearchToDosModel>
     {
-        public PendingToDosListPageModel(PageList<PendingToDoReviewModel> items, SearchToDosModel searchModel, int pageSize) 
+        public PendingToDosListPageModel(PageList<ToDoReviewModel> items, SearchToDosModel searchModel, int pageSize) 
             : base(items, searchModel, pageSize)
         {
         }

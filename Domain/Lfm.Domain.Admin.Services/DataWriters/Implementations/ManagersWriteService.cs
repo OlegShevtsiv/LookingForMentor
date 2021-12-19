@@ -41,5 +41,18 @@ namespace Lfm.Domain.Admin.Services.DataWriters.Implementations
             });
             await _context.SaveChangesAsync();
         }
+
+        public async Task BlockManager(int managerId)
+        {
+            _context.BlockedManagers.Add(new BlockedManager {ManagerId = managerId});
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task UnBlockManager(int managerId)
+        {
+            var entity = await _context.BlockedManagers.FirstOrDefaultAsync(m => m.ManagerId == managerId);
+            _context.BlockedManagers.Remove(entity);
+            await _context.SaveChangesAsync();
+        }
     }
 }

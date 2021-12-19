@@ -88,7 +88,7 @@ namespace LFM.Web.Mvc.Controllers
                     command.StudentEmail = User.GetEmail();
                     command.StudentPhoneNumber = User.GetPhoneNumber();
 
-                    await _commandBus.ExecuteCommand(command);
+                    await _commandBus.ExecuteNeedsApproveCommand<CreateLookingForMentorRequestCommand, CommandResult>(command);
                     return defaultResult;
                 },
                 defaultResult);

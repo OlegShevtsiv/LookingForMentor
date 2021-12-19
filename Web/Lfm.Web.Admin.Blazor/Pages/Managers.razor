@@ -1,11 +1,11 @@
-﻿@page "/managers/{pageNumber:int?}"
+﻿@page "/managers"
 @using Lfm.Domain.Admin.Services.DataProviders
-@using Lfm.Admin.Blazor.App.Models
 @using Lfm.Core.Common.Web.Models
 @using Lfm.Domain.Admin.Models.ReviewModels
+@using Lfm.Domain.Admin.Services.DataWriters
 @inject IManagersProvider ManagersProvider;
-
-<h1>енеджери</h1>
+@inject IManagersWriteService ManagersWriteService;
+<h1>Менеджери</h1>
 
 
 @if (_pageModel == null)
@@ -20,9 +20,10 @@ else
         <thead>
         <tr>
             <th>Id</th>
-            <th>Email</th>
-            <th>Name</th>
-            <th>LastLoginTime</th>
+            <th>Електронна пошта</th>
+            <th>Ім'я</th>
+            <th>Час останнього входу</th>
+            <th>Дії</th>
         </tr>
         </thead>
         <tbody>
@@ -33,6 +34,16 @@ else
                 <td>@manager.Email</td>
                 <td>@manager.Name</td>
                 <td>@(manager.LastLoginTime.HasValue ? manager.LastLoginTime.ToString() : "N/A")</td>
+                <td>
+                    @if (manager.Blocked)
+                    {
+                        <button class="btn btn-sm btn-success" @onclick="(() => UnBlock(manager.Id))">Розблокувати</button>
+                    }
+                    else
+                    {
+                        <button class="btn btn-sm btn-danger" @onclick="(() => Block(manager.Id))">Заблокувати</button>
+                    }
+                </td>
             </tr>
         }
         </tbody>
@@ -44,14 +55,14 @@ else
             @if (_pageModel.Pagination.PageNumber > 1)
             {
             <li class="page-item">
-                <a class="page-link" href="managers/1">&lt;&lt;</a>
+                <a class="page-link" @onclick="(() => RefreshTable(1))">&lt;&lt;</a>
             </li>
             }
                                 
             @foreach (var prev in _pageModel.Pagination.GetNumbersAllPreviousPages())
             {
             <li class="page-item">
-                <a class="page-link"  href="managers/@prev" >@prev</a>
+                <a class="page-link" @onclick="(() => RefreshTable(prev))">@prev</a>
             </li>
             }
                 
@@ -67,7 +78,7 @@ else
             @foreach (var next in _pageModel.Pagination.GetNumbersAllNextPages())
             {
             <li class="page-item">
-                <a class="page-link" href="managers/@next">@next</a>
+                <a class="page-link" @onclick="(() => RefreshTable(next))">@next</a>
             </li>
             }
                                 
@@ -75,7 +86,7 @@ else
             @if (_pageModel.Pagination.PageNumber < _pageModel.Pagination.TotalPages)
             {
             <li class="page-item">
-                <a class="page-link" href="managers/@(_pageModel.Pagination.TotalPages)">>></a>
+                <a class="page-link" @onclick="(() => RefreshTable(_pageModel.Pagination.TotalPages))">>></a>
             </li>
             }
             
@@ -85,16 +96,34 @@ else
 
 @code
 {
-    [Parameter]
-    public int? PageNumber { get; set; }
-    
     BaseListPageModel<ManagerReviewModel> _pageModel;
     
+    private int _currentPage = 1;
+
     protected override async void OnInitialized()
     {
-        var managers = await ManagersProvider.GetManagersList(PageNumber ?? 1, 10);
-        _pageModel = new BaseListPageModel<ManagerReviewModel>(managers, 10);
+        await RefreshTable(_currentPage);
         await base.OnInitializedAsync();
+    }
+
+    private async Task Block(int managerId)
+    {
+        await ManagersWriteService.BlockManager(managerId);
+        await RefreshTable(_currentPage);
+    }
+    
+    private async Task UnBlock(int managerId)
+    {
+        await ManagersWriteService.UnBlockManager(managerId);
+        await RefreshTable(_currentPage);
+    }
+    
+    private async Task RefreshTable(int pageNumber)
+    {
+        _currentPage = pageNumber;
+        var managers = await ManagersProvider
+            .GetManagersList(pageNumber <= 0 ? 1 : pageNumber, 10);
+        _pageModel = new BaseListPageModel<ManagerReviewModel>(managers, 10);
     }
 }
 

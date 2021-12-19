@@ -1,5 +1,6 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @using LFM.DataAccess.DB.Core.Entities
+@using Lfm.Domain.Common.Caching.User
 @using Lfm.Domain.Common.Extensions
 @using Lfm.Web.Mvc.App.UIRenderers
 
@@ -12,7 +13,7 @@
             @{
                 var userCabinetLink = UserCabinetUiRenderer.GetCabinetIndex(Context);
             }
-            <a class="nav-link text-dark" asp-controller="@(userCabinetLink.ControllerName)" asp-action="@(userCabinetLink.ActionName)" title="Manage">Привіт @User.GetName()!</a>
+            <a class="nav-link text-dark" asp-controller="@(userCabinetLink.ControllerName)" asp-action="@(userCabinetLink.ActionName)" title="Manage">Привіт @(await SignInManager.GetName(User))!</a>
         </li>
         <li class="nav-item">
             <form class="form-inline" asp-controller="Auth" asp-action="Logout">
