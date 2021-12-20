@@ -32,7 +32,7 @@ namespace LFM.Domain.Write.Mapper
                 .ForMember(x => x.Id, o => o.Ignore())
                 .ForMember(x => x.RejectedDateTime, o => o.MapFrom(p => DateTime.UtcNow));
             
-            CreateMap<CreateLookingForMentorRequestCommand, OrderRequest>(MemberList.Destination)
+            CreateMap<CreateLookingForMentorRequestCommand, OrderRequest>()
                 .ForMember(x => x.Id, o => o.Ignore())
                 .ForMember(x => x.CreationDateTime, o => o.MapFrom(p => DateTime.UtcNow));
         }

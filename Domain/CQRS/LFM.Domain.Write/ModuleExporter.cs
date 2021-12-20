@@ -39,6 +39,8 @@ namespace LFM.Domain.Write
 
         public static void AddToDoHandlers(this IServiceCollection services)
         {
+            services.AddAutoMapper(typeof(CommandToEntityMapperConfig));
+
             services.AddScoped<INeedsApproveCommandHandler, EditMentorProfileCommandHandler>();
             services.AddScoped<INeedsApproveCommandHandler, AddMentorSubjectCommandHandler>();
             services.AddScoped<INeedsApproveCommandHandler, EditMentorSubjectCommandHandler>();

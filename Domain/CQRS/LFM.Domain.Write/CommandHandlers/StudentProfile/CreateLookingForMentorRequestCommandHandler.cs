@@ -35,7 +35,7 @@ namespace LFM.Domain.Write.CommandHandlers.StudentProfile
         {
             await IsValid(command);
             
-            OrderRequest order = _mapper.Map<OrderRequest>(command);
+            OrderRequest order = _mapper.Map<CreateLookingForMentorRequestCommand, OrderRequest>(command);
 
             _context.OrdersRequests.Add(order);
 
